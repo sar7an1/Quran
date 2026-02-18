@@ -9,180 +9,133 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <style>
-        :root {
-            --primary: #064e3b;
-            --accent: #fbbf24;
-            --card-bg: #f8fafc;
-        }
-        body {
-            font-family: 'Cairo', sans-serif;
-            background-color: #ffffff;
-            margin: 0;
-            user-select: none;
-            overflow-x: hidden;
-        }
-        .basmalah {
-            font-family: 'Amiri', serif;
-            font-size: 2.2rem;
-            color: var(--primary);
-            font-weight: bold;
-            margin: 20px 0;
-        }
-
-        /* Home Grid Styles */
-        .main-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            padding: 15px;
-        }
-        .grid-card {
-            background-color: var(--card-bg);
-            border-radius: 20px;
-            padding: 20px 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            transition: 0.3s;
-            border: 1px solid #e2e8f0;
-            cursor: pointer;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
-        }
-        .grid-card:active { transform: scale(0.95); background-color: #f1f5f9; }
-        .grid-card i { font-size: 2rem; margin-bottom: 10px; }
-        .grid-card span { font-weight: 700; font-size: 0.85rem; color: #1e293b; }
-
-        /* Player Bar */
-        .player-fixed {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: var(--primary);
-            height: 85px;
-            display: flex;
-            align-items: center;
-            padding: 0 20px;
-            color: white;
-            z-index: 1000;
-            border-top: 4px solid var(--accent);
-        }
-
+        :root { --primary: #064e3b; --accent: #fbbf24; }
+        body { font-family: 'Cairo', sans-serif; background-color: #fff; margin: 0; user-select: none; }
+        .basmalah { font-family: 'Amiri', serif; font-size: 2rem; color: var(--primary); font-weight: bold; margin: 20px 0; text-align: center; }
+        
+        /* Grid */
+        .main-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 15px; }
+        .grid-card { background: #f8fafc; border-radius: 20px; padding: 20px 10px; display: flex; flex-direction: column; align-items: center; border: 1px solid #e2e8f0; cursor: pointer; transition: 0.3s; }
+        .grid-card:active { transform: scale(0.95); }
+        .grid-card i { font-size: 1.8rem; margin-bottom: 8px; }
+        
+        /* Content */
+        .content-card { background: white; border-radius: 15px; padding: 15px; margin-bottom: 10px; border-right: 4px solid var(--primary); shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .zekr-count { width: 35px; height: 35px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+        
+        /* Player */
+        .player-fixed { position: fixed; bottom: 0; left: 0; right: 0; background: var(--primary); height: 80px; display: flex; align-items: center; padding: 0 20px; color: white; z-index: 1000; border-top: 3px solid var(--accent); }
+        
         #sidebar { transition: transform 0.3s ease; z-index: 2000; }
         #sidebar.closed { transform: translateX(100%); }
         .hidden { display: none; }
-
-        /* حاوية المصحف الورقي */
-        .quran-container {
-            width: 100%;
-            height: calc(100vh - 175px); 
-            background: #fff;
-            position: relative;
-        }
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
+        
+        /* Mushaf Container */
+        .quran-container { width: 100%; height: calc(100vh - 170px); background: #fdfdfd; }
+        iframe { width: 100%; height: 100%; border: none; }
     </style>
 </head>
 <body>
 
-    <header class="bg-[#064e3b] p-4 sticky top-0 z-50 shadow-lg">
+    <header class="bg-[#064e3b] p-4 sticky top-0 z-50 shadow-md">
         <div class="max-w-md mx-auto flex justify-between items-center">
-            <div class="flex items-center gap-3 cursor-pointer" onclick="showSection('home')">
-                <span class="text-3xl">🕌</span>
-                <div>
-                    <h1 class="text-white font-black text-lg leading-none">القرآن</h1>
-                    <p class="text-[9px] text-amber-300 mt-1 font-bold">صدقة جارية لجميع المسلمين</p>
-                </div>
+            <div onclick="showSection('home')" class="flex items-center gap-2 cursor-pointer">
+                <span class="text-2xl">🕌</span>
+                <h1 class="text-white font-bold text-lg">القرآن الكريم</h1>
             </div>
-            <button onclick="toggleSidebar()" class="text-white text-2xl">
-                <i class="fa-solid fa-bars-staggered"></i>
-            </button>
+            <button onclick="toggleSidebar()" class="text-white text-xl"><i class="fa-solid fa-bars"></i></button>
         </div>
     </header>
 
-    <aside id="sidebar" class="fixed top-0 right-0 h-full w-64 bg-[#064e3b] closed p-6 shadow-2xl">
-        <div class="flex justify-between items-center border-b border-emerald-800 pb-4 mb-6">
-            <span class="text-white font-bold">القائمة</span>
-            <button onclick="toggleSidebar()" class="text-white text-xl"><i class="fa-solid fa-xmark"></i></button>
+    <aside id="sidebar" class="fixed top-0 right-0 h-full w-64 bg-[#064e3b] closed p-6 shadow-2xl text-white">
+        <div class="flex justify-between mb-8 border-b border-emerald-800 pb-2">
+            <span class="font-bold">القائمة</span>
+            <button onclick="toggleSidebar()"><i class="fa-solid fa-xmark"></i></button>
         </div>
-        <nav class="flex flex-col gap-5 text-sm">
-            <button onclick="showSection('home')" class="flex items-center gap-3 text-white"><i class="fa-solid fa-house text-amber-400"></i> الرئيسية</button>
-            <button onclick="showSection('mushaf')" class="flex items-center gap-3 text-white"><i class="fa-solid fa-feather-pointed text-amber-400"></i> المصحف الشريف</button>
-            <button onclick="showSection('radios')" class="flex items-center gap-3 text-white"><i class="fa-solid fa-radio text-amber-400"></i> الإذاعة</button>
-            <button onclick="showSection('reciters')" class="flex items-center gap-3 text-white"><i class="fa-solid fa-heart-pulse text-amber-400"></i> أصوات عذبة</button>
-            <hr class="border-emerald-800">
-            <a href="https://t.me/Sar7an_1" target="_blank" class="text-amber-300 font-bold"><i class="fa-solid fa-paper-plane mr-2"></i> تليجرام المسؤول</a>
+        <nav class="flex flex-col gap-6">
+            <button onclick="showSection('home')"><i class="fa-solid fa-house ml-2"></i> الرئيسية</button>
+            <button onclick="showSection('mushaf')"><i class="fa-solid fa-book-open ml-2"></i> المصحف</button>
+            <button onclick="showSection('radios')"><i class="fa-solid fa-radio ml-2"></i> الإذاعة</button>
+            <button onclick="showSection('reciters')"><i class="fa-solid fa-microphone ml-2"></i> القراء</button>
+            <button onclick="openAzkar('morning')"><i class="fa-solid fa-sun ml-2"></i> أذكار الصباح</button>
+            <button onclick="openAzkar('evening')"><i class="fa-solid fa-moon ml-2"></i> أذكار المساء</button>
         </nav>
     </aside>
 
-    <main class="max-w-md mx-auto pb-32">
+    <main class="max-w-md mx-auto pb-24">
         
         <section id="home-sec">
-            <div class="text-center py-8">
-                <h2 class="basmalah">بسم الله الرحمن الرحيم</h2>
-                <p class="text-emerald-900 font-bold text-xs bg-emerald-50 inline-block px-4 py-1 rounded-full">أهلاً بك في رحاب القرآن</p>
-            </div>
-            
+            <div class="basmalah">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
             <div class="main-grid">
                 <div onclick="showSection('mushaf')" class="grid-card">
-                    <i class="fa-solid fa-feather-pointed text-emerald-700"></i>
-                    <span>تصفح المصحف</span>
+                    <i class="fa-solid fa-book-quran text-emerald-700"></i>
+                    <span class="font-bold text-sm">المصحف الورقي</span>
                 </div>
                 <div onclick="showSection('radios')" class="grid-card">
                     <i class="fa-solid fa-tower-broadcast text-blue-600"></i>
-                    <span>الإذاعة</span>
+                    <span class="font-bold text-sm">إذاعات القران</span>
                 </div>
                 <div onclick="showSection('reciters')" class="grid-card">
-                    <i class="fa-solid fa-heart-pulse text-amber-600"></i>
-                    <span>أصوات عذبة</span>
+                    <i class="fa-solid fa-user-tie text-amber-600"></i>
+                    <span class="font-bold text-sm">كبار القراء</span>
                 </div>
-                <div onclick="showSection('azkar')" class="grid-card">
+                <div onclick="openAzkar('morning')" class="grid-card">
                     <i class="fa-solid fa-sun text-orange-500"></i>
-                    <span>الأذكار</span>
+                    <span class="font-bold text-sm">أذكار الصباح</span>
+                </div>
+                <div onclick="openAzkar('evening')" class="grid-card">
+                    <i class="fa-solid fa-moon text-indigo-600"></i>
+                    <span class="font-bold text-sm">أذكار المساء</span>
+                </div>
+                <div onclick="showSection('roqya')" class="grid-card">
+                    <i class="fa-solid fa-shield-heart text-red-600"></i>
+                    <span class="font-bold text-sm">الرقية الشرعية</span>
                 </div>
             </div>
         </section>
 
         <section id="mushaf-sec" class="hidden">
-            <div class="p-2 bg-emerald-50 flex justify-between items-center border-b border-emerald-100">
-                <span class="text-[11px] font-bold text-emerald-900">مصحف المدينة المنورة</span>
-                <button onclick="showSection('home')" class="text-[10px] bg-white px-3 py-1 rounded-full shadow-sm text-emerald-800 font-bold">رجوع</button>
+            <div class="p-2 bg-slate-50 flex justify-between border-b">
+                <span class="text-sm font-bold text-emerald-900">مصحف المدينة</span>
+                <button onclick="showSection('home')" class="text-xs bg-white px-3 py-1 rounded shadow">رجوع</button>
             </div>
             <div class="quran-container">
-                <iframe src="https://quran-pro.com/ar/read/1/1"></iframe>
+                <iframe src="https://mushaf.quran.com/ar/page/1"></iframe>
             </div>
+        </section>
+
+        <section id="azkar-sec" class="hidden px-4 pt-4">
+            <h3 id="azkarTitle" class="font-bold text-emerald-900 mb-4 text-lg"></h3>
+            <div id="azkarContent"></div>
+        </section>
+
+        <section id="roqya-sec" class="hidden px-4 pt-4">
+            <h3 class="font-bold text-red-900 mb-4">الرقية الشرعية</h3>
+            <div class="content-card">أَعُوذُ بِكَلِمَاتِ اللهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَقَ</div>
+            <div class="content-card">بِاسْمِ اللَّهِ الذي لا يَضُرُّ مع اسْمِهِ شيءٌ في الأرضِ ولا في السَّماءِ</div>
         </section>
 
         <section id="radios-sec" class="hidden px-4 pt-4">
-            <h3 class="font-black text-emerald-900 mb-4 border-r-4 border-emerald-800 pr-3">الإذاعة المباشرة</h3>
-            <div id="radioContainer" class="space-y-2"></div>
+            <h3 class="font-bold text-emerald-900 mb-4">الإذاعات المباشرة</h3>
+            <div id="radioList" class="space-y-2"></div>
         </section>
 
         <section id="reciters-sec" class="hidden px-4 pt-4">
-            <h3 class="font-black text-emerald-900 mb-4 border-r-4 border-emerald-800 pr-3">أصوات عذبة</h3>
-            <input type="text" onkeyup="searchR(this.value)" placeholder="ابحث عن قارئ..." class="w-full p-3 mb-5 rounded-xl border border-emerald-100 outline-none shadow-sm">
-            <div id="recitersList" class="grid grid-cols-1 gap-2"></div>
+            <h3 class="font-bold text-emerald-900 mb-4">أصوات عذبة</h3>
+            <input type="text" onkeyup="searchR(this.value)" placeholder="ابحث باسم القارئ..." class="w-full p-3 rounded-xl border border-emerald-100 mb-4 outline-none">
+            <div id="recitersList" class="space-y-2"></div>
         </section>
-
-        <footer class="mt-10 bg-[#022c22] text-white p-10 text-center border-t-4 border-amber-400">
-            <h4 class="text-amber-400 font-black text-xl mb-1">SAR7AN_1</h4>
-            <p class="text-[10px] text-emerald-100 opacity-60">صدقة جارية</p>
-        </footer>
 
     </main>
 
     <div class="player-fixed">
-        <div class="flex items-center gap-3 w-2/3">
-            <button onclick="toggleAudio()" id="pBtn" class="w-14 h-14 bg-white text-emerald-900 rounded-full flex items-center justify-center shadow-lg">
-                <i class="fa-solid fa-play ml-1"></i>
+        <div class="flex items-center gap-4 w-full">
+            <button onclick="toggleAudio()" id="pBtn" class="w-12 h-12 bg-white text-emerald-900 rounded-full flex items-center justify-center shadow-lg">
+                <i class="fa-solid fa-play"></i>
             </button>
             <div class="overflow-hidden">
-                <div id="trackName" class="text-[10px] font-bold text-amber-300 truncate">اختر محتوى للتشغيل</div>
+                <div id="trackName" class="text-xs font-bold text-amber-300 truncate">اختر محتوى للتشغيل</div>
+                <div class="text-[10px] opacity-70">بث مباشر HD</div>
             </div>
         </div>
         <audio id="audioPlayer"></audio>
@@ -191,30 +144,45 @@
     <script>
         const audio = document.getElementById('audioPlayer');
         const pBtn = document.getElementById('pBtn');
-        let radios = [], rIdx = 0, reciters = [];
+        let radios = [], reciters = [];
 
         window.onload = () => { fetchRadios(); fetchReciters(); showSection('home'); };
 
         function toggleSidebar() { document.getElementById('sidebar').classList.toggle('closed'); }
 
         function showSection(id) {
-            ['home', 'mushaf', 'radios', 'reciters'].forEach(s => {
+            ['home', 'mushaf', 'radios', 'reciters', 'azkar', 'roqya'].forEach(s => {
                 const el = document.getElementById(s + '-sec');
                 if(el) el.classList.add('hidden');
             });
-            const target = document.getElementById(id + '-sec');
-            if(target) target.classList.remove('hidden');
+            document.getElementById(id + '-sec').classList.remove('hidden');
             if(!document.getElementById('sidebar').classList.contains('closed')) toggleSidebar();
             window.scrollTo(0,0);
+        }
+
+        const azData = {
+            morning: { t: "أذكار الصباح", i: ["أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ", "يَا حَيُّ يَا قَيُّومُ بِرَحْمَتِكَ أَسْتَغِيثُ"] },
+            evening: { t: "أذكار المساء", i: ["أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلَّهِ", "اللَّهُمَّ بِكَ أَمْسَيْنَا وَبِكَ أَصْبَحْنَا"] }
+        };
+
+        function openAzkar(type) {
+            showSection('azkar');
+            document.getElementById('azkarTitle').innerText = azData[type].t;
+            document.getElementById('azkarContent').innerHTML = azData[type].i.map(z => `
+                <div class="content-card flex justify-between items-center">
+                    <p class="text-sm">${z}</p>
+                    <div class="zekr-count text-xs">1</div>
+                </div>
+            `).join('');
         }
 
         async function fetchRadios() {
             try {
                 const res = await fetch('https://mp3quran.net/api/v3/radios?language=ar');
                 const data = await res.json(); radios = data.radios;
-                document.getElementById('radioContainer').innerHTML = radios.slice(0, 10).map((r, i) => `
-                    <div onclick="play('${r.url}', '${r.name}', ${i})" class="bg-white p-3 rounded-xl flex justify-between border shadow-sm mb-2">
-                        <span class="text-xs font-bold">${r.name}</span><i class="fa-solid fa-play-circle text-emerald-600"></i>
+                document.getElementById('radioList').innerHTML = radios.slice(0, 15).map((r, i) => `
+                    <div onclick="play('${r.url}', '${r.name}')" class="bg-white p-3 rounded-xl border flex justify-between items-center shadow-sm">
+                        <span class="text-xs font-bold">${r.name}</span><i class="fa-solid fa-circle-play text-emerald-600"></i>
                     </div>
                 `).join('');
             } catch(e) {}
@@ -224,19 +192,20 @@
             try {
                 const res = await fetch('https://mp3quran.net/api/v3/reciters?language=ar');
                 const data = await res.json(); reciters = data.reciters;
-                renderReciters(reciters.slice(0, 10));
+                renderReciters(reciters.slice(0, 15));
             } catch(e) {}
         }
 
         function renderReciters(list) {
             document.getElementById('recitersList').innerHTML = list.map(r => `
-                <div onclick="play('${r.moshaf[0].server}001.mp3', '${r.name}', 0)" class="bg-white p-3 rounded-xl flex items-center gap-3 border shadow-sm mb-2">
+                <div onclick="play('${r.moshaf[0].server}001.mp3', '${r.name}')" class="bg-white p-3 rounded-xl border flex items-center gap-3 shadow-sm">
+                    <div class="w-8 h-8 bg-emerald-800 text-white rounded-full flex items-center justify-center text-[10px]">${r.name[0]}</div>
                     <span class="text-xs font-bold">${r.name}</span>
                 </div>
             `).join('');
         }
 
-        function play(url, name, index) {
+        function play(url, name) {
             audio.src = url; audio.play();
             document.getElementById('trackName').innerText = name;
             pBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
@@ -245,10 +214,10 @@
         function toggleAudio() {
             if(!audio.src) return;
             if(audio.paused) { audio.play(); pBtn.innerHTML = '<i class="fa-solid fa-pause"></i>'; }
-            else { audio.pause(); pBtn.innerHTML = '<i class="fa-solid fa-play ml-1"></i>'; }
+            else { audio.pause(); pBtn.innerHTML = '<i class="fa-solid fa-play"></i>'; }
         }
 
-        function searchR(q) { renderReciters(reciters.filter(r => r.name.includes(q)).slice(0, 10)); }
+        function searchR(q) { renderReciters(reciters.filter(r => r.name.includes(q)).slice(0, 15)); }
     </script>
 </body>
 </html>
