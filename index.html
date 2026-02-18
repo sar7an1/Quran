@@ -5,74 +5,100 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>القرآن الكريم</title>
 
+<!-- Icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
 <style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:tahoma}
+
 body{
-  margin:0;
-  font-family:tahoma;
-  background:#f6f7f8;
+  background:#f4f6f8;
+  padding-bottom:110px;
 }
+
+/* ===== Header ===== */
 .header{
   background:#0f5132;
   color:#fff;
-  padding:12px;
-  text-align:center;
+  padding:14px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.menu-btn{
+  font-size:26px;
+  background:none;
+  border:none;
+  color:#fff;
+}
+.title{
   font-size:20px;
   font-weight:bold;
 }
-.sub{
-  font-size:13px;
-  opacity:.9;
+
+/* ===== Drawer ===== */
+.drawer{
+  position:fixed;
+  top:0;
+  right:-260px;
+  width:260px;
+  height:100%;
+  background:#0f5132;
+  padding:20px;
+  transition:.3s;
+  z-index:999;
 }
-.container{
-  padding:15px;
-}
-.basmala{
-  text-align:center;
-  font-size:26px;
-  color:#0f5132;
-  margin:20px 0;
-}
-.telegram{
-  background:#1d9bf0;
-  color:#fff;
-  padding:14px;
-  text-align:center;
-  border-radius:12px;
-  margin-bottom:20px;
-  font-size:18px;
-  text-decoration:none;
+.drawer a{
   display:block;
+  color:#fff;
+  text-decoration:none;
+  padding:12px 0;
+  border-bottom:1px solid rgba(255,255,255,.2);
+}
+.drawer.open{right:0}
+
+/* ===== Overlay ===== */
+.overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.4);
+  display:none;
+  z-index:998;
+}
+.overlay.show{display:block}
+
+/* ===== Main ===== */
+.main{
+  padding:20px;
+}
+.bismillah{
+  text-align:center;
+  font-size:24px;
+  margin:20px 0;
+  color:#0f5132;
 }
 .grid{
   display:grid;
   grid-template-columns:repeat(2,1fr);
-  gap:15px;
+  gap:16px;
 }
 .card{
   background:#fff;
+  padding:20px;
   border-radius:16px;
-  padding:25px 10px;
   text-align:center;
-  box-shadow:0 2px 6px rgba(0,0,0,.08);
-  cursor:pointer;
+  box-shadow:0 4px 10px rgba(0,0,0,.08);
 }
 .card i{
-  font-size:32px;
+  font-size:28px;
   margin-bottom:10px;
 }
 .card span{
   display:block;
-  font-size:16px;
   font-weight:bold;
 }
-.footer{
-  text-align:center;
-  margin:30px 0;
-  color:#777;
-  font-size:14px;
-}
+
+/* ===== Player ===== */
 .player{
   position:fixed;
   bottom:0;
@@ -80,94 +106,83 @@ body{
   right:0;
   background:#0f5132;
   color:#fff;
-  padding:10px;
+  padding:14px;
+}
+.player-controls{
+  display:flex;
+  justify-content:space-around;
+  align-items:center;
+}
+.play-btn{
+  width:64px;
+  height:64px;
+  background:#fff;
+  color:#0f5132;
+  border-radius:50%;
   display:flex;
   align-items:center;
-  gap:15px;
+  justify-content:center;
+  font-size:26px;
 }
-.player button{
-  background:#fff;
-  border:none;
-  border-radius:50%;
-  width:48px;
-  height:48px;
-  font-size:18px;
-  cursor:pointer;
-}
-.player span{
-  font-size:14px;
+
+/* ===== Desktop ===== */
+@media(min-width:768px){
+  .grid{grid-template-columns:repeat(4,1fr)}
+  .drawer{right:0;position:relative;height:auto;width:220px}
+  .overlay{display:none}
+  body{padding-right:220px}
 }
 </style>
 </head>
 
 <body>
 
+<!-- Header -->
 <div class="header">
-  القرآن الكريم
-  <div class="sub">صدقة جارية لجميع المسلمين</div>
+  <button class="menu-btn" onclick="toggleMenu()"><i class="fa-solid fa-bars"></i></button>
+  <div class="title">القرآن الكريم</div>
 </div>
 
-<div class="container">
+<!-- Drawer -->
+<div id="drawer" class="drawer">
+  <a href="#">🏠 الرئيسية</a>
+  <a href="#">📖 المصحف الورقي</a>
+  <a href="#">📻 الإذاعات</a>
+  <a href="#">🎧 كبار القراء</a>
+  <a href="#">🤲 الأذكار</a>
+</div>
 
-  <div class="basmala">بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيم</div>
+<div id="overlay" class="overlay" onclick="toggleMenu()"></div>
 
-  <a class="telegram" href="#" target="_blank">
-    <i class="fa-brands fa-telegram"></i> قناتنا على تليجرام
-  </a>
+<!-- Main -->
+<div class="main">
+  <div class="bismillah">بسم الله الرحمن الرحيم</div>
 
   <div class="grid">
-
-    <div class="card" onclick="go('radio')">
-      <i class="fa-solid fa-radio" style="color:#0d6efd"></i>
-      <span>الإذاعات</span>
-    </div>
-
-    <div class="card" onclick="go('mushaf')">
-      <i class="fa-solid fa-book-quran" style="color:#198754"></i>
-      <span>المصحف الورقي</span>
-    </div>
-
-    <div class="card" onclick="go('azkar-sabah')">
-      <i class="fa-solid fa-sun" style="color:#fd7e14"></i>
-      <span>أذكار الصباح</span>
-    </div>
-
-    <div class="card" onclick="go('azkar-masaa')">
-      <i class="fa-solid fa-moon" style="color:#6f42c1"></i>
-      <span>أذكار المساء</span>
-    </div>
-
-    <div class="card" onclick="go('reciters')">
-      <i class="fa-solid fa-microphone" style="color:#d63384"></i>
-      <span>كبار القراء</span>
-    </div>
-
-    <div class="card" onclick="go('roqya')">
-      <i class="fa-solid fa-heart" style="color:#dc3545"></i>
-      <span>الرقية الشرعية</span>
-    </div>
-
+    <div class="card"><i class="fa-solid fa-radio"></i><span>الإذاعات</span></div>
+    <div class="card"><i class="fa-solid fa-book-quran"></i><span>المصحف</span></div>
+    <div class="card"><i class="fa-solid fa-moon"></i><span>أذكار المساء</span></div>
+    <div class="card"><i class="fa-solid fa-sun"></i><span>أذكار الصباح</span></div>
+    <div class="card"><i class="fa-solid fa-microphone"></i><span>كبار القراء</span></div>
+    <div class="card"><i class="fa-solid fa-heart"></i><span>الرقية الشرعية</span></div>
   </div>
-
-  <div class="footer">
-    Sar7an_1 © 2026
-  </div>
-
 </div>
 
+<!-- Player -->
 <div class="player">
-  <button onclick="playPause()"><i class="fa-solid fa-play"></i></button>
-  <span id="now">اختر محتوى للتشغيل</span>
+  <div class="player-controls">
+    <i class="fa-solid fa-backward-step"></i>
+    <div class="play-btn"><i class="fa-solid fa-play"></i></div>
+    <i class="fa-solid fa-forward-step"></i>
+  </div>
 </div>
 
 <script>
-function go(page){
-  alert("هنا هتربط صفحة: " + page);
-}
-function playPause(){
-  alert("تشغيل / إيقاف");
+function toggleMenu(){
+  drawer.classList.toggle("open");
+  overlay.classList.toggle("show");
 }
 </script>
 
 </body>
-</html>
+</html> 
