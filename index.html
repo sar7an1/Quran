@@ -5,96 +5,119 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>القرآن الكريم</title>
 
-<!-- Icons -->
+<!-- Font Awesome -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:tahoma}
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:tahoma;
+}
 
 body{
-  background:#f4f6f8;
-  padding-bottom:110px;
+  background:#f6f7f8;
+  padding-bottom:90px;
 }
 
 /* ===== Header ===== */
-.header{
-  background:#0f5132;
+.top-bar{
+  background:#14532d;
   color:#fff;
-  padding:14px;
   display:flex;
   align-items:center;
-  gap:12px;
+  justify-content:space-between;
+  padding:10px 14px;
 }
+
 .menu-btn{
-  font-size:26px;
   background:none;
   border:none;
   color:#fff;
-}
-.title{
-  font-size:20px;
-  font-weight:bold;
+  font-size:22px;
 }
 
-/* ===== Drawer ===== */
-.drawer{
-  position:fixed;
-  top:0;
-  right:-260px;
-  width:260px;
-  height:100%;
-  background:#0f5132;
-  padding:20px;
-  transition:.3s;
-  z-index:999;
+.title-box{
+  text-align:center;
+  line-height:1.2;
 }
-.drawer a{
-  display:block;
+
+.title-box h1{
+  font-size:18px;
+}
+
+.title-box span{
+  font-size:11px;
+  opacity:.9;
+}
+
+.contact-btn{
+  background:#1d4ed8;
+  color:#fff;
+  padding:6px 10px;
+  border-radius:8px;
+  font-size:13px;
+  text-decoration:none;
+  display:flex;
+  align-items:center;
+  gap:5px;
+}
+
+/* ===== Telegram Box ===== */
+.telegram-box{
+  margin:15px;
+  background:#1d4ed8;
+  color:#fff;
+  padding:14px;
+  border-radius:14px;
+  text-align:center;
+  font-size:16px;
+}
+
+.telegram-box a{
   color:#fff;
   text-decoration:none;
-  padding:12px 0;
-  border-bottom:1px solid rgba(255,255,255,.2);
+  font-weight:bold;
+  margin-right:6px;
 }
-.drawer.open{right:0}
 
-/* ===== Overlay ===== */
-.overlay{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.4);
-  display:none;
-  z-index:998;
-}
-.overlay.show{display:block}
-
-/* ===== Main ===== */
+/* ===== Content ===== */
 .main{
-  padding:20px;
+  padding:15px;
 }
-.bismillah{
+
+.basmala{
   text-align:center;
-  font-size:24px;
-  margin:20px 0;
-  color:#0f5132;
+  font-size:22px;
+  color:#14532d;
+  margin-bottom:20px;
 }
+
+/* ===== Cards ===== */
 .grid{
   display:grid;
   grid-template-columns:repeat(2,1fr);
-  gap:16px;
+  gap:15px;
 }
+
 .card{
   background:#fff;
+  border-radius:18px;
   padding:20px;
-  border-radius:16px;
   text-align:center;
-  box-shadow:0 4px 10px rgba(0,0,0,.08);
+  box-shadow:0 4px 10px rgba(0,0,0,.1);
 }
+
 .card i{
-  font-size:28px;
+  font-size:30px;
   margin-bottom:10px;
+  color:#14532d;
 }
+
 .card span{
   display:block;
+  font-size:16px;
   font-weight:bold;
 }
 
@@ -104,33 +127,60 @@ body{
   bottom:0;
   left:0;
   right:0;
-  background:#0f5132;
+  background:#14532d;
   color:#fff;
-  padding:14px;
-}
-.player-controls{
-  display:flex;
-  justify-content:space-around;
-  align-items:center;
-}
-.play-btn{
-  width:64px;
-  height:64px;
-  background:#fff;
-  color:#0f5132;
-  border-radius:50%;
+  padding:12px;
   display:flex;
   align-items:center;
-  justify-content:center;
-  font-size:26px;
+  justify-content:space-between;
 }
 
-/* ===== Desktop ===== */
-@media(min-width:768px){
-  .grid{grid-template-columns:repeat(4,1fr)}
-  .drawer{right:0;position:relative;height:auto;width:220px}
-  .overlay{display:none}
-  body{padding-right:220px}
+.player button{
+  background:none;
+  border:none;
+  color:#fff;
+  font-size:22px;
+}
+
+.play-btn{
+  background:#fff;
+  color:#14532d;
+  width:55px;
+  height:55px;
+  border-radius:50%;
+  font-size:22px;
+}
+
+/* ===== Side Menu ===== */
+.side-menu{
+  position:fixed;
+  top:0;
+  right:-260px;
+  width:240px;
+  height:100%;
+  background:#fff;
+  box-shadow:-2px 0 10px rgba(0,0,0,.2);
+  padding:20px;
+  transition:.3s;
+  z-index:999;
+}
+
+.side-menu a{
+  display:block;
+  padding:12px;
+  color:#111;
+  text-decoration:none;
+  border-radius:8px;
+  font-size:15px;
+}
+
+.side-menu a i{
+  margin-left:8px;
+  color:#14532d;
+}
+
+.side-menu.active{
+  right:0;
 }
 </style>
 </head>
@@ -138,51 +188,89 @@ body{
 <body>
 
 <!-- Header -->
-<div class="header">
-  <button class="menu-btn" onclick="toggleMenu()"><i class="fa-solid fa-bars"></i></button>
-  <div class="title">القرآن الكريم</div>
-</div>
+<header class="top-bar">
+  <button class="menu-btn" onclick="toggleMenu()">
+    <i class="fa-solid fa-bars"></i>
+  </button>
 
-<!-- Drawer -->
-<div id="drawer" class="drawer">
-  <a href="#">🏠 الرئيسية</a>
-  <a href="#">📖 المصحف الورقي</a>
-  <a href="#">📻 الإذاعات</a>
-  <a href="#">🎧 كبار القراء</a>
-  <a href="#">🤲 الأذكار</a>
-</div>
+  <div class="title-box">
+    <h1>القرآن الكريم</h1>
+    <span>صدقة عني وعن جميع المسلمين</span>
+  </div>
 
-<div id="overlay" class="overlay" onclick="toggleMenu()"></div>
+  <a class="contact-btn" href="https://t.me/YOUR_TELEGRAM" target="_blank">
+    <i class="fa-brands fa-telegram"></i>
+    تواصل معنا
+  </a>
+</header>
+
+<!-- Telegram Box -->
+<div class="telegram-box">
+  <i class="fa-brands fa-telegram"></i>
+  <a href="https://t.me/YOUR_TELEGRAM" target="_blank">
+    قناتنا على التليجرام
+  </a>
+</div>
 
 <!-- Main -->
 <div class="main">
-  <div class="bismillah">بسم الله الرحمن الرحيم</div>
+  <div class="basmala">
+    بسم الله الرحمن الرحيم
+  </div>
 
   <div class="grid">
-    <div class="card"><i class="fa-solid fa-radio"></i><span>الإذاعات</span></div>
-    <div class="card"><i class="fa-solid fa-book-quran"></i><span>المصحف</span></div>
-    <div class="card"><i class="fa-solid fa-moon"></i><span>أذكار المساء</span></div>
-    <div class="card"><i class="fa-solid fa-sun"></i><span>أذكار الصباح</span></div>
-    <div class="card"><i class="fa-solid fa-microphone"></i><span>كبار القراء</span></div>
-    <div class="card"><i class="fa-solid fa-heart"></i><span>الرقية الشرعية</span></div>
+    <div class="card">
+      <i class="fa-solid fa-book-quran"></i>
+      <span>المصحف</span>
+    </div>
+
+    <div class="card">
+      <i class="fa-solid fa-radio"></i>
+      <span>الإذاعات</span>
+    </div>
+
+    <div class="card">
+      <i class="fa-solid fa-sun"></i>
+      <span>أذكار الصباح</span>
+    </div>
+
+    <div class="card">
+      <i class="fa-solid fa-moon"></i>
+      <span>أذكار المساء</span>
+    </div>
+
+    <div class="card">
+      <i class="fa-solid fa-heart"></i>
+      <span>الرقية الشرعية</span>
+    </div>
+
+    <div class="card">
+      <i class="fa-solid fa-microphone"></i>
+      <span>كبار القراء</span>
+    </div>
   </div>
 </div>
 
 <!-- Player -->
 <div class="player">
-  <div class="player-controls">
-    <i class="fa-solid fa-backward-step"></i>
-    <div class="play-btn"><i class="fa-solid fa-play"></i></div>
-    <i class="fa-solid fa-forward-step"></i>
-  </div>
+  <button><i class="fa-solid fa-backward"></i></button>
+  <button class="play-btn"><i class="fa-solid fa-play"></i></button>
+  <button><i class="fa-solid fa-forward"></i></button>
+</div>
+
+<!-- Side Menu -->
+<div id="sideMenu" class="side-menu">
+  <a href="#"><i class="fa-solid fa-house"></i> الرئيسية</a>
+  <a href="#"><i class="fa-solid fa-book-quran"></i> المصحف</a>
+  <a href="#"><i class="fa-solid fa-radio"></i> الإذاعات</a>
+  <a href="#"><i class="fa-solid fa-heart"></i> الرقية الشرعية</a>
 </div>
 
 <script>
 function toggleMenu(){
-  drawer.classList.toggle("open");
-  overlay.classList.toggle("show");
+  document.getElementById("sideMenu").classList.toggle("active");
 }
 </script>
 
 </body>
-</html> 
+</html>
