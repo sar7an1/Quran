@@ -10,28 +10,29 @@
     
     <style>
         :root { --primary: #064e3b; --accent: #fbbf24; }
-        body { font-family: 'Cairo', sans-serif; background-color: #fff; margin: 0; user-select: none; }
-        .basmalah { font-family: 'Amiri', serif; font-size: 2rem; color: var(--primary); font-weight: bold; margin: 20px 0; text-align: center; }
+        body { font-family: 'Cairo', sans-serif; background-color: #fff; margin: 0; user-select: none; scroll-behavior: smooth; }
+        .basmalah { font-family: 'Amiri', serif; font-size: 1.8rem; color: var(--primary); font-weight: bold; margin: 15px 0; text-align: center; }
         
         /* Grid */
-        .main-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 15px; }
-        .grid-card { background: #f8fafc; border-radius: 20px; padding: 20px 10px; display: flex; flex-direction: column; align-items: center; border: 1px solid #e2e8f0; cursor: pointer; transition: 0.3s; }
-        .grid-card:active { transform: scale(0.95); }
-        .grid-card i { font-size: 1.8rem; margin-bottom: 8px; }
+        .main-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 15px; }
+        .grid-card { background: #f8fafc; border-radius: 18px; padding: 15px 10px; display: flex; flex-direction: column; align-items: center; border: 1px solid #e2e8f0; cursor: pointer; transition: 0.2s; text-align: center; }
+        .grid-card:active { transform: scale(0.95); background: #f1f5f9; }
+        .grid-card i { font-size: 1.6rem; margin-bottom: 8px; }
         
-        /* Content */
-        .content-card { background: white; border-radius: 15px; padding: 15px; margin-bottom: 10px; border-right: 4px solid var(--primary); shadow: 0 2px 4px rgba(0,0,0,0.05); }
-        .zekr-count { width: 35px; height: 35px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
-        
-        /* Player */
-        .player-fixed { position: fixed; bottom: 0; left: 0; right: 0; background: var(--primary); height: 80px; display: flex; align-items: center; padding: 0 20px; color: white; z-index: 1000; border-top: 3px solid var(--accent); }
-        
+        /* Content Cards */
+        .content-card { background: white; border-radius: 15px; padding: 18px; margin-bottom: 12px; border-right: 5px solid var(--primary); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+        .zekr-count { width: 40px; height: 40px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; cursor: pointer; }
+        .zekr-count.done { background: #10b981; }
+
+        /* Sidebar */
         #sidebar { transition: transform 0.3s ease; z-index: 2000; }
         #sidebar.closed { transform: translateX(100%); }
-        .hidden { display: none; }
         
-        /* Mushaf Container */
-        .quran-container { width: 100%; height: calc(100vh - 170px); background: #fdfdfd; }
+        /* Player */
+        .player-fixed { position: fixed; bottom: 0; left: 0; right: 0; background: var(--primary); height: 75px; display: flex; align-items: center; padding: 0 20px; color: white; z-index: 1000; border-top: 3px solid var(--accent); }
+        
+        .hidden { display: none; }
+        .quran-container { width: 100%; height: calc(100vh - 165px); }
         iframe { width: 100%; height: 100%; border: none; }
     </style>
 </head>
@@ -53,12 +54,12 @@
             <button onclick="toggleSidebar()"><i class="fa-solid fa-xmark"></i></button>
         </div>
         <nav class="flex flex-col gap-6">
-            <button onclick="showSection('home')"><i class="fa-solid fa-house ml-2"></i> الرئيسية</button>
-            <button onclick="showSection('mushaf')"><i class="fa-solid fa-book-open ml-2"></i> المصحف</button>
-            <button onclick="showSection('radios')"><i class="fa-solid fa-radio ml-2"></i> الإذاعة</button>
-            <button onclick="showSection('reciters')"><i class="fa-solid fa-microphone ml-2"></i> القراء</button>
-            <button onclick="openAzkar('morning')"><i class="fa-solid fa-sun ml-2"></i> أذكار الصباح</button>
-            <button onclick="openAzkar('evening')"><i class="fa-solid fa-moon ml-2"></i> أذكار المساء</button>
+            <button onclick="showSection('home')"><i class="fa-solid fa-house ml-2 text-amber-400"></i> الرئيسية</button>
+            <button onclick="showSection('mushaf')"><i class="fa-solid fa-book-open ml-2 text-amber-400"></i> المصحف</button>
+            <button onclick="showSection('radios')"><i class="fa-solid fa-radio ml-2 text-amber-400"></i> الإذاعة</button>
+            <button onclick="showSection('reciters')"><i class="fa-solid fa-microphone ml-2 text-amber-400"></i> القراء</button>
+            <hr class="border-emerald-800">
+            <a href="https://t.me/Sar7an_1" target="_blank" class="flex items-center"><i class="fa-solid fa-envelope ml-2 text-amber-400"></i> تواصل معنا</a>
         </nav>
     </aside>
 
@@ -66,36 +67,43 @@
         
         <section id="home-sec">
             <div class="basmalah">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
+            
+            <div class="px-4 mb-4">
+                <a href="https://t.me/Sar7an_1" target="_blank" class="w-full bg-sky-600 text-white p-3 rounded-2xl flex items-center justify-center gap-2 font-bold shadow-lg">
+                    <i class="fa-brands fa-telegram text-xl"></i> تابعنا على قناة التليجرام
+                </a>
+            </div>
+
             <div class="main-grid">
                 <div onclick="showSection('mushaf')" class="grid-card">
                     <i class="fa-solid fa-book-quran text-emerald-700"></i>
-                    <span class="font-bold text-sm">المصحف الورقي</span>
+                    <span class="font-bold text-xs">المصحف الورقي</span>
                 </div>
                 <div onclick="showSection('radios')" class="grid-card">
                     <i class="fa-solid fa-tower-broadcast text-blue-600"></i>
-                    <span class="font-bold text-sm">إذاعات القران</span>
-                </div>
-                <div onclick="showSection('reciters')" class="grid-card">
-                    <i class="fa-solid fa-user-tie text-amber-600"></i>
-                    <span class="font-bold text-sm">كبار القراء</span>
+                    <span class="font-bold text-xs">إذاعات القران</span>
                 </div>
                 <div onclick="openAzkar('morning')" class="grid-card">
                     <i class="fa-solid fa-sun text-orange-500"></i>
-                    <span class="font-bold text-sm">أذكار الصباح</span>
+                    <span class="font-bold text-xs">أذكار الصباح</span>
                 </div>
                 <div onclick="openAzkar('evening')" class="grid-card">
                     <i class="fa-solid fa-moon text-indigo-600"></i>
-                    <span class="font-bold text-sm">أذكار المساء</span>
+                    <span class="font-bold text-xs">أذكار المساء</span>
                 </div>
                 <div onclick="showSection('roqya')" class="grid-card">
                     <i class="fa-solid fa-shield-heart text-red-600"></i>
-                    <span class="font-bold text-sm">الرقية الشرعية</span>
+                    <span class="font-bold text-xs">الرقية الشرعية</span>
+                </div>
+                <div onclick="showSection('reciters')" class="grid-card">
+                    <i class="fa-solid fa-user-tie text-amber-600"></i>
+                    <span class="font-bold text-xs">كبار القراء</span>
                 </div>
             </div>
         </section>
 
         <section id="mushaf-sec" class="hidden">
-            <div class="p-2 bg-slate-50 flex justify-between border-b">
+            <div class="p-2 bg-slate-50 flex justify-between border-b sticky top-[60px] z-40">
                 <span class="text-sm font-bold text-emerald-900">مصحف المدينة</span>
                 <button onclick="showSection('home')" class="text-xs bg-white px-3 py-1 rounded shadow">رجوع</button>
             </div>
@@ -105,14 +113,32 @@
         </section>
 
         <section id="azkar-sec" class="hidden px-4 pt-4">
-            <h3 id="azkarTitle" class="font-bold text-emerald-900 mb-4 text-lg"></h3>
-            <div id="azkarContent"></div>
+            <div class="flex justify-between items-center mb-6">
+                <h3 id="azkarTitle" class="font-bold text-emerald-900 text-xl"></h3>
+                <button onclick="showSection('home')" class="text-xs bg-slate-100 px-3 py-1 rounded-full">إغلاق</button>
+            </div>
+            <div id="azkarContent" class="space-y-4"></div>
         </section>
 
         <section id="roqya-sec" class="hidden px-4 pt-4">
-            <h3 class="font-bold text-red-900 mb-4">الرقية الشرعية</h3>
-            <div class="content-card">أَعُوذُ بِكَلِمَاتِ اللهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَقَ</div>
-            <div class="content-card">بِاسْمِ اللَّهِ الذي لا يَضُرُّ مع اسْمِهِ شيءٌ في الأرضِ ولا في السَّماءِ</div>
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="font-bold text-red-900 text-xl">الرقية الشرعية الكاملة</h3>
+                <button onclick="showSection('home')" class="text-xs bg-red-50 px-3 py-1 rounded-full">رجوع</button>
+            </div>
+            <div class="space-y-4">
+                <div class="content-card">
+                    <h4 class="font-bold text-red-700 mb-2">الفاتحة وآية الكرسي</h4>
+                    <p class="text-sm leading-relaxed">قراءة سورة الفاتحة، ثم آية الكرسي: "اللَّهُ لَا إِلَهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ..." [cite: 195]</p>
+                </div>
+                <div class="content-card">
+                    <h4 class="font-bold text-red-700 mb-2">المعوذات</h4>
+                    <p class="text-sm leading-relaxed">قراءة سورة الإخلاص، الفلق، والناس (3 مرات).</p>
+                </div>
+                <div class="content-card">
+                    <h4 class="font-bold text-red-700 mb-2">أدعية نبوية</h4>
+                    <p class="text-sm leading-relaxed">"أعوذ بكلمات الله التامات من شر ما خلق"، "بسم الله الذي لا يضر مع اسمه شيء".</p>
+                </div>
+            </div>
         </section>
 
         <section id="radios-sec" class="hidden px-4 pt-4">
@@ -121,8 +147,8 @@
         </section>
 
         <section id="reciters-sec" class="hidden px-4 pt-4">
-            <h3 class="font-bold text-emerald-900 mb-4">أصوات عذبة</h3>
-            <input type="text" onkeyup="searchR(this.value)" placeholder="ابحث باسم القارئ..." class="w-full p-3 rounded-xl border border-emerald-100 mb-4 outline-none">
+            <h3 class="font-bold text-emerald-900 mb-4">كبار القراء</h3>
+            <input type="text" onkeyup="searchR(this.value)" placeholder="ابحث باسم القارئ..." class="w-full p-3 rounded-xl border border-emerald-100 mb-4 outline-none shadow-sm">
             <div id="recitersList" class="space-y-2"></div>
         </section>
 
@@ -134,8 +160,8 @@
                 <i class="fa-solid fa-play"></i>
             </button>
             <div class="overflow-hidden">
-                <div id="trackName" class="text-xs font-bold text-amber-300 truncate">اختر محتوى للتشغيل</div>
-                <div class="text-[10px] opacity-70">بث مباشر HD</div>
+                <div id="trackName" class="text-xs font-bold text-amber-300 truncate">اختر إذاعة للتشغيل</div>
+                <div class="text-[10px] opacity-70">بث مباشر فائق الجودة</div>
             </div>
         </div>
         <audio id="audioPlayer"></audio>
@@ -160,29 +186,52 @@
             window.scrollTo(0,0);
         }
 
+        // بيانات الأذكار من الملف المرفق
         const azData = {
-            morning: { t: "أذكار الصباح", i: ["أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ", "يَا حَيُّ يَا قَيُّومُ بِرَحْمَتِكَ أَسْتَغِيثُ"] },
-            evening: { t: "أذكار المساء", i: ["أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلَّهِ", "اللَّهُمَّ بِكَ أَمْسَيْنَا وَبِكَ أَصْبَحْنَا"] }
+            morning: { 
+                t: "أذكار الصباح", 
+                i: [
+                    {m: "آية الكرسي: اللّهُ لاَ إِلَـهَ إِلاَّ هُوَ الْحَيُّ الْقَيُّومُ", c: 1},
+                    {m: "أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ", c: 1},
+                    {m: "اللَّهُمَّ بِكَ أَصْبَحْنَا، وَبِكَ أَمْسَيْنَا", c: 1},
+                    {m: "بِسْمِ اللَّهِ الَّذِي لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ", c: 3}
+                ] 
+            },
+            evening: { 
+                t: "أذكار المساء", 
+                i: [
+                    {m: "آية الكرسي: اللّهُ لاَ إِلَـهَ إِلاَّ هُوَ الْحَيُّ الْقَيُّومُ", c: 1},
+                    {m: "أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ", c: 1},
+                    {m: "اللَّهُمَّ بِكَ أَمْسَيْنَا، وَبِكَ أَصْبَحْنَا", c: 1},
+                    {m: "أَعُوذُ بِكَلِمَاتِ اللهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَقَ", c: 3}
+                ] 
+            }
         };
 
         function openAzkar(type) {
             showSection('azkar');
             document.getElementById('azkarTitle').innerText = azData[type].t;
-            document.getElementById('azkarContent').innerHTML = azData[type].i.map(z => `
-                <div class="content-card flex justify-between items-center">
-                    <p class="text-sm">${z}</p>
-                    <div class="zekr-count text-xs">1</div>
+            document.getElementById('azkarContent').innerHTML = azData[type].i.map((z, idx) => `
+                <div class="content-card flex justify-between items-start gap-4">
+                    <p class="text-sm leading-relaxed">${z.m}</p>
+                    <div onclick="updateCount(this, ${z.c})" class="zekr-count flex-shrink-0">${z.c}</div>
                 </div>
             `).join('');
+        }
+
+        function updateCount(el, start) {
+            let current = parseInt(el.innerText) || 0;
+            if (current > 1) { el.innerText = current - 1; } 
+            else { el.innerText = "✓"; el.classList.add('done'); }
         }
 
         async function fetchRadios() {
             try {
                 const res = await fetch('https://mp3quran.net/api/v3/radios?language=ar');
                 const data = await res.json(); radios = data.radios;
-                document.getElementById('radioList').innerHTML = radios.slice(0, 15).map((r, i) => `
-                    <div onclick="play('${r.url}', '${r.name}')" class="bg-white p-3 rounded-xl border flex justify-between items-center shadow-sm">
-                        <span class="text-xs font-bold">${r.name}</span><i class="fa-solid fa-circle-play text-emerald-600"></i>
+                document.getElementById('radioList').innerHTML = radios.slice(0, 20).map((r, i) => `
+                    <div onclick="play('${r.url}', '${r.name}')" class="bg-white p-4 rounded-xl border flex justify-between items-center shadow-sm hover:border-emerald-500 transition">
+                        <span class="text-sm font-bold text-slate-700">${r.name}</span><i class="fa-solid fa-circle-play text-emerald-600 text-xl"></i>
                     </div>
                 `).join('');
             } catch(e) {}
@@ -192,15 +241,15 @@
             try {
                 const res = await fetch('https://mp3quran.net/api/v3/reciters?language=ar');
                 const data = await res.json(); reciters = data.reciters;
-                renderReciters(reciters.slice(0, 15));
+                renderReciters(reciters.slice(0, 20));
             } catch(e) {}
         }
 
         function renderReciters(list) {
             document.getElementById('recitersList').innerHTML = list.map(r => `
-                <div onclick="play('${r.moshaf[0].server}001.mp3', '${r.name}')" class="bg-white p-3 rounded-xl border flex items-center gap-3 shadow-sm">
-                    <div class="w-8 h-8 bg-emerald-800 text-white rounded-full flex items-center justify-center text-[10px]">${r.name[0]}</div>
-                    <span class="text-xs font-bold">${r.name}</span>
+                <div onclick="play('${r.moshaf[0].server}001.mp3', 'الشيخ ${r.name}')" class="bg-white p-3 rounded-xl border flex items-center gap-4 shadow-sm">
+                    <div class="w-10 h-10 bg-emerald-100 text-emerald-800 rounded-full flex items-center justify-center font-bold">${r.name[0]}</div>
+                    <span class="text-sm font-bold">${r.name}</span>
                 </div>
             `).join('');
         }
@@ -214,10 +263,10 @@
         function toggleAudio() {
             if(!audio.src) return;
             if(audio.paused) { audio.play(); pBtn.innerHTML = '<i class="fa-solid fa-pause"></i>'; }
-            else { audio.pause(); pBtn.innerHTML = '<i class="fa-solid fa-play"></i>'; }
+            else { audio.pause(); pBtn.innerHTML = '<i class="fa-solid fa-play ml-1"></i>'; }
         }
 
-        function searchR(q) { renderReciters(reciters.filter(r => r.name.includes(q)).slice(0, 15)); }
+        function searchR(q) { renderReciters(reciters.filter(r => r.name.includes(q)).slice(0, 20)); }
     </script>
 </body>
 </html>
