@@ -10,22 +10,21 @@
     
     <style>
         :root { --primary: #064e3b; --accent: #fbbf24; --player-bg: #022c22; }
-        body { font-family: 'Cairo', sans-serif; background-color: #f8fafc; margin: 0; padding-bottom: 160px; }
+        body { font-family: 'Cairo', sans-serif; background-color: #f8fafc; margin: 0; padding-bottom: 170px; }
         
-        /* زر رجوع ثابت */
-        .sticky-back { position: sticky; top: 0; z-index: 1000; background: white; padding: 10px; border-bottom: 1px solid #eee; display: flex; align-items: center; justify-content: space-between; }
-
-        /* مشغل صوتيات */
-        .modern-player { position: fixed; bottom: 0; left: 0; right: 0; background: var(--player-bg); color: white; height: 130px; z-index: 2000; border-top: 4px solid var(--accent); padding: 15px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .player-info { width: 100%; text-align: center; margin-bottom: 8px; color: var(--accent); font-size: 13px; font-weight: bold; }
+        /* مشغل صوتيات متطور */
+        .modern-player { position: fixed; bottom: 0; left: 0; right: 0; background: var(--player-bg); color: white; height: 150px; z-index: 2000; border-top: 4px solid var(--accent); padding: 15px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .player-info { width: 100%; text-align: center; margin-bottom: 10px; color: var(--accent); font-size: 13px; font-weight: bold; }
+        .player-controls { display: flex; align-items: center; gap: 25px; }
         .play-main { width: 50px; height: 50px; background: white; color: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; cursor: pointer; }
+        .nav-btn { font-size: 1.5rem; color: #ccc; cursor: pointer; }
+        
+        /* التحكم في الصوت والتقديم */
+        .slider-container { width: 80%; display: flex; align-items: center; gap: 10px; margin-top: 10px; }
+        input[type="range"] { flex-grow: 1; accent-color: var(--accent); cursor: pointer; }
 
-        /* بطاقات الواجهة */
-        .content-card { background: white; border-radius: 15px; padding: 20px; border-right: 5px solid var(--primary); box-shadow: 0 2px 8px rgba(0,0,0,0.05); cursor: pointer; display: flex; flex-direction: column; align-items: center; text-align: center; height: 100%; }
-        
-        /* تذييل الصفحة */
-        .footer-line { background: var(--primary); color: white; padding: 10px; text-align: center; margin-top: 40px; }
-        
+        .content-card { background: white; border-radius: 15px; padding: 20px; border-right: 5px solid var(--primary); box-shadow: 0 2px 8px rgba(0,0,0,0.05); cursor: pointer; display: flex; flex-direction: column; align-items: center; text-align: center; }
+        .footer-line { background: var(--primary); color: white; padding: 15px; text-align: center; margin-top: 40px; }
         .hidden { display: none; }
     </style>
 </head>
@@ -44,7 +43,7 @@
             </a>
 
             <div class="grid grid-cols-2 gap-4">
-                <div onclick="playTrack('https://n02.radiojar.com/8s9u67z8n0quv', 'إذاعة القرآن من القاهرة')" class="content-card">
+                <div onclick="playTrack('https://n04.radiojar.com/8s9u67z8n0quv', 'إذاعة القرآن من القاهرة')" class="content-card">
                     <i class="fa-solid fa-tower-broadcast text-3xl text-blue-600 mb-2"></i>
                     <span class="font-bold text-xs">إذاعة القاهرة</span>
                 </div>
@@ -64,46 +63,70 @@
         </div>
 
         <div id="dynamic-view" class="hidden">
-            <div class="sticky-back">
-                <button onclick="showHome()" class="bg-emerald-900 text-white px-3 py-1 rounded-lg text-xs font-bold">رجوع</button>
-                <span id="page-title" class="font-bold text-sm text-emerald-900"></span>
+            <div class="flex items-center justify-between mb-4 bg-white p-2 rounded-lg shadow-sm">
+                <button onclick="showHome()" class="bg-emerald-900 text-white px-4 py-1 rounded-lg text-xs font-bold">رجوع</button>
+                <span id="page-title" class="font-bold text-emerald-900 text-sm"></span>
             </div>
-            <div id="list-container" class="mt-4"></div>
+            <div id="list-container"></div>
         </div>
 
-        <div class="footer-line mt-10 rounded-lg">
+        <div class="footer-line rounded-lg">
             <div class="font-bold text-sm tracking-widest">Sar7an_1©(2026)</div>
             <div class="text-[10px] mt-1 opacity-80">رَبَّنَا تَقَبَّلْ مِنَّا إِنَّكَ أَنتَ السَّمِيعُ الْعَلِيمُ</div>
         </div>
     </main>
 
     <div class="modern-player">
-        <div id="trackName" class="player-info">اختر إذاعة للاستماع</div>
+        <div id="trackName" class="player-info">جاهز للتشغيل</div>
+        
         <div class="player-controls">
-            <div id="playBtn" onclick="togglePlay()" class="play-main"><i class="fa-solid fa-play ml-1"></i></div>
+            <i class="fa-solid fa-backward-step nav-btn" onclick="skip(-10)"></i>
+            <div id="playBtn" onclick="togglePlay()" class="play-main">
+                <i class="fa-solid fa-play ml-1"></i>
+            </div>
+            <i class="fa-solid fa-forward-step nav-btn" onclick="skip(10)"></i>
         </div>
-        <audio id="audioPlayer"></audio>
+
+        <div class="slider-container">
+            <span id="currentTime" class="text-[10px]">0:00</span>
+            <input type="range" id="seekSlider" value="0" max="100" oninput="seek()">
+            <span id="duration" class="text-[10px]">0:00</span>
+        </div>
+
+        <div class="flex items-center gap-2 mt-2 w-1/2">
+            <i class="fa-solid fa-volume-low text-xs"></i>
+            <input type="range" min="0" max="1" step="0.1" value="1" oninput="audio.volume = this.value">
+            <i class="fa-solid fa-volume-high text-xs"></i>
+        </div>
     </div>
+
+    <audio id="audioPlayer"></audio>
 
     <script>
         const audio = document.getElementById('audioPlayer');
         const playBtn = document.getElementById('playBtn');
         const trackName = document.getElementById('trackName');
+        const seekSlider = document.getElementById('seekSlider');
+        const currentTimeEl = document.getElementById('currentTime');
+        const durationEl = document.getElementById('duration');
 
         function showHome() {
             document.getElementById('home-view').classList.remove('hidden');
             document.getElementById('dynamic-view').classList.add('hidden');
+            window.scrollTo(0,0);
         }
 
         function openPage(title) {
             document.getElementById('home-view').classList.add('hidden');
             document.getElementById('dynamic-view').classList.remove('hidden');
             document.getElementById('page-title').innerText = title;
+            window.scrollTo(0,0);
         }
 
         function playTrack(url, name) {
             audio.src = url;
-            audio.play();
+            audio.load();
+            audio.play().catch(e => alert("عذراً، هذا البث غير متاح حالياً، جرب رابطاً آخر."));
             trackName.innerText = name;
             playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
         }
@@ -114,53 +137,63 @@
             else { audio.pause(); playBtn.innerHTML = '<i class="fa-solid fa-play ml-1"></i>'; }
         }
 
-        // الأذكار
+        // وظائف التقديم والتأخير
+        function skip(seconds) { audio.currentTime += seconds; }
+        
+        function seek() { audio.currentTime = (seekSlider.value / 100) * audio.duration; }
+
+        audio.ontimeupdate = () => {
+            if(audio.duration) {
+                const val = (audio.currentTime / audio.duration) * 100;
+                seekSlider.value = val;
+                currentTimeEl.innerText = formatTime(audio.currentTime);
+                durationEl.innerText = formatTime(audio.duration);
+            }
+        };
+
+        function formatTime(s) {
+            let min = Math.floor(s / 60);
+            let sec = Math.floor(s % 60);
+            return min + ":" + (sec < 10 ? "0" + sec : sec);
+        };
+
         function showAzkarMenu() {
             openPage("الأذكار");
             document.getElementById('list-container').innerHTML = `
-                <div class="grid grid-cols-1 gap-4">
-                    <button onclick="showAzkarList('morning')" class="p-4 bg-orange-50 text-orange-800 rounded-xl font-bold border border-orange-200">أذكار الصباح</button>
-                    <button onclick="showAzkarList('evening')" class="p-4 bg-indigo-50 text-indigo-800 rounded-xl font-bold border border-indigo-200">أذكار المساء</button>
-                </div>
+                <button onclick="showAzkarList('morning')" class="w-full p-4 bg-orange-50 text-orange-800 rounded-xl font-bold mb-4 border border-orange-200 text-right">أذكار الصباح</button>
+                <button onclick="showAzkarList('evening')" class="w-full p-4 bg-indigo-50 text-indigo-800 rounded-xl font-bold border border-indigo-200 text-right">أذكار المساء</button>
             `;
         }
 
         function showAzkarList(type) {
-            const title = type === 'morning' ? "أذكار الصباح" : "أذكار المساء";
-            openPage(title);
-            // بيانات من ملف خالد العتيبي المرفق [cite: 1, 9, 89]
-            const items = type === 'morning' ? 
-                ["آية الكرسي [cite: 92]", "أصبحنا وأصبح الملك لله [cite: 92]", "اللهم بك أصبحنا [cite: 92]"] : 
-                ["آية الكرسي [cite: 92]", "أمسينا وأمسى الملك لله", "اللهم بك أمسينا"];
-            
-            document.getElementById('list-container').innerHTML = items.map(z => `
-                <div class="bg-white p-4 rounded-xl mb-3 shadow-sm border-r-4 border-emerald-700 font-bold text-sm">${z}</div>
+            openPage(type === 'morning' ? "أذكار الصباح" : "أذكار المساء");
+            const azkar = type === 'morning' ? ["آية الكرسي", "أصبحنا وأصبح الملك لله", "اللهم بك أصبحنا"] : ["آية الكرسي", "أمسينا وأمسى الملك لله", "اللهم بك أمسينا"];
+            document.getElementById('list-container').innerHTML = azkar.map(z => `
+                <div class="bg-white p-4 rounded-xl mb-3 shadow-sm border-r-4 border-emerald-700 font-bold text-sm leading-relaxed">${z}</div>
             `).join('');
         }
 
-        // الرقية الشرعية
         function showRoqya() {
             openPage("الرقية الشرعية");
             document.getElementById('list-container').innerHTML = `
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-emerald-100 text-center">
-                    <p class="mb-4 font-bold text-emerald-900">الرقية الشرعية الصوتية كاملة</p>
-                    <button onclick="playTrack('https://server10.mp3quran.net/download/roqia/001.mp3', 'الرقية الشرعية الصوتية')" 
-                            class="bg-red-600 text-white px-6 py-3 rounded-full font-bold shadow-lg">
-                        <i class="fa-solid fa-play-circle ml-2"></i> تشغيل الرقية
+                <div class="bg-white p-8 rounded-xl shadow-sm text-center border">
+                    <p class="mb-6 font-bold text-emerald-900">استمع للرقية الشرعية كاملة</p>
+                    <button onclick="playTrack('https://server10.mp3quran.net/download/roqia/001.mp3', 'الرقية الشرعية')" 
+                            class="bg-red-600 text-white w-full py-4 rounded-xl font-bold text-lg shadow-lg active:scale-95 transition">
+                        <i class="fa-solid fa-play-circle ml-2"></i> تشغيل الآن
                     </button>
                 </div>
             `;
         }
 
-        // القراء
         async function loadReciters() {
             openPage("أصوات مختلفة");
             const res = await fetch('https://mp3quran.net/api/v3/reciters?language=ar');
             const data = await res.json();
             document.getElementById('list-container').innerHTML = data.reciters.slice(0, 30).map(r => `
-                <div class="bg-white p-3 rounded-lg mb-2 shadow-sm flex justify-between items-center" onclick="playTrack('${r.moshaf[0].server}001.mp3', 'الشيخ ${r.name}')">
-                    <span class="font-bold text-xs">${r.name}</span>
-                    <i class="fa-solid fa-play-circle text-emerald-600"></i>
+                <div class="bg-white p-4 rounded-lg mb-2 shadow-sm flex justify-between items-center" onclick="playTrack('${r.moshaf[0].server}001.mp3', 'الشيخ ${r.name}')">
+                    <span class="font-bold text-sm">${r.name}</span>
+                    <i class="fa-solid fa-play-circle text-emerald-600 text-xl"></i>
                 </div>
             `).join('');
         }
