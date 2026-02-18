@@ -3,165 +3,126 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة القرآن الكريم - Sar7an</title>
+    <title>منصة القرآن - Sar7an</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        :root { --primary: #064e3b; --accent: #fbbf24; --player-bg: #022c22; }
-        body { font-family: 'Cairo', sans-serif; background-color: #f8fafc; margin: 0; padding-bottom: 180px; }
-        .modern-player { position: fixed; bottom: 0; left: 0; right: 0; background: var(--player-bg); color: white; height: 165px; z-index: 2000; border-top: 4px solid var(--accent); padding: 15px; display: flex; flex-direction: column; align-items: center; }
-        .player-info { width: 100%; text-align: center; margin-bottom: 8px; color: var(--accent); font-size: 13px; font-weight: bold; height: 20px; }
-        .player-controls { display: flex; align-items: center; gap: 30px; margin-top: 5px; }
-        .play-main { width: 55px; height: 55px; background: white; color: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; cursor: pointer; }
-        .volume-vertical { position: absolute; left: 15px; bottom: 35px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
-        .volume-vertical input { appearance: none; width: 4px; height: 80px; background: #333; border-radius: 5px; outline: none; -webkit-appearance: slider-vertical; }
-        .volume-vertical input::-webkit-slider-thumb { appearance: none; width: 14px; height: 14px; background: var(--accent); border-radius: 50%; cursor: pointer; border: 2px solid white; }
-        .seek-container { width: 90%; display: flex; align-items: center; gap: 10px; }
-        .seek-container input { flex-grow: 1; accent-color: var(--accent); height: 5px; cursor: pointer; }
-        .content-card { background: white; border-radius: 15px; padding: 20px; border-right: 5px solid var(--primary); box-shadow: 0 2px 8px rgba(0,0,0,0.05); cursor: pointer; text-align: center; }
-        .footer-strip { background: var(--primary); color: white; padding: 12px; text-align: center; margin-top: 30px; border-radius: 8px; }
+        body { font-family: 'Cairo', sans-serif; background: #f0f4f8; padding-bottom: 180px; }
+        .header { background: #064e3b; color: white; text-align: center; padding: 20px; border-bottom: 4px solid #fbbf24; }
+        .card { background: white; border-radius: 12px; padding: 15px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); cursor: pointer; border-right: 5px solid #064e3b; }
+        
+        /* المشغل الثابت */
+        .player-fixed { position: fixed; bottom: 0; left: 0; right: 0; background: #022c22; color: white; padding: 15px; z-index: 1000; border-top: 3px solid #fbbf24; }
+        .vol-box { position: absolute; left: 10px; bottom: 40px; display: flex; flex-direction: column; align-items: center; gap: 5px; }
+        .vol-box input { appearance: none; width: 4px; height: 70px; background: #444; -webkit-appearance: slider-vertical; }
+        
+        .btn-main { width: 50px; height: 50px; background: white; color: #064e3b; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+        .footer-text { background: #064e3b; color: white; text-align: center; padding: 10px; margin-top: 20px; font-size: 12px; border-radius: 8px; }
         .hidden { display: none; }
     </style>
 </head>
 <body>
 
-    <header class="bg-[#064e3b] p-5 text-white text-center shadow-lg border-b-2 border-amber-500">
-        <h1 class="font-black text-xl">منصة القرآن الكريم 🕌</h1>
-        <p class="text-[10px] text-amber-300 font-bold mt-1">صدقة جارية عني وعن جميع المسلمين والمسلمات</p>
-    </header>
+    <div class="header">
+        <h1 class="font-bold text-xl">منصة القرآن الكريم 🕌</h1>
+        <p class="text-xs text-amber-300">صدقة جارية عني وعن جميع المسلمين والمسلمات</p>
+    </div>
 
-    <main class="max-w-md mx-auto p-4">
-        <div id="home-view">
-            <a href="https://t.me/Sar7an_1" target="_blank" class="w-full bg-[#0088cc] text-white p-4 rounded-xl flex items-center justify-center gap-3 mb-6 shadow-md">
-                <i class="fa-brands fa-telegram text-2xl"></i> <span class="font-bold">قناتنا على التليجرام</span>
-            </a>
-            <div class="grid grid-cols-2 gap-4">
-                <div onclick="safePlay('https://n04.radiojar.com/8s9u67z8n0quv', 'إذاعة القرآن من القاهرة')" class="content-card">
-                    <i class="fa-solid fa-tower-broadcast text-3xl text-blue-600 mb-2"></i> <span class="font-bold text-xs">إذاعة القاهرة</span>
+    <div class="p-4 max-w-md mx-auto">
+        <div id="main-ui">
+            <a href="https://t.me/Sar7an_1" target="_blank" class="block w-full bg-blue-500 text-white text-center p-3 rounded-lg mb-4 font-bold">قناتنا على التليجرام</a>
+            
+            <div class="grid grid-cols-2 gap-3">
+                <div onclick="playAudio('https://qurany.com/stream/8s9u67z8n0quv', 'إذاعة القاهرة')" class="card">
+                    <i class="fa fa-radio text-blue-500 text-2xl mb-2"></i><br><span class="text-xs font-bold">إذاعة القاهرة</span>
                 </div>
-                <div onclick="loadReciters()" class="content-card">
-                    <i class="fa-solid fa-microphone-lines text-3xl text-amber-600 mb-2"></i> <span class="font-bold text-xs">أصوات مختلفة</span>
+                <div onclick="openPage('أصوات مختلفة')" class="card">
+                    <i class="fa fa-microphone text-amber-500 text-2xl mb-2"></i><br><span class="text-xs font-bold">أصوات مختلفة</span>
                 </div>
-                <div onclick="showAzkarMenu()" class="content-card">
-                    <i class="fa-solid fa-book-open text-3xl text-emerald-700 mb-2"></i> <span class="font-bold text-xs">الأذكار</span>
+                <div onclick="openPage('الأذكار')" class="card">
+                    <i class="fa fa-book text-emerald-600 text-2xl mb-2"></i><br><span class="text-xs font-bold">الأذكار</span>
                 </div>
-                <div onclick="showRoqya()" class="content-card">
-                    <i class="fa-solid fa-hand-holding-heart text-3xl text-red-600 mb-2"></i> <span class="font-bold text-xs">الرقية الشرعية</span>
+                <div onclick="playAudio('https://server10.mp3quran.net/roqia/001.mp3', 'الرقية الشرعية')" class="card">
+                    <i class="fa fa-shield-heart text-red-500 text-2xl mb-2"></i><br><span class="text-xs font-bold">الرقية الشرعية</span>
                 </div>
             </div>
         </div>
 
-        <div id="dynamic-view" class="hidden">
-            <div class="flex items-center justify-between mb-4 bg-white p-3 rounded-lg shadow-sm border">
-                <button onclick="showHome()" class="bg-emerald-900 text-white px-4 py-1 rounded-lg text-xs font-bold">رجوع</button>
-                <span id="page-title" class="font-bold text-emerald-900 text-sm"></span>
-            </div>
-            <div id="list-container"></div>
+        <div id="sub-ui" class="hidden">
+            <button onclick="closePage()" class="bg-red-700 text-white px-4 py-1 rounded mb-4 text-xs">رجوع للرئيسية</button>
+            <div id="list-content"></div>
         </div>
 
-        <div class="footer-strip">
-            <div class="font-black text-xs tracking-widest">Sar7an_1©(2026)</div>
-            <div class="text-[10px] mt-1 opacity-80 font-bold">رَبَّنَا تَقَبَّلْ مِنَّا إِنَّكَ أَنتَ السَّمِيعُ الْعَلِيمُ</div>
-        </div>
-    </main>
-
-    <div class="modern-player">
-        <div id="trackName" class="player-info">اختر ما تود سماعه</div>
-        <div class="seek-container">
-            <span id="currentTime" class="text-[10px] w-8">0:00</span>
-            <input type="range" id="seekSlider" value="0" max="100" oninput="seek()">
-            <span id="duration" class="text-[10px] w-8">0:00</span>
-        </div>
-        <div class="player-controls">
-            <i class="fa-solid fa-rotate-left text-2xl cursor-pointer text-gray-400" onclick="skip(-10)"></i>
-            <div id="playBtn" onclick="togglePlay()" class="play-main"><i class="fa-solid fa-play ml-1"></i></div>
-            <i class="fa-solid fa-rotate-right text-2xl cursor-pointer text-gray-400" onclick="skip(10)"></i>
-        </div>
-        <div class="volume-vertical">
-            <i class="fa-solid fa-volume-high text-[10px] text-amber-400"></i>
-            <input type="range" min="0" max="1" step="0.05" value="1" oninput="audio.volume = this.value">
-            <i class="fa-solid fa-volume-off text-[10px] text-gray-500"></i>
+        <div class="footer-text">
+            <b>Sar7an_1©(2026)</b><br>
+            <span>رَبَّنَا تَقَبَّلْ مِنَّا إِنَّكَ أَنتَ السَّمِيعُ الْعَلِيمُ</span>
         </div>
     </div>
 
-    <audio id="audioPlayer" crossorigin="anonymous"></audio>
+    <div class="player-fixed">
+        <div id="title" class="text-center text-xs text-amber-400 mb-2 font-bold">جاهز للتشغيل</div>
+        <div class="flex justify-center items-center gap-6">
+            <i class="fa fa-backward cursor-pointer" onclick="document.getElementById('audio').currentTime -= 10"></i>
+            <div class="btn-main" onclick="toggleBtn()" id="play-icon"><i class="fa fa-play"></i></div>
+            <i class="fa fa-forward cursor-pointer" onclick="document.getElementById('audio').currentTime += 10"></i>
+        </div>
+        <div class="vol-box">
+            <i class="fa fa-volume-up text-[10px]"></i>
+            <input type="range" min="0" max="1" step="0.1" oninput="document.getElementById('audio').volume = this.value">
+        </div>
+        <audio id="audio" onplay="updateIcon(true)" onpause="updateIcon(false)"></audio>
+    </div>
 
     <script>
-        const audio = document.getElementById('audioPlayer');
-        const playBtn = document.getElementById('playBtn');
-        const trackName = document.getElementById('trackName');
-        const seekSlider = document.getElementById('seekSlider');
-        const currentTimeEl = document.getElementById('currentTime');
-        const durationEl = document.getElementById('duration');
-
-        function showHome() { document.getElementById('home-view').classList.remove('hidden'); document.getElementById('dynamic-view').classList.add('hidden'); window.scrollTo(0,0); }
-        function openPage(title) { document.getElementById('home-view').classList.add('hidden'); document.getElementById('dynamic-view').classList.remove('hidden'); document.getElementById('page-title').innerText = title; window.scrollTo(0,0); }
-
-        function safePlay(url, name) {
-            trackName.innerText = "جاري التحميل...";
+        const audio = document.getElementById('audio');
+        
+        function playAudio(url, name) {
             audio.src = url;
-            audio.load();
-            var playPromise = audio.play();
-            if (playPromise !== undefined) {
-                playPromise.then(_ => { trackName.innerText = name; playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>'; })
-                .catch(e => { trackName.innerText = "اضغط تشغيل للمحاولة"; playBtn.innerHTML = '<i class="fa-solid fa-play ml-1"></i>'; });
+            audio.play().catch(() => alert("اضغط تشغيل مرة أخرى"));
+            document.getElementById('title').innerText = name;
+        }
+
+        function toggleBtn() {
+            if (audio.paused) audio.play();
+            else audio.pause();
+        }
+
+        function updateIcon(isPlaying) {
+            document.getElementById('play-icon').innerHTML = isPlaying ? '<i class="fa fa-pause"></i>' : '<i class="fa-play"></i>';
+        }
+
+        function openPage(type) {
+            document.getElementById('main-ui').classList.add('hidden');
+            document.getElementById('sub-ui').classList.remove('hidden');
+            let content = "";
+            if(type === 'الأذكار') {
+                content = `
+                    <button onclick="showZekr('morning')" class="w-full p-4 bg-orange-100 mb-2 rounded font-bold">أذكار الصباح</button>
+                    <button onclick="showZekr('evening')" class="w-full p-4 bg-blue-100 rounded font-bold">أذكار المساء</button>
+                `;
+            } else {
+                content = "<p class='text-center'>جاري تحميل القراء...</p>";
+                fetch('https://mp3quran.net/api/v3/reciters?language=ar').then(r => r.json()).then(data => {
+                    let html = data.reciters.slice(0,20).map(r => `
+                        <div class="card mb-2 flex justify-between items-center" onclick="playAudio('${r.moshaf[0].server}001.mp3', 'الشيخ ${r.name}')">
+                            <span class="text-xs font-bold">${r.name}</span> <i class="fa fa-play-circle text-emerald-600"></i>
+                        </div>
+                    `).join('');
+                    document.getElementById('list-content').innerHTML = html;
+                });
             }
+            document.getElementById('list-content').innerHTML = content;
         }
 
-        function togglePlay() {
-            if(!audio.src) return;
-            if(audio.paused) { audio.play(); playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>'; }
-            else { audio.pause(); playBtn.innerHTML = '<i class="fa-solid fa-play ml-1"></i>'; }
+        function showZekr(t) {
+            let azkar = t === 'morning' ? ["آية الكرسي", "أصبحنا وأصبح الملك لله"] : ["آية الكرسي", "أمسينا وأمسى الملك لله"];
+            document.getElementById('list-content').innerHTML = azkar.map(z => `<div class="card mb-2 text-sm font-bold">${z}</div>`).join('');
         }
 
-        function skip(time) { audio.currentTime += time; }
-        function seek() { audio.currentTime = (seekSlider.value / 100) * (audio.duration || 0); }
-
-        audio.ontimeupdate = () => {
-            if(audio.duration) {
-                seekSlider.value = (audio.currentTime / audio.duration) * 100;
-                currentTimeEl.innerText = formatTime(audio.currentTime);
-                durationEl.innerText = formatTime(audio.duration);
-            }
-        };
-
-        function formatTime(s) { let m = Math.floor(s / 60); let sec = Math.floor(s % 60); return m + ":" + (sec < 10 ? "0" + sec : sec); }
-
-        function showAzkarMenu() {
-            openPage("الأذكار");
-            document.getElementById('list-container').innerHTML = `
-                <button onclick="showAzkarList('morning')" class="w-full p-5 bg-orange-50 text-orange-800 rounded-2xl font-bold mb-4 border border-orange-200 text-right shadow-sm">☀️ أذكار الصباح</button>
-                <button onclick="showAzkarList('evening')" class="w-full p-5 bg-indigo-50 text-indigo-800 rounded-2xl font-bold border border-indigo-200 text-right shadow-sm">🌙 أذكار المساء</button>
-            `;
-        }
-
-        function showAzkarList(type) {
-            openPage(type === 'morning' ? "أذكار الصباح" : "أذكار المساء");
-            const azkar = type === 'morning' ? ["آية الكرسي", "أصبحنا وأصبح الملك لله", "اللهم بك أصبحنا"] : ["آية الكرسي", "أمسينا وأمسى الملك لله", "اللهم بك أمسينا"];
-            document.getElementById('list-container').innerHTML = azkar.map(z => `<div class="bg-white p-5 rounded-xl mb-3 shadow-sm border-r-4 border-emerald-700 font-bold text-sm leading-relaxed">${z}</div>`).join('');
-        }
-
-        function showRoqya() {
-            openPage("الرقية الشرعية");
-            document.getElementById('list-container').innerHTML = `
-                <div class="bg-white p-10 rounded-2xl shadow-sm text-center border">
-                    <i class="fa-solid fa-shield-heart text-5xl text-red-600 mb-4"></i>
-                    <p class="mb-6 font-bold text-emerald-900">الرقية الشرعية الصوتية كاملة</p>
-                    <button onclick="safePlay('https://server10.mp3quran.net/roqia/001.mp3', 'الرقية الشرعية')" class="bg-red-600 text-white w-full py-4 rounded-xl font-bold shadow-lg">تشغيل الآن</button>
-                </div>
-            `;
-        }
-
-        async function loadReciters() {
-            openPage("أصوات مختلفة");
-            const res = await fetch('https://mp3quran.net/api/v3/reciters?language=ar');
-            const data = await res.json();
-            document.getElementById('list-container').innerHTML = data.reciters.slice(0, 30).map(r => `
-                <div class="bg-white p-4 rounded-xl mb-2 shadow-sm flex justify-between items-center border" onclick="safePlay('${r.moshaf[0].server}001.mp3', 'الشيخ ${r.name}')">
-                    <span class="font-bold text-xs">${r.name}</span> <i class="fa-solid fa-play-circle text-emerald-600 text-xl"></i>
-                </div>
-            `).join('');
+        function closePage() {
+            document.getElementById('main-ui').classList.remove('hidden');
+            document.getElementById('sub-ui').classList.add('hidden');
         }
     </script>
 </body>
