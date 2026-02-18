@@ -1,277 +1,173 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة القرآن الكريم</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    
-    <style>
-        :root { --primary: #064e3b; --accent: #fbbf24; --player-bg: #042f2e; }
-        body { font-family: 'Cairo', sans-serif; background-color: #f8fafc; margin: 0; user-select: none; }
-        
-        /* زر الرجوع الثابت والمميز */
-        .back-sticky { position: sticky; top: 72px; z-index: 100; background: white; padding: 12px 15px; border-bottom: 2px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>القرآن الكريم</title>
 
-        /* مشغل الصوتيات الاحترافي */
-        .modern-player { position: fixed; bottom: 0; left: 0; right: 0; background: var(--player-bg); color: white; height: 120px; z-index: 1000; border-top: 3px solid var(--accent); padding: 10px 15px; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 -5px 25px rgba(0,0,0,0.3); }
-        .player-info { width: 100%; text-align: center; margin-bottom: 8px; }
-        .player-controls { display: flex; align-items: center; gap: 30px; margin-bottom: 5px; }
-        .vol-control { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; align-items: center; gap: 5px; }
-        
-        .play-main { width: 48px; height: 48px; background: white; color: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; box-shadow: 0 4px 15px rgba(255,255,255,0.2); cursor: pointer; }
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-        /* تواصل معنا شيك */
-        .contact-card { background: linear-gradient(135deg, #1e40af, #3b82f6); padding: 16px; border-radius: 15px; margin-top: 25px; display: flex; align-items: center; justify-content: center; gap: 12px; color: white; font-weight: bold; transition: 0.3s; border: 1px solid rgba(255,255,255,0.1); }
-
-        /* البطاقات والمحتوى */
-        .content-card { background: white; border-radius: 18px; padding: 22px; margin-bottom: 15px; border-right: 6px solid var(--primary); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-        .zekr-count { width: 45px; height: 45px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; cursor: pointer; transition: 0.2s; }
-        .zekr-count:active { transform: scale(0.85); background: #10b981; }
-
-        #sidebar { transition: transform 0.3s ease; z-index: 2000; }
-        #sidebar.closed { transform: translateX(100%); }
-        .hidden { display: none; }
-    </style>
+<style>
+body{
+  margin:0;
+  font-family:tahoma;
+  background:#f6f7f8;
+}
+.header{
+  background:#0f5132;
+  color:#fff;
+  padding:12px;
+  text-align:center;
+  font-size:20px;
+  font-weight:bold;
+}
+.sub{
+  font-size:13px;
+  opacity:.9;
+}
+.container{
+  padding:15px;
+}
+.basmala{
+  text-align:center;
+  font-size:26px;
+  color:#0f5132;
+  margin:20px 0;
+}
+.telegram{
+  background:#1d9bf0;
+  color:#fff;
+  padding:14px;
+  text-align:center;
+  border-radius:12px;
+  margin-bottom:20px;
+  font-size:18px;
+  text-decoration:none;
+  display:block;
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:15px;
+}
+.card{
+  background:#fff;
+  border-radius:16px;
+  padding:25px 10px;
+  text-align:center;
+  box-shadow:0 2px 6px rgba(0,0,0,.08);
+  cursor:pointer;
+}
+.card i{
+  font-size:32px;
+  margin-bottom:10px;
+}
+.card span{
+  display:block;
+  font-size:16px;
+  font-weight:bold;
+}
+.footer{
+  text-align:center;
+  margin:30px 0;
+  color:#777;
+  font-size:14px;
+}
+.player{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  background:#0f5132;
+  color:#fff;
+  padding:10px;
+  display:flex;
+  align-items:center;
+  gap:15px;
+}
+.player button{
+  background:#fff;
+  border:none;
+  border-radius:50%;
+  width:48px;
+  height:48px;
+  font-size:18px;
+  cursor:pointer;
+}
+.player span{
+  font-size:14px;
+}
+</style>
 </head>
+
 <body>
 
-    <header class="bg-[#064e3b] p-4 sticky top-0 z-[1000] shadow-xl h-[72px] flex items-center">
-        <div class="max-w-md mx-auto w-full flex justify-between items-center">
-            <div onclick="showSection('home')" class="flex items-center gap-3 cursor-pointer">
-                <span class="text-3xl">🕌</span>
-                <div>
-                    <h1 class="text-white font-black text-lg leading-none">القرآن الكريم</h1>
-                    <p class="text-[9px] text-amber-300 mt-1 font-bold">صدقة عني وعن جميع المسلمين والمسلمات</p>
-                </div>
-            </div>
-            <button onclick="toggleSidebar()" class="text-white text-2xl"><i class="fa-solid fa-bars-staggered"></i></button>
-        </div>
-    </header>
+<div class="header">
+  القرآن الكريم
+  <div class="sub">صدقة جارية لجميع المسلمين</div>
+</div>
 
-    <aside id="sidebar" class="fixed top-0 right-0 h-full w-72 bg-[#064e3b] closed p-6 shadow-2xl text-white">
-        <div class="flex justify-between mb-10 border-b border-emerald-800 pb-4">
-            <span class="font-black text-amber-400 tracking-widest">القائمة</span>
-            <button onclick="toggleSidebar()"><i class="fa-solid fa-xmark text-2xl"></i></button>
-        </div>
-        <nav class="flex flex-col gap-7 font-bold">
-            <button onclick="showSection('home')" class="text-right flex items-center"><i class="fa-solid fa-house ml-4 text-amber-400 w-6 text-lg"></i> الرئيسية</button>
-            <button onclick="showSection('mushaf')" class="text-right flex items-center"><i class="fa-solid fa-book-open ml-4 text-amber-400 w-6 text-lg"></i> المصحف الشريف</button>
-            <button onclick="showSection('radios')" class="text-right flex items-center"><i class="fa-solid fa-tower-broadcast ml-4 text-amber-400 w-6 text-lg"></i> الإذاعة المباشرة</button>
-            <button onclick="showSection('reciters')" class="text-right flex items-center"><i class="fa-solid fa-microphone-lines ml-4 text-amber-400 w-6 text-lg"></i> القراء</button>
-            
-            <a href="https://t.me/Sar7an_1" target="_blank" class="contact-card">
-                <i class="fa-brands fa-telegram text-2xl"></i>
-                <span>تواصل معنا (تليجرام)</span>
-            </a>
-        </nav>
-    </aside>
+<div class="container">
 
-    <main class="max-w-md mx-auto pb-40">
-        
-        <section id="home-sec">
-            <div class="text-center py-10">
-                <div class="font-serif text-3xl text-emerald-900 font-black mb-2">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
-                <div class="w-20 h-1.5 bg-amber-400 mx-auto rounded-full"></div>
-            </div>
+  <div class="basmala">بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيم</div>
 
-            <div class="px-5 mb-8">
-                <a href="https://t.me/Sar7an_1" target="_blank" class="w-full bg-[#0088cc] text-white p-4 rounded-2xl flex items-center justify-center gap-3 shadow-xl hover:scale-[1.02] transition transform">
-                    <i class="fa-brands fa-telegram text-2xl"></i>
-                    <span class="font-black">قناتنا على التليجرام</span>
-                </a>
-            </div>
+  <a class="telegram" href="#" target="_blank">
+    <i class="fa-brands fa-telegram"></i> قناتنا على تليجرام
+  </a>
 
-            <div class="grid grid-cols-2 gap-4 px-5">
-                <div onclick="showSection('mushaf')" class="bg-white p-6 rounded-3xl border border-slate-100 flex flex-col items-center text-center shadow-sm">
-                    <i class="fa-solid fa-book-quran text-3xl text-emerald-800 mb-3"></i>
-                    <span class="font-black text-xs">المصحف الورقي</span>
-                </div>
-                <div onclick="showSection('radios')" class="bg-white p-6 rounded-3xl border border-slate-100 flex flex-col items-center text-center shadow-sm">
-                    <i class="fa-solid fa-radio text-3xl text-blue-600 mb-3"></i>
-                    <span class="font-black text-xs">الإذاعات</span>
-                </div>
-                <div onclick="openAzkar('morning')" class="bg-white p-6 rounded-3xl border border-slate-100 flex flex-col items-center text-center shadow-sm">
-                    <i class="fa-solid fa-sun text-3xl text-orange-500 mb-3"></i>
-                    <span class="font-black text-xs">أذكار الصباح</span>
-                </div>
-                <div onclick="openAzkar('evening')" class="bg-white p-6 rounded-3xl border border-slate-100 flex flex-col items-center text-center shadow-sm">
-                    <i class="fa-solid fa-moon text-3xl text-indigo-700 mb-3"></i>
-                    <span class="font-black text-xs">أذكار المساء</span>
-                </div>
-                <div onclick="showSection('roqya')" class="bg-white p-6 rounded-3xl border border-slate-100 flex flex-col items-center text-center shadow-sm">
-                    <i class="fa-solid fa-hand-holding-heart text-3xl text-red-600 mb-3"></i>
-                    <span class="font-black text-xs">الرقية الشرعية</span>
-                </div>
-                <div onclick="showSection('reciters')" class="bg-white p-6 rounded-3xl border border-slate-100 flex flex-col items-center text-center shadow-sm">
-                    <i class="fa-solid fa-microphone-lines text-3xl text-amber-600 mb-3"></i>
-                    <span class="font-black text-xs">كبار القراء</span>
-                </div>
-            </div>
-        </section>
+  <div class="grid">
 
-        <section id="dynamic-sec" class="hidden">
-            <div class="back-sticky">
-                <button onclick="showSection('home')" class="bg-emerald-900 text-white px-4 py-2 rounded-xl text-xs font-bold shadow-md">
-                    <i class="fa-solid fa-arrow-right ml-2"></i> رجوع للرئيسية
-                </button>
-                <span id="dynamicTitle" class="font-black text-emerald-900 text-[13px]"></span>
-            </div>
-            <div id="dynamicContent" class="p-4"></div>
-        </section>
-
-        <section id="mushaf-sec" class="hidden">
-            <div class="back-sticky">
-                <button onclick="showSection('home')" class="bg-emerald-900 text-white px-4 py-2 rounded-xl text-xs font-bold shadow-md"><i class="fa-solid fa-arrow-right ml-2"></i> رجوع</button>
-                <span class="font-black text-emerald-900 text-xs">مصحف المدينة المنورة</span>
-            </div>
-            <div class="quran-container h-[calc(100vh-200px)]">
-                <iframe src="https://mushaf.quran.com/ar/page/1"></iframe>
-            </div>
-        </section>
-
-        <footer class="text-center py-20 opacity-60">
-            <p class="text-[11px] font-black tracking-[0.2em] text-emerald-900">
-                Sar7an_1© (2026)
-            </p>
-        </footer>
-    </main>
-
-    <div class="modern-player">
-        <div class="player-info">
-            <div id="trackName" class="text-[12px] font-black text-amber-400 truncate px-10">صدقة جارية لجميع المسلمين</div>
-        </div>
-        <div class="player-controls">
-            <i class="fa-solid fa-backward-step text-2xl cursor-pointer opacity-80" onclick="prevTrack()"></i>
-            <div onclick="toggleAudio()" id="pBtn" class="play-main">
-                <i class="fa-solid fa-play ml-1"></i>
-            </div>
-            <i class="fa-solid fa-forward-step text-2xl cursor-pointer opacity-80" onclick="nextTrack()"></i>
-        </div>
-        <div class="vol-control">
-            <i class="fa-solid fa-volume-high text-[10px] text-amber-400"></i>
-            <input type="range" min="0" max="1" step="0.1" value="1" oninput="changeVol(this.value)" class="w-1.5 h-16 bg-emerald-800 rounded-lg appearance-none vertical-range accent-amber-400" style="writing-mode: bt-lr; -webkit-appearance: slider-vertical;">
-        </div>
-        <audio id="audioPlayer"></audio>
+    <div class="card" onclick="go('radio')">
+      <i class="fa-solid fa-radio" style="color:#0d6efd"></i>
+      <span>الإذاعات</span>
     </div>
 
-    <script>
-        const audio = document.getElementById('audioPlayer');
-        const pBtn = document.getElementById('pBtn');
-        let radios = [], reciters = [], currentIdx = 0;
+    <div class="card" onclick="go('mushaf')">
+      <i class="fa-solid fa-book-quran" style="color:#198754"></i>
+      <span>المصحف الورقي</span>
+    </div>
 
-        window.onload = () => { fetchRadios(); fetchReciters(); showSection('home'); };
+    <div class="card" onclick="go('azkar-sabah')">
+      <i class="fa-solid fa-sun" style="color:#fd7e14"></i>
+      <span>أذكار الصباح</span>
+    </div>
 
-        function toggleSidebar() { document.getElementById('sidebar').classList.toggle('closed'); }
+    <div class="card" onclick="go('azkar-masaa')">
+      <i class="fa-solid fa-moon" style="color:#6f42c1"></i>
+      <span>أذكار المساء</span>
+    </div>
 
-        function showSection(id) {
-            ['home', 'mushaf', 'dynamic'].forEach(s => document.getElementById(s + '-sec').classList.add('hidden'));
-            document.getElementById(id + '-sec').classList.remove('hidden');
-            if(!document.getElementById('sidebar').classList.contains('closed')) toggleSidebar();
-            window.scrollTo(0,0);
-        }
+    <div class="card" onclick="go('reciters')">
+      <i class="fa-solid fa-microphone" style="color:#d63384"></i>
+      <span>كبار القراء</span>
+    </div>
 
-        // أذكار كاملة من الملف
-        const azData = {
-            morning: {
-                t: "أذكار الصباح كاملة",
-                i: [
-                    {m: "آية الكرسي: اللّهُ لاَ إِلَـهَ إِلاَّ هُوَ الْحَيُّ الْقَيُّومُ لاَ تَأْخُذُهُ سِنَةٌ وَلاَ نَوْمٌ لَّهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الأَرْضِ", c: 1},
-                    {m: "سورة الإخلاص (3 مرات)", c: 3},
-                    {m: "سورة الفلق (3 مرات)", c: 3},
-                    {m: "سورة الناس (3 مرات)", c: 3},
-                    {m: "أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ، لاَ إِلَهَ إِلاَّ اللَّهُ وَحْدَهُ لاَ شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ", c: 1},
-                    {m: "اللَّهُمَّ بِكَ أَصْبَحْنَا، وَبِكَ أَمْسَيْنَا، وَبِكَ نَحْيَا، وَبِكَ نَمُوتُ وَإِلَيْكَ النُّشُورُ", c: 1},
-                    {m: "اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ", c: 1},
-                    {m: "بِسْمِ اللَّهِ الَّذِي لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الْأَرْضِ وَلَا فِي السَّمَاءِ وَهُوَ السَّمِيعُ الْعَلِيمُ", c: 3},
-                    {m: "رضيت بالله رباً وبالإسلام ديناً وبمحمد صلى الله عليه وسلم نبياً", c: 3}
-                ]
-            },
-            evening: {
-                t: "أذكار المساء كاملة",
-                i: [
-                    {m: "آية الكرسي: اللّهُ لاَ إِلَـهَ إِلاَّ هُوَ الْحَيُّ الْقَيُّومُ", c: 1},
-                    {m: "سورة الإخلاص، الفلق، والناس (3 مرات)", c: 3},
-                    {m: "أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ، لاَ إِلَهَ إِلاَّ اللَّهُ وَحْدَهُ لاَ شَرِيكَ لَهُ", c: 1},
-                    {m: "اللَّهُمَّ بِكَ أَمْسَيْنَا، وَبِكَ أَصْبَحْنَا، وَبِكَ نَحْيَا، وَبِكَ نَمُوتُ وَإِلَيْكَ الْمَصِيرُ", c: 1},
-                    {m: "أَعُوذُ بِكَلِمَاتِ اللهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَقَ", c: 3},
-                    {m: "اللَّهُمَّ مَا أَمْسَى بِي مِنْ نِعْمَةٍ أَوْ بِأَحَدٍ مِنْ خَلْقِكَ فَمِنْكَ وَحْدَكَ لَا شَرِيكَ لَكَ", c: 1}
-                ]
-            }
-        };
+    <div class="card" onclick="go('roqya')">
+      <i class="fa-solid fa-heart" style="color:#dc3545"></i>
+      <span>الرقية الشرعية</span>
+    </div>
 
-        function openAzkar(type) {
-            showSection('dynamic');
-            document.getElementById('dynamicTitle').innerText = azData[type].t;
-            document.getElementById('dynamicContent').innerHTML = azData[type].i.map(z => `
-                <div class="content-card flex justify-between items-start gap-4">
-                    <p class="text-[13px] font-bold text-slate-800 leading-relaxed">${z.m}</p>
-                    <div onclick="this.innerText=parseInt(this.innerText)-1; if(this.innerText=='0'){this.innerText='✓'; this.style.background='#10b981'}" class="zekr-count flex-shrink-0">${z.c}</div>
-                </div>
-            `).join('');
-        }
+  </div>
 
-        async function fetchRadios() {
-            const res = await fetch('https://mp3quran.net/api/v3/radios?language=ar');
-            const data = await res.json(); radios = data.radios;
-        }
-        document.querySelector('[onclick="showSection(\'radios\')"]').onclick = () => {
-            showSection('dynamic');
-            document.getElementById('dynamicTitle').innerText = "إذاعات القرآن المباشرة";
-            document.getElementById('dynamicContent').innerHTML = radios.slice(0, 30).map((r, i) => `
-                <div onclick="play('${r.url}', '${r.name}', ${i})" class="content-card flex justify-between items-center cursor-pointer">
-                    <span class="text-xs font-black">${r.name}</span>
-                    <i class="fa-solid fa-circle-play text-2xl text-emerald-600"></i>
-                </div>
-            `).join('');
-        };
+  <div class="footer">
+    Sar7an_1 © 2026
+  </div>
 
-        async function fetchReciters() {
-            const res = await fetch('https://mp3quran.net/api/v3/reciters?language=ar');
-            const data = await res.json(); reciters = data.reciters;
-        }
-        document.querySelector('[onclick="showSection(\'reciters\')"]').onclick = () => {
-            showSection('dynamic');
-            document.getElementById('dynamicTitle').innerText = "كبار قراء العالم الإسلامي";
-            document.getElementById('dynamicContent').innerHTML = reciters.slice(0, 25).map((r, i) => `
-                <div onclick="play('${r.moshaf[0].server}001.mp3', 'الشيخ ${r.name}', ${i})" class="content-card flex items-center gap-4 cursor-pointer">
-                    <div class="w-10 h-10 bg-emerald-100 text-emerald-900 rounded-full flex items-center justify-center font-black">${r.name[0]}</div>
-                    <span class="text-xs font-black">${r.name}</span>
-                </div>
-            `).join('');
-        };
+</div>
 
-        function showRoqya() {
-            showSection('dynamic');
-            document.getElementById('dynamicTitle').innerText = "الرقية الشرعية";
-            document.getElementById('dynamicContent').innerHTML = `
-                <div class="content-card text-sm leading-8">
-                    <h4 class="font-black text-red-700 border-b pb-2 mb-3">الرقية من الكتاب والسنة</h4>
-                    - الفاتحة، آية الكرسي، المعوذات.<br>
-                    - "أعوذ بكلمات الله التامات من شر ما خلق".<br>
-                    - "بسم الله أرقيك من كل شيء يؤذيك".
-                </div>
-            `;
-        }
-        document.querySelector('[onclick="showSection(\'roqya\')"]').onclick = showRoqya;
+<div class="player">
+  <button onclick="playPause()"><i class="fa-solid fa-play"></i></button>
+  <span id="now">اختر محتوى للتشغيل</span>
+</div>
 
-        function play(url, name, index) {
-            currentIdx = index; audio.src = url; audio.play();
-            document.getElementById('trackName').innerText = name;
-            pBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
-        }
+<script>
+function go(page){
+  alert("هنا هتربط صفحة: " + page);
+}
+function playPause(){
+  alert("تشغيل / إيقاف");
+}
+</script>
 
-        function toggleAudio() {
-            if(!audio.src) return;
-            if(audio.paused) { audio.play(); pBtn.innerHTML = '<i class="fa-solid fa-pause"></i>'; }
-            else { audio.pause(); pBtn.innerHTML = '<i class="fa-solid fa-play ml-1"></i>'; }
-        }
-
-        function changeVol(v) { audio.volume = v; }
-        function nextTrack() { if(radios[currentIdx+1]) play(radios[currentIdx+1].url, radios[currentIdx+1].name, currentIdx+1); }
-        function prevTrack() { if(radios[currentIdx-1]) play(radios[currentIdx-1].url, radios[currentIdx-1].name, currentIdx-1); }
-    </script>
 </body>
 </html>
