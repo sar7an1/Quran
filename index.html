@@ -13,44 +13,46 @@
         body { font-family: 'Cairo', sans-serif; background-color: #f8fafc; margin: 0; padding-bottom: 180px; }
         
         /* مشغل صوتيات احترافي */
-        .modern-player { position: fixed; bottom: 0; left: 0; right: 0; background: var(--player-bg); color: white; height: 160px; z-index: 2000; border-top: 4px solid var(--accent); padding: 15px; display: flex; flex-direction: column; align-items: center; }
-        .player-info { width: 100%; text-align: center; margin-bottom: 10px; color: var(--accent); font-size: 13px; font-weight: bold; height: 20px; }
-        .player-controls { display: flex; align-items: center; gap: 30px; margin-bottom: 15px; }
-        .play-main { width: 55px; height: 55px; background: white; color: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; cursor: pointer; box-shadow: 0 0 15px rgba(255,255,255,0.1); }
+        .modern-player { position: fixed; bottom: 0; left: 0; right: 0; background: var(--player-bg); color: white; height: 165px; z-index: 2000; border-top: 4px solid var(--accent); padding: 15px; display: flex; flex-direction: column; align-items: center; }
+        .player-info { width: 100%; text-align: center; margin-bottom: 8px; color: var(--accent); font-size: 13px; font-weight: bold; height: 20px; overflow: hidden; }
+        .player-controls { display: flex; align-items: center; gap: 30px; margin-top: 5px; }
+        .play-main { width: 55px; height: 55px; background: white; color: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; cursor: pointer; shadow: 0 0 15px rgba(255,255,255,0.2); }
         
-        /* التحكم في الصوت الجانبي (واقف) */
-        .volume-aside { position: absolute; left: 15px; bottom: 30px; display: flex; flex-direction: column; align-items: center; gap: 8px; }
-        .volume-aside input { appearance: none; width: 4px; height: 80px; background: #444; border-radius: 5px; outline: none; writing-mode: bt-lr; -webkit-appearance: slider-vertical; }
-        .volume-aside input::-webkit-slider-thumb { appearance: none; width: 12px; height: 12px; background: var(--accent); border-radius: 50%; cursor: pointer; }
+        /* التحكم في الصوت الرأسي (واقف) جهة اليسار */
+        .volume-vertical { position: absolute; left: 15px; bottom: 35px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+        .volume-vertical input { appearance: none; width: 4px; height: 80px; background: #333; border-radius: 5px; outline: none; -webkit-appearance: slider-vertical; }
+        .volume-vertical input::-webkit-slider-thumb { appearance: none; width: 14px; height: 14px; background: var(--accent); border-radius: 50%; cursor: pointer; border: 2px solid white; }
 
         /* شريط التقديم */
-        .seek-container { width: 90%; display: flex; align-items: center; gap: 10px; margin-bottom: 5px; }
-        .seek-container input { flex-grow: 1; accent-color: var(--accent); height: 4px; cursor: pointer; }
+        .seek-container { width: 90%; display: flex; align-items: center; gap: 10px; }
+        .seek-container input { flex-grow: 1; accent-color: var(--accent); height: 5px; cursor: pointer; }
 
-        .content-card { background: white; border-radius: 15px; padding: 20px; border-right: 5px solid var(--primary); box-shadow: 0 2px 8px rgba(0,0,0,0.05); cursor: pointer; text-align: center; }
-        .footer-line { background: var(--primary); color: white; padding: 15px; text-align: center; margin-top: 30px; border-radius: 10px; }
+        .content-card { background: white; border-radius: 15px; padding: 20px; border-right: 5px solid var(--primary); box-shadow: 0 2px 8px rgba(0,0,0,0.05); cursor: pointer; text-align: center; transition: 0.2s; }
+        .content-card:active { transform: scale(0.95); }
+        
+        .footer-strip { background: var(--primary); color: white; padding: 12px; text-align: center; margin-top: 30px; width: 100%; }
         .hidden { display: none; }
     </style>
 </head>
 <body>
 
-    <header class="bg-[#064e3b] p-5 text-white text-center shadow-lg">
-        <div class="flex flex-col items-center gap-1">
+    <header class="bg-[#064e3b] p-5 text-white text-center shadow-lg border-b-2 border-amber-500">
+        <div class="flex flex-col items-center">
             <h1 class="font-black text-xl">منصة القرآن الكريم 🕌</h1>
-            <p class="text-[10px] text-amber-300 font-bold">صدقة جارية عني وعن جميع المسلمين والمسلمات</p>
+            <p class="text-[10px] text-amber-300 font-bold mt-1">صدقة جارية عني وعن جميع المسلمين</p>
         </div>
     </header>
 
     <main class="max-w-md mx-auto p-4">
         
         <div id="home-view">
-            <a href="https://t.me/Sar7an_1" target="_blank" class="w-full bg-[#0088cc] text-white p-4 rounded-xl flex items-center justify-center gap-3 mb-6 shadow-md">
+            <a href="https://t.me/Sar7an_1" target="_blank" class="w-full bg-[#0088cc] text-white p-4 rounded-xl flex items-center justify-center gap-3 mb-6 shadow-md active:scale-95 transition">
                 <i class="fa-brands fa-telegram text-2xl"></i>
                 <span class="font-bold">قناتنا على التليجرام</span>
             </a>
 
             <div class="grid grid-cols-2 gap-4">
-                <div onclick="playTrack('https://n04.radiojar.com/8s9u67z8n0quv', 'إذاعة القرآن من القاهرة')" class="content-card">
+                <div onclick="playLive('https://n04.radiojar.com/8s9u67z8n0quv', 'إذاعة القرآن من القاهرة')" class="content-card">
                     <i class="fa-solid fa-tower-broadcast text-3xl text-blue-600 mb-2"></i>
                     <span class="font-bold text-xs">إذاعة القاهرة</span>
                 </div>
@@ -77,14 +79,14 @@
             <div id="list-container"></div>
         </div>
 
-        <div class="footer-line">
-            <div class="font-bold text-sm tracking-widest">Sar7an_1©(2026)</div>
-            <div class="text-[10px] mt-1 opacity-90">رَبَّنَا تَقَبَّلْ مِنَّا إِنَّكَ أَنتَ السَّمِيعُ الْعَلِيمُ</div>
+        <div class="footer-strip rounded-lg">
+            <div class="font-black text-xs tracking-widest">Sar7an_1©(2026)</div>
+            <div class="text-[10px] mt-1 opacity-80 font-bold">رَبَّنَا تَقَبَّلْ مِنَّا إِنَّكَ أَنتَ السَّمِيعُ الْعَلِيمُ</div>
         </div>
     </main>
 
     <div class="modern-player">
-        <div id="trackName" class="player-info">اختر ما تود سماعه</div>
+        <div id="trackName" class="player-info">بانتظار اختيارك...</div>
         
         <div class="seek-container">
             <span id="currentTime" class="text-[10px] w-8">0:00</span>
@@ -93,21 +95,21 @@
         </div>
 
         <div class="player-controls">
-            <i class="fa-solid fa-rotate-left text-xl cursor-pointer text-gray-400" onclick="skip(-10)"></i>
+            <i class="fa-solid fa-backward-step text-2xl cursor-pointer text-gray-400" onclick="skip(-10)"></i>
             <div id="playBtn" onclick="togglePlay()" class="play-main">
                 <i class="fa-solid fa-play ml-1"></i>
             </div>
-            <i class="fa-solid fa-rotate-right text-xl cursor-pointer text-gray-400" onclick="skip(10)"></i>
+            <i class="fa-solid fa-forward-step text-2xl cursor-pointer text-gray-400" onclick="skip(10)"></i>
         </div>
 
-        <div class="volume-aside">
+        <div class="volume-vertical">
             <i class="fa-solid fa-volume-high text-[10px] text-amber-400"></i>
             <input type="range" min="0" max="1" step="0.05" value="1" oninput="audio.volume = this.value">
             <i class="fa-solid fa-volume-off text-[10px] text-gray-500"></i>
         </div>
     </div>
 
-    <audio id="audioPlayer" preload="auto"></audio>
+    <audio id="audioPlayer"></audio>
 
     <script>
         const audio = document.getElementById('audioPlayer');
@@ -130,21 +132,33 @@
             window.scrollTo(0,0);
         }
 
-        function playTrack(url, name) {
+        // دالة تشغيل الإذاعة (Live) والملفات المسجلة
+        function playLive(url, name) {
+            trackName.innerText = "جاري الاتصال بالبث...";
             audio.src = url;
-            audio.play().then(() => {
-                trackName.innerText = name;
-                playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
-            }).catch(err => {
-                console.error("Audio error:", err);
-                trackName.innerText = "خطأ في تشغيل المصدر";
-            });
+            audio.load();
+            let playPromise = audio.play();
+
+            if (playPromise !== undefined) {
+                playPromise.then(_ => {
+                    trackName.innerText = name;
+                    playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
+                }).catch(error => {
+                    trackName.innerText = "خطأ: اضغط تشغيل مرة أخرى";
+                    playBtn.innerHTML = '<i class="fa-solid fa-play ml-1"></i>';
+                });
+            }
         }
 
         function togglePlay() {
             if(!audio.src) return;
-            if(audio.paused) { audio.play(); playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>'; }
-            else { audio.pause(); playBtn.innerHTML = '<i class="fa-solid fa-play ml-1"></i>'; }
+            if(audio.paused) { 
+                audio.play(); 
+                playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>'; 
+            } else { 
+                audio.pause(); 
+                playBtn.innerHTML = '<i class="fa-solid fa-play ml-1"></i>'; 
+            }
         }
 
         function skip(time) { audio.currentTime += time; }
@@ -175,7 +189,11 @@
 
         function showAzkarList(type) {
             openPage(type === 'morning' ? "أذكار الصباح" : "أذكار المساء");
-            const azkar = type === 'morning' ? ["آية الكرسي", "أصبحنا وأصبح الملك لله", "اللهم بك أصبحنا"] : ["آية الكرسي", "أمسينا وأمسى الملك لله", "اللهم بك أمسينا"];
+            // محتوى مختصر من ملف خالد العتيبي
+            const azkar = type === 'morning' ? 
+                ["آية الكرسي", "أصبحنا وأصبح الملك لله", "اللهم بك أصبحنا", "سيد الاستغفار"] : 
+                ["آية الكرسي", "أمسينا وأمسى الملك لله", "اللهم بك أمسينا", "أعوذ بكلمات الله التامات"];
+            
             document.getElementById('list-container').innerHTML = azkar.map(z => `
                 <div class="bg-white p-5 rounded-xl mb-3 shadow-sm border-r-4 border-emerald-700 font-bold text-sm leading-relaxed">${z}</div>
             `).join('');
@@ -186,10 +204,10 @@
             document.getElementById('list-container').innerHTML = `
                 <div class="bg-white p-10 rounded-2xl shadow-sm text-center border">
                     <i class="fa-solid fa-shield-heart text-5xl text-red-600 mb-4"></i>
-                    <p class="mb-6 font-bold text-emerald-900">الرقية الشرعية الصوتية كاملة</p>
-                    <button onclick="playTrack('https://server10.mp3quran.net/roqia/001.mp3', 'الرقية الشرعية الصوتية')" 
-                            class="bg-red-600 text-white w-full py-4 rounded-xl font-bold shadow-lg hover:bg-red-700 transition">
-                        تشغيل الآن
+                    <p class="mb-6 font-bold text-emerald-900">الرقية الشرعية الصوتية (خالد الحبشي)</p>
+                    <button onclick="playLive('https://server10.mp3quran.net/roqia/001.mp3', 'الرقية الشرعية')" 
+                            class="bg-red-600 text-white w-full py-4 rounded-xl font-bold shadow-lg active:scale-95 transition">
+                        تشغيل الرقية الآن
                     </button>
                 </div>
             `;
@@ -200,7 +218,7 @@
             const res = await fetch('https://mp3quran.net/api/v3/reciters?language=ar');
             const data = await res.json();
             document.getElementById('list-container').innerHTML = data.reciters.slice(0, 30).map(r => `
-                <div class="bg-white p-4 rounded-xl mb-2 shadow-sm flex justify-between items-center border" onclick="playTrack('${r.moshaf[0].server}001.mp3', 'الشيخ ${r.name}')">
+                <div class="bg-white p-4 rounded-xl mb-2 shadow-sm flex justify-between items-center border active:bg-gray-50" onclick="playLive('${r.moshaf[0].server}001.mp3', 'الشيخ ${r.name}')">
                     <span class="font-bold text-xs">${r.name}</span>
                     <i class="fa-solid fa-play-circle text-emerald-600 text-xl"></i>
                 </div>
