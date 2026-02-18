@@ -61,29 +61,6 @@
             color: #1e293b;
         }
 
-        /* Content Card Styles */
-        .content-card {
-            background: white;
-            border-radius: 18px;
-            padding: 18px;
-            margin-bottom: 12px;
-            border-right: 4px solid var(--primary);
-            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
-        }
-        .zekr-count {
-            display: inline-flex;
-            width: 38px;
-            height: 38px;
-            background: var(--primary);
-            color: white;
-            border-radius: 50%;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .zekr-count.done { background: #cbd5e1; text-decoration: line-through; }
-
         /* Player Bar */
         .player-fixed {
             position: fixed;
@@ -104,18 +81,37 @@
         #sidebar.closed { transform: translateX(100%); }
         .hidden { display: none; }
 
-        /* إطار المصحف المحسن للهاتف */
+        /* إطار المصحف المطور لمنع "زحمة" الصفحة الرئيسية */
         .quran-container {
             width: 100%;
-            height: calc(100vh - 180px); /* يملأ الشاشة مع ترك مساحة للهيدر والبلير */
+            height: calc(100vh - 170px); 
             background: #fff;
-            overflow: hidden;
             position: relative;
         }
         iframe {
             width: 100%;
             height: 100%;
             border: none;
+        }
+        .content-card {
+            background: white;
+            border-radius: 18px;
+            padding: 18px;
+            margin-bottom: 12px;
+            border-right: 4px solid var(--primary);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+        }
+        .zekr-count {
+            display: inline-flex;
+            width: 38px;
+            height: 38px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -148,7 +144,6 @@
             <button onclick="showSection('reciters')" class="flex items-center gap-3 text-white"><i class="fa-solid fa-heart-pulse text-amber-400"></i> أصوات عذبة</button>
             <button onclick="openAzkarDirect('morning')" class="flex items-center gap-3 text-white"><i class="fa-solid fa-sun text-amber-400"></i> أذكار الصباح</button>
             <button onclick="openAzkarDirect('evening')" class="flex items-center gap-3 text-white"><i class="fa-solid fa-moon text-amber-400"></i> أذكار المساء</button>
-            <button onclick="showSection('roqya')" class="flex items-center gap-3 text-white"><i class="fa-solid fa-shield-halved text-amber-400"></i> الرقية الشرعية</button>
             <hr class="border-emerald-800">
             <a href="https://t.me/Sar7an_1" target="_blank" class="text-amber-300 font-bold"><i class="fa-solid fa-paper-plane mr-2"></i> تليجرام المسؤول</a>
         </nav>
@@ -187,24 +182,16 @@
                     <i class="fa-solid fa-shield-halved text-red-600"></i>
                     <span>الرقية الشرعية</span>
                 </div>
-                <div onclick="window.open('https://t.me/QuranDaily_1', '_blank')" class="grid-card">
-                    <i class="fa-brands fa-telegram text-sky-500"></i>
-                    <span>تليجرام</span>
-                </div>
-                <div onclick="showSection('home')" class="grid-card opacity-50 cursor-not-allowed">
-                    <i class="fa-solid fa-ellipsis text-slate-400"></i>
-                    <span>قريباً</span>
-                </div>
             </div>
         </section>
 
         <section id="mushaf-sec" class="hidden">
-            <div class="p-3 bg-emerald-50 flex justify-between items-center border-b border-emerald-100">
-                <span class="text-xs font-bold text-emerald-900">تصفح السور والآيات</span>
-                <button onclick="showSection('home')" class="text-[10px] bg-white px-4 py-1 rounded-full shadow-sm text-emerald-800">رجوع</button>
+            <div class="p-2 bg-emerald-50 flex justify-between items-center border-b border-emerald-100">
+                <span class="text-[11px] font-bold text-emerald-900">المصحف التفاعلي</span>
+                <button onclick="showSection('home')" class="text-[10px] bg-white px-3 py-1 rounded-full shadow-sm text-emerald-800 font-bold">رجوع</button>
             </div>
             <div class="quran-container">
-                <iframe src="https://quran.com/?reading=true"></iframe>
+                <iframe src="https://quran.com/1?view=full"></iframe>
             </div>
         </section>
 
@@ -278,7 +265,6 @@
             window.scrollTo(0,0);
         }
 
-        // Data & Logic (باقي الكود الأصلي)
         const azkarData = {
             morning: { title: "أذكار الصباح", items: [{t: "أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ...", c: 1}, {t: "بِسْمِ اللَّهِ الَّذِي لَا يَضُرُّ...", c: 3}] },
             evening: { title: "أذكار المساء", items: [{t: "أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلَّهِ...", c: 1}, {t: "أَعُوذُ بِكَلِمَاتِ اللهِ...", c: 3}] }
@@ -323,7 +309,7 @@
             try {
                 const res = await fetch('https://mp3quran.net/api/v3/radios?language=ar');
                 const data = await res.json(); radios = data.radios;
-                document.getElementById('radioContainer').innerHTML = radios.slice(0, 15).map((r, i) => `
+                document.getElementById('radioContainer').innerHTML = radios.slice(0, 20).map((r, i) => `
                     <div onclick="play('${r.url}', '${r.name}', ${i})" class="bg-white p-3 rounded-xl flex justify-between border shadow-sm">
                         <span class="text-xs font-bold">${r.name}</span><i class="fa-solid fa-play-circle text-emerald-600"></i>
                     </div>
@@ -335,7 +321,7 @@
             try {
                 const res = await fetch('https://mp3quran.net/api/v3/reciters?language=ar');
                 const data = await res.json(); reciters = data.reciters;
-                renderReciters(reciters.slice(0, 15));
+                renderReciters(reciters.slice(0, 20));
             } catch(e) {}
         }
 
@@ -348,7 +334,9 @@
             `).join('');
         }
 
-        function searchR(q) { renderReciters(reciters.filter(r => r.name.includes(q)).slice(0, 15)); }
+        function searchR(q) { renderReciters(reciters.filter(r => r.name.includes(q)).slice(0, 20)); }
+        function nextR() { if(radios.length) { rIdx = (rIdx + 1) % radios.length; play(radios[rIdx].url, radios[rIdx].name, rIdx); } }
+        function prevR() { if(radios.length) { rIdx = (rIdx - 1 + radios.length) % radios.length; play(radios[rIdx].url, radios[rIdx].name, rIdx); } }
     </script>
 </body>
 </html>
