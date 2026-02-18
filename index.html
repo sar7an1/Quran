@@ -3,434 +3,433 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>القرآن</title>
+    <title>القرآن - تصفح المصحف الشريف</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <style>
         :root {
-            --emerald-dark: #064e3b;
-            --emerald-deep: #022c22;
-            --card-bg: #cbd5e1; 
+            --primary: #064e3b;
+            --accent: #fbbf24;
+            --bg-light: #f8fafc;
+            --mushaf-bg: #ffffff;
         }
         body {
             font-family: 'Cairo', sans-serif;
-            background-color: #f1f5f9;
+            background-color: var(--bg-light);
+            margin: 0;
             user-select: none;
-            overflow-x: hidden;
         }
         .basmalah {
             font-family: 'Amiri', serif;
-            font-size: 2rem;
-            color: var(--emerald-dark);
-            margin-bottom: 20px;
+            font-size: 2.2rem;
+            color: var(--primary);
+            font-weight: bold;
+            margin: 25px 0;
         }
-        .icon-grid {
+
+        /* Mushaf Styling - Professional View */
+        .mushaf-wrapper {
+            background: var(--mushaf-bg);
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            position: relative;
+            max-width: 100%;
+            margin: 0 auto;
+            overflow: hidden;
+            padding: 10px;
+        }
+        .mushaf-img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: opacity 0.3s ease;
+        }
+        .mushaf-ornament {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 25px;
+            background-image: url('https://www.transparenttextures.com/patterns/arabesque.png');
+            opacity: 0.1;
+            pointer-events: none;
+        }
+        .orn-right { right: 0; border-left: 1px solid #ccc; }
+        .orn-left { left: 0; border-right: 1px solid #ccc; }
+
+        /* Navigation Bar Above Mushaf */
+        .mushaf-nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: white;
+            padding: 12px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+
+        /* Footer Box */
+        .full-footer {
+            background-color: #022c22;
+            color: white;
+            padding: 40px 20px;
+            width: 100%;
+            border-top: 4px solid var(--accent);
+            text-align: center;
+        }
+
+        /* Grid Home Icons */
+        .home-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 12px;
             padding: 10px;
         }
-        .icon-card {
-            background-color: var(--card-bg);
-            border-radius: 16px;
-            height: 110px;
+        .card-item {
+            background: #cbd5e1;
+            border: 1px solid #94a3b8;
+            border-radius: 20px;
+            padding: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            border: 1px solid #94a3b8;
+            gap: 10px;
             cursor: pointer;
-            transition: 0.2s;
+            transition: 0.3s;
         }
-        .icon-card:active { transform: scale(0.95); }
+        .card-item:active { transform: scale(0.95); }
         .icon-circle {
-            width: 42px;
-            height: 42px;
+            width: 50px;
+            height: 50px;
             background: white;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 8px;
-            color: var(--emerald-dark);
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            color: var(--primary);
+            font-size: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         }
 
-        /* Sidebar */
-        #sidebar { transition: transform 0.3s ease-in-out; z-index: 2000; }
-        #sidebar.closed { transform: translateX(100%); }
-        #overlay { transition: opacity 0.3s ease; z-index: 1999; }
-
-        /* Mushaf Style */
-        .mushaf-container {
-            background: #fff;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            overflow: hidden;
-            position: relative;
-        }
-        .mushaf-page {
-            width: 100%;
-            min-height: 500px;
-            display: block;
-        }
-
-        /* Footer Box */
-        .custom-footer {
-            background-color: var(--emerald-deep);
-            color: white;
-            padding: 30px 15px;
-            border-radius: 24px 24px 0 0;
-            margin-top: 50px;
-        }
-
-        /* Player Controls */
-        .player-footer {
+        /* Player Footer */
+        .player-bar {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
-            height: 75px;
-            background: var(--emerald-dark);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 20px;
+            background: var(--primary);
+            height: 85px;
             z-index: 1000;
-            border-top: 3px solid #fbbf24;
-        }
-        .control-btn {
-            width: 38px;
-            height: 38px;
             display: flex;
             align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.1);
-            transition: 0.2s;
+            padding: 0 20px;
+            border-top: 3px solid var(--accent);
+            color: white;
         }
-        .control-btn:active { background: rgba(255,255,255,0.3); }
 
-        .video-box {
-            position: relative;
-            padding-bottom: 56.25%;
-            height: 0;
-            border-radius: 12px;
-            overflow: hidden;
-            background: #000;
-        }
-        .video-box iframe {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-        }
+        #sidebar { transition: transform 0.3s ease; z-index: 2000; }
+        #sidebar.closed { transform: translateX(100%); }
         .hidden { display: none; }
+        
         .spinner {
-            border: 4px solid rgba(255,255,255,0.3);
-            border-top: 4px solid #fbbf24;
+            border: 3px solid rgba(0,0,0,0.1);
+            border-top: 3px solid var(--primary);
             border-radius: 50%;
             width: 40px;
             height: 40px;
-            animation: spin 1s linear infinite;
+            animation: spin 0.8s linear infinite;
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
-    <div id="overlay" class="fixed inset-0 bg-black/50 opacity-0 pointer-events-none" onclick="toggleSidebar()"></div>
-
-    <!-- Sidebar Menu -->
-    <aside id="sidebar" class="fixed top-0 right-0 h-full w-64 bg-[#064e3b] shadow-2xl closed">
-        <div class="p-6">
-            <div class="flex justify-between items-center mb-8 border-b border-emerald-800 pb-4">
-                <span class="text-white font-bold">القائمة</span>
-                <button onclick="toggleSidebar()" class="text-white text-xl"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            <nav class="flex flex-col gap-4">
-                <button onclick="showSec('home')" class="text-right text-white hover:bg-emerald-800 p-2 rounded transition text-sm"><i class="fa-solid fa-house ml-2"></i> الرئيسية</button>
-                <button onclick="showSec('radios')" class="text-right text-white hover:bg-emerald-800 p-2 rounded transition text-sm"><i class="fa-solid fa-radio ml-2"></i> الإذاعات</button>
-                <button onclick="showSec('visuals')" class="text-right text-white hover:bg-emerald-800 p-2 rounded transition text-sm"><i class="fa-solid fa-tv ml-2"></i> البث المباشر</button>
-                <button onclick="showSec('mushaf')" class="text-right text-white hover:bg-emerald-800 p-2 rounded transition text-sm"><i class="fa-solid fa-book-open ml-2"></i> المصحف الشريف</button>
-                <button onclick="showSec('azkar')" class="text-right text-white hover:bg-emerald-800 p-2 rounded transition text-sm"><i class="fa-solid fa-heart ml-2"></i> الأذكار</button>
-                <hr class="border-emerald-800 my-2">
-                <a href="https://t.me/Sar7an_1" target="_blank" class="text-right text-amber-400 p-2 rounded transition text-sm font-bold"><i class="fa-solid fa-headset ml-2"></i> تواصل مع المسؤول</a>
-            </nav>
-        </div>
-    </aside>
-
     <!-- Header -->
-    <header class="bg-[#064e3b] p-3 sticky top-0 z-50 border-b-2 border-amber-500 shadow-lg">
+    <header class="bg-[#064e3b] p-4 sticky top-0 z-50 shadow-md">
         <div class="max-w-lg mx-auto flex justify-between items-center">
-            <div class="flex items-center gap-2 cursor-pointer" onclick="showSec('home')">
-                <i class="fa-solid fa-quran text-amber-400 text-xl"></i>
+            <div class="flex items-center gap-3 cursor-pointer" onclick="showSec('home')">
+                <span class="text-2xl">🕌</span>
                 <div>
-                    <h1 class="text-white font-bold text-lg leading-none">القرآن</h1>
-                    <p class="text-[9px] text-amber-200 mt-0.5">صدقة جارية لجميع المسلمين</p>
+                    <h1 class="text-white font-black text-xl leading-none">القرآن</h1>
+                    <p class="text-[9px] text-amber-300 mt-1 font-bold">صدقة جارية عن جميع المسلمين</p>
                 </div>
             </div>
-            <button onclick="toggleSidebar()" class="text-white p-1">
-                <i class="fa-solid fa-bars text-xl"></i>
-            </button>
+            <button onclick="toggleSidebar()" class="text-white text-xl"><i class="fa-solid fa-bars"></i></button>
         </div>
     </header>
 
-    <main class="max-w-lg mx-auto p-3 pb-24">
+    <!-- Sidebar -->
+    <aside id="sidebar" class="fixed top-0 right-0 h-full w-72 bg-[#064e3b] closed p-6">
+        <div class="flex justify-between items-center border-b border-emerald-800 pb-4 mb-6">
+            <span class="text-white font-bold">القائمة الرئيسية</span>
+            <button onclick="toggleSidebar()" class="text-white text-2xl"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="flex flex-col gap-4">
+            <button onclick="showSec('home')" class="flex items-center gap-3 text-white p-3 hover:bg-emerald-800 rounded-xl transition"><i class="fa-solid fa-house"></i> الرئيسية</button>
+            <button onclick="showSec('mushaf')" class="flex items-center gap-3 text-white p-3 hover:bg-emerald-800 rounded-xl transition"><i class="fa-solid fa-book-open"></i> تصفح المصحف</button>
+            <button onclick="showSec('radios')" class="flex items-center gap-3 text-white p-3 hover:bg-emerald-800 rounded-xl transition"><i class="fa-solid fa-radio"></i> الإذاعات</button>
+            <button onclick="showSec('reciters')" class="flex items-center gap-3 text-white p-3 hover:bg-emerald-800 rounded-xl transition"><i class="fa-solid fa-microphone"></i> القراء</button>
+            <button onclick="showSec('azkar')" class="flex items-center gap-3 text-white p-3 hover:bg-emerald-800 rounded-xl transition"><i class="fa-solid fa-heart"></i> الأذكار</button>
+            <hr class="border-emerald-800">
+            <a href="https://t.me/Sar7an_1" target="_blank" class="flex items-center gap-3 text-amber-400 p-3 font-bold"><i class="fa-solid fa-headset"></i> تواصل معنا</a>
+        </div>
+    </aside>
+
+    <main class="max-w-xl mx-auto p-4 pb-32">
         
         <!-- Home Section -->
         <section id="home-sec">
-            <div class="text-center my-8">
-                <h2 class="basmalah font-bold italic">بسم الله الرحمن الرحيم</h2>
+            <div class="text-center py-6">
+                <h2 class="basmalah">بسم الله الرحمن الرحيم</h2>
             </div>
-            <div class="icon-grid">
-                <div onclick="showSec('radios')" class="icon-card">
+            <div class="home-grid">
+                <div onclick="showSec('mushaf')" class="card-item">
+                    <div class="icon-circle"><i class="fa-solid fa-book-quran"></i></div>
+                    <span class="font-bold text-sm text-emerald-950">تصفح المصحف</span>
+                </div>
+                <div onclick="showSec('radios')" class="card-item">
                     <div class="icon-circle"><i class="fa-solid fa-radio"></i></div>
-                    <span class="font-bold text-xs">إذاعة القرآن</span>
+                    <span class="font-bold text-sm text-emerald-950">الإذاعة</span>
                 </div>
-                <div onclick="showSec('visuals')" class="icon-card">
-                    <div class="icon-circle"><i class="fa-solid fa-tv"></i></div>
-                    <span class="font-bold text-xs">المحتوى المرئي</span>
+                <div onclick="showSec('reciters')" class="card-item">
+                    <div class="icon-circle"><i class="fa-solid fa-microphone-lines"></i></div>
+                    <span class="font-bold text-sm text-emerald-950">أصوات القراء</span>
                 </div>
-                <div onclick="showSec('mushaf')" class="icon-card">
-                    <div class="icon-circle"><i class="fa-solid fa-book-open"></i></div>
-                    <span class="font-bold text-xs">المصحف الشريف</span>
-                </div>
-                <div onclick="showSec('reciters')" class="icon-card">
-                    <div class="icon-circle"><i class="fa-solid fa-microphone"></i></div>
-                    <span class="font-bold text-xs">القراء</span>
-                </div>
-                <div onclick="showSec('azkar')" class="icon-card">
-                    <div class="icon-circle"><i class="fa-solid fa-heart"></i></div>
-                    <span class="font-bold text-xs">الأذكار</span>
-                </div>
-                <a href="https://t.me/QuranDaily_1" target="_blank" class="icon-card">
-                    <div class="icon-circle text-blue-500"><i class="fa-brands fa-telegram"></i></div>
-                    <span class="font-bold text-xs">تليجرام</span>
-                </a>
-            </div>
-        </section>
-
-        <!-- Visuals Section -->
-        <section id="visuals-sec" class="hidden">
-            <h3 class="font-bold text-emerald-900 mb-4 text-center">بث مباشر للقنوات الإسلامية</h3>
-            <div class="mb-4">
-                <p class="text-[10px] font-bold mb-1 text-slate-500">قناة القرآن الكريم (مباشر مكة)</p>
-                <div class="video-box">
-                    <iframe src="https://www.youtube.com/embed/Cm1v4bteXbI?rel=0" frameborder="0" allowfullscreen></iframe>
-                </div>
-            </div>
-            <div class="mb-4">
-                <p class="text-[10px] font-bold mb-1 text-slate-500">قناة المجد للقرآن الكريم</p>
-                <div class="video-box">
-                    <iframe src="https://www.youtube.com/embed/XW7_T95z5fM?rel=0" frameborder="0" allowfullscreen></iframe>
+                <div onclick="showSec('azkar')" class="card-item">
+                    <div class="icon-circle"><i class="fa-solid fa-hand-holding-heart"></i></div>
+                    <span class="font-bold text-sm text-emerald-950">الأذكار</span>
                 </div>
             </div>
         </section>
 
-        <!-- Radios Section -->
-        <section id="radios-sec" class="hidden">
-            <h3 class="font-bold text-emerald-900 mb-4 border-r-4 border-emerald-900 pr-2">الإذاعات المباشرة</h3>
-            <div id="radioList" class="space-y-2"></div>
-        </section>
-
-        <!-- Mushaf Section -->
+        <!-- Mushaf Section (The Core Part) -->
         <section id="mushaf-sec" class="hidden">
-            <div class="mushaf-container">
-                <div id="mLoader" class="absolute inset-0 flex items-center justify-center bg-white z-10">
+            <div class="mushaf-nav">
+                <button onclick="changePage(1)" class="w-10 h-10 flex items-center justify-center bg-emerald-100 text-emerald-900 rounded-full active:scale-90 transition">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </button>
+                
+                <div class="flex items-center gap-2">
+                    <select id="surahSelect" onchange="goToSurah()" class="bg-emerald-50 border border-emerald-200 text-xs font-bold p-2 rounded-lg outline-none text-emerald-900">
+                        <!-- Surahs injected by JS -->
+                    </select>
+                    <input type="number" id="pageInp" value="1" min="1" max="604" onchange="jumpToPage()" class="w-14 p-2 bg-emerald-50 border border-emerald-200 rounded-lg text-center font-bold text-xs outline-none">
+                </div>
+
+                <button onclick="changePage(-1)" class="w-10 h-10 flex items-center justify-center bg-emerald-100 text-emerald-900 rounded-full active:scale-90 transition">
+                    <i class="fa-solid fa-chevron-left"></i>
+                </button>
+            </div>
+
+            <div class="mushaf-wrapper">
+                <div id="loader" class="absolute inset-0 flex items-center justify-center bg-white z-20">
                     <div class="spinner"></div>
                 </div>
-                <img id="mImg" src="https://images.quran.com/images/mushaf/p1.png" class="mushaf-page" onload="mLoaded()">
+                <div class="mushaf-ornament orn-right"></div>
+                <div class="mushaf-ornament orn-left"></div>
+                <img id="mushafImg" src="https://raw.githubusercontent.com/GhaithKandalaft/Quran-Images/master/Pages/1.png" alt="صفحة المصحف" class="mushaf-img" onload="hideLoader()">
             </div>
-            <div class="flex items-center justify-between mt-4 bg-white p-3 rounded-2xl shadow-md">
-                <button onclick="navPage(1)" class="bg-emerald-800 text-white w-12 h-10 rounded-xl flex items-center justify-center"><i class="fa-solid fa-chevron-right"></i></button>
-                <div class="flex items-center gap-2">
-                    <span class="text-xs font-bold text-emerald-900">الصفحة</span>
-                    <input type="number" id="pNum" value="1" min="1" max="604" onchange="goPage()" class="w-14 h-10 border-2 border-emerald-100 rounded-lg text-center font-bold text-emerald-900 focus:border-emerald-500 outline-none">
-                </div>
-                <button onclick="navPage(-1)" class="bg-emerald-800 text-white w-12 h-10 rounded-xl flex items-center justify-center"><i class="fa-solid fa-chevron-left"></i></button>
+
+            <div class="flex justify-center mt-6 gap-4">
+                <button onclick="changePage(1)" class="bg-emerald-800 text-white px-6 py-2 rounded-full font-bold text-sm shadow-lg active:scale-95 transition">التالي</button>
+                <button onclick="changePage(-1)" class="bg-emerald-800 text-white px-6 py-2 rounded-full font-bold text-sm shadow-lg active:scale-95 transition">السابق</button>
             </div>
         </section>
 
-        <!-- Azkar Section -->
+        <!-- Other Sections (Radios, Reciters, Azkar) -->
+        <section id="radios-sec" class="hidden">
+            <h3 class="font-bold text-emerald-900 mb-4 border-r-4 border-emerald-900 pr-3">إذاعات القرآن المباشرة</h3>
+            <div id="radioList" class="space-y-3"></div>
+        </section>
+
+        <section id="reciters-sec" class="hidden">
+            <input type="text" onkeyup="filterR(this.value)" placeholder="ابحث عن قارئ..." class="w-full p-4 mb-4 rounded-2xl border-2 border-emerald-100 outline-none focus:border-emerald-500">
+            <div id="recitersList" class="grid grid-cols-1 gap-3"></div>
+        </section>
+
         <section id="azkar-sec" class="hidden">
-            <div class="grid grid-cols-2 gap-3 mb-6">
-                <button onclick="loadAzkar('morning')" class="p-5 bg-amber-50 border border-amber-200 rounded-2xl font-bold text-amber-900 text-sm">أذكار الصباح</button>
-                <button onclick="loadAzkar('evening')" class="p-5 bg-indigo-50 border border-indigo-200 rounded-2xl font-bold text-indigo-900 text-sm">أذكار المساء</button>
+            <div class="flex gap-2 mb-6">
+                <button onclick="loadAzkar('morning')" class="flex-1 p-4 bg-orange-50 border border-orange-200 rounded-2xl font-bold text-orange-900">الصباح</button>
+                <button onclick="loadAzkar('evening')" class="flex-1 p-4 bg-indigo-50 border border-indigo-200 rounded-2xl font-bold text-indigo-900">المساء</button>
             </div>
             <div id="azkarContent" class="space-y-3"></div>
         </section>
 
-        <!-- Reciters Section -->
-        <section id="reciters-sec" class="hidden">
-            <div class="relative mb-4">
-                <input type="text" onkeyup="searchR(this.value)" placeholder="ابحث عن قارئ..." class="w-full p-3 pr-10 border-2 border-emerald-100 rounded-xl text-sm outline-none focus:border-emerald-500">
-                <i class="fa-solid fa-magnifying-glass absolute right-4 top-4 text-emerald-300"></i>
-            </div>
-            <div id="rList" class="grid grid-cols-2 gap-2"></div>
-        </section>
-
-        <!-- Footer Design (Dark Box) -->
-        <footer class="custom-footer text-center">
-            <p class="text-amber-400 font-black text-xl mb-2">Sar7an_1</p>
-            <p class="text-sm text-emerald-100 mb-6 font-medium">نسألكم الدعاء لي ولوالدي وللمسلمين أجمعين</p>
-            <div class="flex justify-center gap-8 text-amber-500 opacity-80">
-                <i class="fa-solid fa-star-and-crescent text-2xl"></i>
-                <i class="fa-solid fa-mosque text-2xl"></i>
-                <i class="fa-solid fa-heart text-2xl"></i>
+        <!-- Full Width Footer -->
+        <footer class="full-footer">
+            <h4 class="text-amber-400 font-black text-2xl mb-2 tracking-widest">SAR7AN_1</h4>
+            <p class="text-sm text-emerald-200 mb-8 max-w-xs mx-auto">هذا العمل صدقة جارية، نسأل الله القبول لنا ولكم ولوالدينا وللمسلمين أجمعين.</p>
+            <div class="flex justify-center gap-12 text-amber-500 opacity-60 text-2xl">
+                <i class="fa-solid fa-mosque"></i>
+                <i class="fa-solid fa-kaaba"></i>
+                <i class="fa-solid fa-heart"></i>
             </div>
         </footer>
 
     </main>
 
-    <!-- Player Tool with Next/Prev -->
-    <div class="player-footer">
-        <div class="flex items-center gap-3 w-1/3">
-            <button onclick="prevTrack()" class="control-btn"><i class="fa-solid fa-backward-step"></i></button>
-            <button onclick="togglePly()" id="plyBtn" class="w-12 h-12 bg-white text-emerald-900 rounded-full flex items-center justify-center shrink-0 shadow-lg transition active:scale-90">
-                <i class="fa-solid fa-play ml-1"></i>
+    <!-- Player Tool -->
+    <div class="player-bar">
+        <div class="flex items-center gap-4 w-1/2">
+            <button onclick="toggleAudio()" id="playBtn" class="w-14 h-14 bg-white text-emerald-900 rounded-full flex items-center justify-center shrink-0 shadow-lg active:scale-90 border-2 border-amber-400">
+                <i class="fa-solid fa-play ml-1 text-xl"></i>
             </button>
-            <button onclick="nextTrack()" class="control-btn"><i class="fa-solid fa-forward-step"></i></button>
+            <div class="overflow-hidden">
+                <div id="nowPlaying" class="text-xs font-bold text-amber-300 truncate">توقف التشغيل</div>
+                <div class="text-[10px] text-white opacity-70">بث حي بجودة عالية</div>
+            </div>
         </div>
-        
-        <div class="w-2/3 text-left">
-            <div id="trackT" class="text-[11px] font-bold truncate text-amber-300">اختر إذاعة للتشغيل</div>
-            <div class="text-[9px] text-emerald-100 opacity-70">بث مباشر صوتي</div>
+        <div class="w-1/2 flex justify-end gap-6 text-white text-lg">
+            <i class="fa-solid fa-backward-step cursor-pointer" onclick="prevRadio()"></i>
+            <i class="fa-solid fa-forward-step cursor-pointer" onclick="nextRadio()"></i>
         </div>
-        
-        <audio id="player" onended="nextTrack()"></audio>
+        <audio id="mainAudio"></audio>
     </div>
 
     <script>
-        const audio = document.getElementById('player');
-        const pBtn = document.getElementById('plyBtn');
-        let pg = 1;
-        let reciters = [];
-        let currentPlaylist = [];
-        let currentIndex = -1;
+        const audio = document.getElementById('mainAudio');
+        const pBtn = document.getElementById('playBtn');
+        let currentPage = 1;
+        let allRadios = [];
+        let radioIndex = 0;
+        let allReciters = [];
 
-        const dataAzkar = {
-            morning: ["أَصْبَحْنَا وَأَصْبَحَ المُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ.","آية الكرسي.","سورة الإخلاص (3 مرات).","بِسْمِ اللَّهِ الَّذِي لاَ يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الأَرْضِ."],
-            evening: ["أَمْسَيْنَا وَأَمْسَى المُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ.","آية الكرسي.","سورة الإخلاص (3 مرات).","أَعُوذُ بِكَلِمَاتِ اللهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَقَ."]
-        };
+        const surahs = [
+            {n:"الفاتحة", p:1}, {n:"البقرة", p:2}, {n:"آل عمران", p:50}, {n:"النساء", p:77}, {n:"المائدة", p:106},
+            {n:"الأنعام", p:128}, {n:"الأعراف", p:151}, {n:"الأنفال", p:177}, {n:"التوبة", p:187}, {n:"يونس", p:208},
+            {n:"هود", p:221}, {n:"يوسف", p:235}, {n:"الرعد", p:249}, {n:"إبراهيم", p:255}, {n:"الحجر", p:262},
+            {n:"النحل", p:267}, {n:"الإسراء", p:282}, {n:"الكهف", p:293}, {n:"مريم", p:305}, {n:"طه", p:312}
+            // يمكن استكمال باقي السور لاحقاً
+        ];
 
         window.onload = () => {
-            getRadios();
-            getReciters();
+            initSurahs();
+            fetchRadios();
+            fetchReciters();
             showSec('home');
         };
 
+        function initSurahs() {
+            const select = document.getElementById('surahSelect');
+            select.innerHTML = surahs.map(s => `<option value="${s.p}">${s.n}</option>`).join('');
+        }
+
         function toggleSidebar() {
-            const sb = document.getElementById('sidebar');
-            const ov = document.getElementById('overlay');
-            sb.classList.toggle('closed');
-            ov.classList.toggle('opacity-100');
-            ov.classList.toggle('pointer-events-none');
+            document.getElementById('sidebar').classList.toggle('closed');
         }
 
         function showSec(id) {
-            const sections = ['home', 'radios', 'visuals', 'mushaf', 'azkar', 'reciters'];
-            sections.forEach(s => {
-                const el = document.getElementById(s + '-sec');
-                if(el) el.classList.add('hidden');
+            ['home', 'mushaf', 'radios', 'reciters', 'azkar'].forEach(s => {
+                document.getElementById(s + '-sec').classList.add('hidden');
             });
             document.getElementById(id + '-sec').classList.remove('hidden');
-            const sb = document.getElementById('sidebar');
-            if(!sb.classList.contains('closed')) toggleSidebar();
-            if(id === 'mushaf') updateM();
+            if(!document.getElementById('sidebar').classList.contains('closed')) toggleSidebar();
             window.scrollTo(0,0);
         }
 
-        // Mushaf Navigation
-        function updateM() {
-            document.getElementById('mLoader').classList.remove('hidden');
-            document.getElementById('mImg').src = `https://images.quran.com/images/mushaf/p${pg}.png`;
-            document.getElementById('pNum').value = pg;
-        }
-        function mLoaded() { document.getElementById('mLoader').classList.add('hidden'); }
-        function navPage(s) {
-            let n = pg + s;
-            if(n >= 1 && n <= 604) { pg = n; updateM(); }
-        }
-        function goPage() {
-            let v = parseInt(document.getElementById('pNum').value);
-            if(v >= 1 && v <= 604) { pg = v; updateM(); }
+        // Mushaf Logic
+        function changePage(dir) {
+            let next = currentPage + dir;
+            if(next >= 1 && next <= 604) {
+                currentPage = next;
+                updateMushaf();
+            }
         }
 
-        // Player Functions
-        function play(url, title, index, list) {
-            currentIndex = index;
-            currentPlaylist = list;
+        function jumpToPage() {
+            let val = parseInt(document.getElementById('pageInp').value);
+            if(val >= 1 && val <= 604) {
+                currentPage = val;
+                updateMushaf();
+            }
+        }
+
+        function goToSurah() {
+            currentPage = parseInt(document.getElementById('surahSelect').value);
+            updateMushaf();
+        }
+
+        function updateMushaf() {
+            document.getElementById('loader').classList.remove('hidden');
+            document.getElementById('mushafImg').src = `https://raw.githubusercontent.com/GhaithKandalaft/Quran-Images/master/Pages/${currentPage}.png`;
+            document.getElementById('pageInp').value = currentPage;
+        }
+
+        function hideLoader() {
+            document.getElementById('loader').classList.add('hidden');
+        }
+
+        // Audio Player Logic
+        function playMedia(url, name, index = null) {
+            if(index !== null) radioIndex = index;
             audio.src = url;
-            document.getElementById('trackT').innerText = title;
             audio.play();
-            pBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
+            document.getElementById('nowPlaying').innerText = name;
+            pBtn.innerHTML = '<i class="fa-solid fa-pause text-xl"></i>';
         }
 
-        function togglePly() {
+        function toggleAudio() {
             if(!audio.src) return;
-            if(audio.paused) { audio.play(); pBtn.innerHTML = '<i class="fa-solid fa-pause"></i>'; }
-            else { audio.pause(); pBtn.innerHTML = '<i class="fa-solid fa-play ml-1"></i>'; }
+            if(audio.paused) { audio.play(); pBtn.innerHTML = '<i class="fa-solid fa-pause text-xl"></i>'; }
+            else { audio.pause(); pBtn.innerHTML = '<i class="fa-solid fa-play ml-1 text-xl"></i>'; }
         }
 
-        function nextTrack() {
-            if(currentIndex < currentPlaylist.length - 1) {
-                currentIndex++;
-                const item = currentPlaylist[currentIndex];
-                play(item.url || (item.moshaf ? item.moshaf[0].server + '001.mp3' : ''), item.name, currentIndex, currentPlaylist);
-            }
-        }
-
-        function prevTrack() {
-            if(currentIndex > 0) {
-                currentIndex--;
-                const item = currentPlaylist[currentIndex];
-                play(item.url || (item.moshaf ? item.moshaf[0].server + '001.mp3' : ''), item.name, currentIndex, currentPlaylist);
-            }
-        }
-
-        // APIs
-        async function getRadios() {
-            try {
-                const res = await fetch('https://mp3quran.net/api/v3/radios?language=ar');
-                const d = await res.json();
-                const radios = d.radios;
-                document.getElementById('radioList').innerHTML = radios.map((r, i) => `
-                    <div class="bg-white p-4 rounded-2xl flex justify-between items-center shadow-sm border border-slate-100 active:bg-emerald-50 transition" onclick="play('${r.url}', '${r.name}', ${i}, ${JSON.stringify(radios).replace(/'/g, "")})">
-                        <span class="text-xs font-bold text-emerald-900">${r.name}</span>
-                        <div class="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-800"><i class="fa-solid fa-play text-[10px]"></i></div>
-                    </div>
-                `).join('');
-            } catch(e) {}
-        }
-
-        async function getReciters() {
-            try {
-                const res = await fetch('https://mp3quran.net/api/v3/reciters?language=ar');
-                const d = await res.json();
-                reciters = d.reciters;
-                drawR(reciters.slice(0, 30));
-            } catch(e) {}
-        }
-
-        function drawR(list) {
-            document.getElementById('rList').innerHTML = list.map((r, i) => `
-                <div class="bg-slate-200 p-3 rounded-2xl text-center border border-slate-300 active:bg-emerald-200 transition" onclick="play('${r.moshaf[0].server}001.mp3', 'الشيخ: ${r.name}', ${i}, [])">
-                    <span class="text-[10px] font-bold text-emerald-900 leading-tight">${r.name}</span>
+        async function fetchRadios() {
+            const res = await fetch('https://mp3quran.net/api/v3/radios?language=ar');
+            const data = await res.json();
+            allRadios = data.radios;
+            document.getElementById('radioList').innerHTML = allRadios.map((r, i) => `
+                <div onclick="playMedia('${r.url}', '${r.name}', ${i})" class="bg-white p-4 rounded-2xl flex justify-between items-center shadow-sm border border-slate-100 active:bg-emerald-50 transition">
+                    <span class="text-sm font-bold text-emerald-900">${r.name}</span>
+                    <i class="fa-solid fa-circle-play text-emerald-600 text-xl"></i>
                 </div>
             `).join('');
         }
 
-        function searchR(q) {
-            const f = reciters.filter(r => r.name.includes(q));
-            drawR(f.slice(0, 30));
+        function nextRadio() {
+            radioIndex = (radioIndex + 1) % allRadios.length;
+            playMedia(allRadios[radioIndex].url, allRadios[radioIndex].name);
         }
 
+        function prevRadio() {
+            radioIndex = (radioIndex - 1 + allRadios.length) % allRadios.length;
+            playMedia(allRadios[radioIndex].url, allRadios[radioIndex].name);
+        }
+
+        async function fetchReciters() {
+            const res = await fetch('https://mp3quran.net/api/v3/reciters?language=ar');
+            const data = await res.json();
+            allReciters = data.reciters;
+            renderReciters(allReciters.slice(0, 50));
+        }
+
+        function renderReciters(list) {
+            document.getElementById('recitersList').innerHTML = list.map(r => `
+                <div onclick="playMedia('${r.moshaf[0].server}001.mp3', 'الشيخ: ${r.name}')" class="bg-white p-4 rounded-xl flex items-center gap-4 shadow-sm border border-slate-100">
+                    <div class="w-10 h-10 bg-emerald-800 text-white rounded-full flex items-center justify-center font-bold">${r.name[0]}</div>
+                    <span class="text-sm font-bold text-emerald-950">${r.name}</span>
+                </div>
+            `).join('');
+        }
+
+        function filterR(q) {
+            const filtered = allReciters.filter(r => r.name.includes(q)).slice(0, 50);
+            renderReciters(filtered);
+        }
+
+        const azkarData = {
+            morning: ["أصبحنا وأصبح الملك لله والحمد لله.", "يا حي يا قيوم برحمتك أستغيث.", "اللهم بك أصبحنا وبك أمسينا."],
+            evening: ["أمسينا وأمسى الملك لله والحمد لله.", "اللهم إني أسألك خير هذه الليلة.", "اللهم بك أمسينا وبك أصبحنا."]
+        };
+
         function loadAzkar(t) {
-            document.getElementById('azkarContent').innerHTML = dataAzkar[t].map(z => `
-                <div class="bg-white p-4 rounded-2xl border-r-4 border-emerald-900 shadow-sm text-sm leading-relaxed text-emerald-950">${z}</div>
+            document.getElementById('azkarContent').innerHTML = azkarData[t].map(a => `
+                <div class="bg-white p-5 rounded-2xl border-r-4 border-emerald-900 shadow-sm text-sm leading-loose">${a}</div>
             `).join('');
         }
     </script>
 </body>
-                    </html>
+    </html>
