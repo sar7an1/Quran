@@ -81,37 +81,18 @@
         #sidebar.closed { transform: translateX(100%); }
         .hidden { display: none; }
 
-        /* إطار المصحف المطور لمنع "زحمة" الصفحة الرئيسية */
+        /* تعديل حاوية المصحف لتناسب عرض المصحف الورقي */
         .quran-container {
             width: 100%;
-            height: calc(100vh - 170px); 
-            background: #fff;
+            height: calc(100vh - 175px); 
+            background: #fdfdfd;
             position: relative;
+            overflow: hidden;
         }
         iframe {
             width: 100%;
             height: 100%;
             border: none;
-        }
-        .content-card {
-            background: white;
-            border-radius: 18px;
-            padding: 18px;
-            margin-bottom: 12px;
-            border-right: 4px solid var(--primary);
-            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
-        }
-        .zekr-count {
-            display: inline-flex;
-            width: 38px;
-            height: 38px;
-            background: var(--primary);
-            color: white;
-            border-radius: 50%;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            cursor: pointer;
         }
     </style>
 </head>
@@ -187,18 +168,18 @@
 
         <section id="mushaf-sec" class="hidden">
             <div class="p-2 bg-emerald-50 flex justify-between items-center border-b border-emerald-100">
-                <span class="text-[11px] font-bold text-emerald-900">المصحف التفاعلي</span>
-                <button onclick="showSection('home')" class="text-[10px] bg-white px-3 py-1 rounded-full shadow-sm text-emerald-800 font-bold">رجوع</button>
+                <span class="text-[11px] font-bold text-emerald-900">المصحف الإلكتروني</span>
+                <button onclick="showSection('home')" class="text-[10px] bg-white px-3 py-1 rounded-full shadow-sm text-emerald-800 font-bold">رجوع للرئيسية</button>
             </div>
             <div class="quran-container">
-                <iframe src="https://quran.com/1?view=full"></iframe>
+                <iframe src="https://quran.ksu.edu.sa/m.php"></iframe>
             </div>
         </section>
 
         <section id="azkar-sec" class="hidden px-4 pt-4">
             <div class="flex items-center gap-3 mb-6 bg-slate-50 p-4 rounded-2xl border border-slate-200">
                 <button onclick="showSection('home')" class="text-emerald-800"><i class="fa-solid fa-arrow-right text-xl"></i></button>
-                <h3 id="azkarTitle" class="font-black text-emerald-900"></h3>
+                <h3 id="azkarTitle" class="font-black text-emerald-900">أذكار</h3>
             </div>
             <div id="azkarContent" class="space-y-3"></div>
         </section>
@@ -208,7 +189,9 @@
                 <button onclick="showSection('home')" class="text-red-800"><i class="fa-solid fa-arrow-right text-xl"></i></button>
                 <h3 class="font-black text-red-900">الرقية الشرعية</h3>
             </div>
-            <div id="roqyaContent" class="space-y-3"></div>
+            <div id="roqyaContent" class="space-y-3">
+                <div class="bg-white p-4 rounded-xl border-r-4 border-red-600 shadow-sm text-sm">سورة الفاتحة، آية الكرسي، والمعوذات.</div>
+            </div>
         </section>
 
         <section id="radios-sec" class="hidden px-4 pt-4">
@@ -224,7 +207,7 @@
 
         <footer class="mt-10 bg-[#022c22] text-white p-10 text-center border-t-4 border-amber-400">
             <h4 class="text-amber-400 font-black text-xl mb-1">SAR7AN_1</h4>
-            <p class="text-[10px] text-emerald-100 opacity-60">صدقة جارية لنا ولوالدينا ولجميع المسلمين</p>
+            <p class="text-[10px] text-emerald-100 opacity-60">صدقة جارية لجميع المسلمين</p>
         </footer>
 
     </main>
@@ -251,7 +234,7 @@
         const pBtn = document.getElementById('pBtn');
         let radios = [], rIdx = 0, reciters = [];
 
-        window.onload = () => { fetchRadios(); fetchReciters(); initRoqya(); showSection('home'); };
+        window.onload = () => { fetchRadios(); fetchReciters(); showSection('home'); };
 
         function toggleSidebar() { document.getElementById('sidebar').classList.toggle('closed'); }
 
@@ -265,32 +248,34 @@
             window.scrollTo(0,0);
         }
 
-        const azkarData = {
-            morning: { title: "أذكار الصباح", items: [{t: "أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ...", c: 1}, {t: "بِسْمِ اللَّهِ الَّذِي لَا يَضُرُّ...", c: 3}] },
-            evening: { title: "أذكار المساء", items: [{t: "أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلَّهِ...", c: 1}, {t: "أَعُوذُ بِكَلِمَاتِ اللهِ...", c: 3}] }
-        };
+        // Logic (Radios/Reciters)
+        async function fetchRadios() {
+            try {
+                const res = await fetch('https://mp3quran.net/api/v3/radios?language=ar');
+                const data = await res.json(); radios = data.radios;
+                document.getElementById('radioContainer').innerHTML = radios.slice(0, 15).map((r, i) => `
+                    <div onclick="play('${r.url}', '${r.name}', ${i})" class="bg-white p-3 rounded-xl flex justify-between border shadow-sm">
+                        <span class="text-xs font-bold">${r.name}</span><i class="fa-solid fa-play-circle text-emerald-600"></i>
+                    </div>
+                `).join('');
+            } catch(e) {}
+        }
 
-        const roqyaData = [{t: "سورة الفاتحة كامله."}, {t: "آية الكرسي."}];
+        async function fetchReciters() {
+            try {
+                const res = await fetch('https://mp3quran.net/api/v3/reciters?language=ar');
+                const data = await res.json(); reciters = data.reciters;
+                renderReciters(reciters.slice(0, 15));
+            } catch(e) {}
+        }
 
-        function openAzkarDirect(type) {
-            showSection('azkar');
-            document.getElementById('azkarTitle').innerText = azkarData[type].title;
-            document.getElementById('azkarContent').innerHTML = azkarData[type].items.map((item, idx) => `
-                <div class="content-card">
-                    <p class="text-sm text-slate-800">${item.t}</p>
-                    <div class="flex justify-between items-center mt-3"><div id="z-${type}-${idx}" onclick="cntZ('${type}', ${idx})" class="zekr-count text-xs">${item.c}</div></div>
+        function renderReciters(list) {
+            document.getElementById('recitersList').innerHTML = list.map(r => `
+                <div onclick="play('${r.moshaf[0].server}001.mp3', '${r.name}', 0)" class="bg-white p-3 rounded-xl flex items-center gap-3 border shadow-sm">
+                    <div class="w-8 h-8 bg-emerald-800 text-white rounded-full flex items-center justify-center text-[10px]">${r.name[0]}</div>
+                    <span class="text-xs font-bold">${r.name}</span>
                 </div>
             `).join('');
-        }
-
-        function cntZ(t, i) {
-            const el = document.getElementById(`z-${t}-${i}`);
-            let val = parseInt(el.innerText);
-            if(val > 1) el.innerText = val - 1; else { el.innerText = "✓"; el.classList.add('done'); }
-        }
-
-        function initRoqya() {
-            document.getElementById('roqyaContent').innerHTML = roqyaData.map(item => `<div class="content-card border-r-red-600"><p class="text-sm">${item.t}</p></div>`).join('');
         }
 
         function play(url, name, index) {
@@ -305,38 +290,9 @@
             else { audio.pause(); pBtn.innerHTML = '<i class="fa-solid fa-play ml-1"></i>'; }
         }
 
-        async function fetchRadios() {
-            try {
-                const res = await fetch('https://mp3quran.net/api/v3/radios?language=ar');
-                const data = await res.json(); radios = data.radios;
-                document.getElementById('radioContainer').innerHTML = radios.slice(0, 20).map((r, i) => `
-                    <div onclick="play('${r.url}', '${r.name}', ${i})" class="bg-white p-3 rounded-xl flex justify-between border shadow-sm">
-                        <span class="text-xs font-bold">${r.name}</span><i class="fa-solid fa-play-circle text-emerald-600"></i>
-                    </div>
-                `).join('');
-            } catch(e) {}
-        }
-
-        async function fetchReciters() {
-            try {
-                const res = await fetch('https://mp3quran.net/api/v3/reciters?language=ar');
-                const data = await res.json(); reciters = data.reciters;
-                renderReciters(reciters.slice(0, 20));
-            } catch(e) {}
-        }
-
-        function renderReciters(list) {
-            document.getElementById('recitersList').innerHTML = list.map(r => `
-                <div onclick="play('${r.moshaf[0].server}001.mp3', '${r.name}', 0)" class="bg-white p-3 rounded-xl flex items-center gap-3 border shadow-sm">
-                    <div class="w-8 h-8 bg-emerald-800 text-white rounded-full flex items-center justify-center text-[10px]">${r.name[0]}</div>
-                    <span class="text-xs font-bold">${r.name}</span>
-                </div>
-            `).join('');
-        }
-
-        function searchR(q) { renderReciters(reciters.filter(r => r.name.includes(q)).slice(0, 20)); }
+        function searchR(q) { renderReciters(reciters.filter(r => r.name.includes(q)).slice(0, 15)); }
         function nextR() { if(radios.length) { rIdx = (rIdx + 1) % radios.length; play(radios[rIdx].url, radios[rIdx].name, rIdx); } }
         function prevR() { if(radios.length) { rIdx = (rIdx - 1 + radios.length) % radios.length; play(radios[rIdx].url, radios[rIdx].name, rIdx); } }
     </script>
 </body>
-</html>
+</html> 
