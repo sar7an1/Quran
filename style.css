@@ -1,44 +1,50 @@
-@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
-
 body{
-    font-family:'Cairo',sans-serif;
+    font-family:Tahoma,Arial;
     background:#f4f7f6;
     margin:0;
-    padding-bottom:170px;
+    padding-bottom:160px;
     direction:rtl;
 }
 
 .hidden{display:none}
 
-/* ===== Container ===== */
+/* Header */
+.header{
+    background:#064e3b;
+    color:#fff;
+    text-align:center;
+    padding:20px;
+    border-bottom:4px solid #fbbf24;
+}
+
+.header p{
+    font-size:12px;
+    color:#fbbf24;
+}
+
+/* Layout */
 .container{
-    max-width:1100px;
-    margin:0 auto;
+    max-width:900px;
+    margin:auto;
     padding:20px;
 }
 
-/* ===== Telegram Button ===== */
+/* Telegram */
 .telegram-btn{
     display:flex;
-    align-items:center;
     justify-content:center;
+    align-items:center;
     gap:10px;
     background:#0088cc;
     color:#fff;
     padding:15px;
-    border-radius:14px;
-    font-weight:bold;
+    border-radius:12px;
     text-decoration:none;
+    font-weight:bold;
     margin-bottom:25px;
-    box-shadow:0 6px 12px rgba(0,0,0,.15);
-    transition:.3s;
-}
-.telegram-btn:hover{
-    background:#0077b3;
-    transform:translateY(-2px);
 }
 
-/* ===== Menu Grid ===== */
+/* Grid */
 .menu-grid{
     display:grid;
     grid-template-columns:repeat(2,1fr);
@@ -51,101 +57,46 @@ body{
     }
 }
 
-/* ===== Cards ===== */
+/* Cards */
 .card{
     background:#fff;
-    padding:22px 15px;
-    border-radius:18px;
+    padding:20px;
+    border-radius:16px;
     text-align:center;
     cursor:pointer;
     border-right:5px solid #064e3b;
-    box-shadow:0 8px 15px rgba(0,0,0,.06);
-    transition:.3s;
-}
-
-.card:hover{
-    transform:translateY(-4px);
-    box-shadow:0 12px 20px rgba(0,0,0,.1);
+    box-shadow:0 4px 8px rgba(0,0,0,.06);
 }
 
 .card i{
-    font-size:32px;
-    margin-bottom:12px;
+    font-size:30px;
+    margin-bottom:10px;
     display:block;
 }
 
 .card span{
-    font-size:14px;
     font-weight:bold;
+    font-size:14px;
 }
 
-/* ===== Icon Colors ===== */
+/* Colors */
 .blue{color:#2563eb}
 .amber{color:#d97706}
 .emerald{color:#059669}
 .red{color:#dc2626}
 
-/* ===== Back Button ===== */
+/* Back */
 .back-btn{
     background:#064e3b;
     color:#fff;
-    padding:10px 22px;
-    border-radius:10px;
-    font-weight:bold;
-    margin-bottom:20px;
+    padding:8px 20px;
     border:none;
+    border-radius:8px;
+    margin-bottom:15px;
     cursor:pointer;
 }
 
-/* =================================================
-   صفحات السور / المصحف
-================================================= */
-
-/* تثبيت شريط الصفحة الداخلية */
-.sticky-nav{
-    position:sticky;
-    top:0;
-    background:#f4f7f6;
-    padding:10px 0;
-    z-index:100;
-    border-bottom:1px solid #ddd;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-}
-
-/* شبكة السور */
-.surah-grid{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:10px;
-    margin-top:15px;
-}
-
-@media(min-width:768px){
-    .surah-grid{
-        grid-template-columns:repeat(4,1fr);
-    }
-}
-
-.surah-card{
-    background:white;
-    padding:12px;
-    border-radius:10px;
-    text-align:center;
-    font-size:13px;
-    font-weight:bold;
-    border:1px solid #e2e8f0;
-    cursor:pointer;
-    transition:.2s;
-}
-
-.surah-card:hover{
-    background:#ecfdf5;
-    border-color:#059669;
-}
-
-/* ===== Player Bar ===== */
+/* Player */
 .player-bar{
     position:fixed;
     bottom:0;
@@ -153,96 +104,45 @@ body{
     right:0;
     background:#022c22;
     color:#fff;
-    padding:14px 10px 18px;
+    padding:15px;
     border-top:4px solid #fbbf24;
     display:flex;
     flex-direction:column;
     align-items:center;
-    z-index:1000;
 }
 
 #track-title{
-    font-size:13px;
+    font-size:12px;
     color:#fbbf24;
-    margin-bottom:10px;
-    text-align:center;
+    margin-bottom:8px;
 }
 
-/* ===== Player Controls ===== */
 .controls{
     display:flex;
     align-items:center;
-    gap:28px;
+    gap:25px;
 }
 
 .controls i{
-    font-size:20px;
+    font-size:18px;
     cursor:pointer;
-    transition:.2s;
-}
-
-.controls i:hover{
-    color:#fbbf24;
 }
 
 .play-btn{
     background:#fff;
     color:#064e3b;
-    width:58px;
-    height:58px;
+    width:55px;
+    height:55px;
     border-radius:50%;
     display:flex;
     align-items:center;
     justify-content:center;
-    font-size:24px;
-    cursor:pointer;
-    box-shadow:0 6px 10px rgba(0,0,0,.25);
+    font-size:22px;
 }
 
-/* ===== Volume ===== */
 .volume-slider{
-    margin-top:12px;
+    margin-top:10px;
     display:flex;
     align-items:center;
-    gap:10px;
-}
-
-.volume-slider i{
-    font-size:16px;
-}
-
-.volume-slider input{
-    width:110px;
-}
-
-/* ===== Footer ===== */
-.main-footer{
-    background:#064e3b;
-    color:#fff;
-    text-align:center;
-    padding:18px 12px;
-    margin-top:50px;
-    border-radius:18px 18px 0 0;
-}
-
-.main-footer .copy{
-    font-size:13px;
-    font-weight:bold;
-}
-
-.main-footer .dua{
-    font-size:11px;
-    opacity:.85;
-    margin-top:6px;
-}
-
-/* ===== Mobile Tweaks ===== */
-@media(max-width:480px){
-    .card span{font-size:13px}
-    .controls{gap:22px}
-    .play-btn{
-        width:54px;
-        height:54px;
-        font-size:22px;
-    }
+    gap:8px;
 }
