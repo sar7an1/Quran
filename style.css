@@ -2,27 +2,33 @@
 :root { --main: #064e3b; --bg: #f4f7f6; --accent: #fbbf24; }
 body { font-family: 'Cairo', sans-serif; background: var(--bg); margin: 0; padding-bottom: 160px; direction: rtl; }
 
+/* الهيدر */
 .main-header { background: var(--main); color: white; padding: 40px 15px; text-align: center; border-bottom: 5px solid var(--accent); position: relative; }
 .menu-trigger { position: absolute; right: 20px; top: 35px; color: white; font-size: 24px; cursor: pointer; }
 
+/* زر التليجرام */
 .telegram-btn { display: flex; align-items: center; justify-content: center; gap: 10px; background: #0088cc; color: white !important; padding: 18px; border-radius: 15px; font-weight: bold; margin: -28px auto 25px; text-decoration: none; width: 85%; position: relative; z-index: 100; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
 
+/* الشبكة والكروت */
 .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 15px; }
 .card { background: white; padding: 25px 10px; border-radius: 20px; text-align: center; cursor: pointer; border-bottom: 5px solid var(--main); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
 .card i { font-size: 30px; margin-bottom: 10px; display: block; }
 
-/* قسم الصلاة المطور */
+/* مواقيت الصلاة */
 .prayer-section { width: 90%; margin: 20px auto; }
-#next-prayer-info { background: white; padding: 10px; text-align: center; border-radius: 10px; border: 1px solid var(--accent); font-weight: bold; margin-bottom: 10px; }
+#next-prayer-info { background: white; padding: 10px; text-align: center; border-radius: 10px; border: 1px solid var(--accent); font-weight: bold; margin-bottom: 10px; font-size: 14px; }
 .prayer-box { display: grid; grid-template-columns: repeat(5, 1fr); background: white; border-radius: 10px; padding: 10px; border-bottom: 3px solid var(--accent); gap: 5px; }
 .prayer-item { text-align: center; }
 
+/* المشغل */
 .player-bar { position: fixed; bottom: 0; width: 100%; background: #011d17; color: white; padding: 15px 0; border-top: 4px solid var(--accent); z-index: 9999; }
 .play-main-btn { background: white; color: #011d17; width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
 
+/* القائمة الجانبية والدعاء */
 .sidebar { position: fixed; right: -280px; top: 0; width: 260px; height: 100%; background: var(--main); z-index: 10000; transition: 0.3s; padding: 20px; color: white; }
 .sidebar.active { right: 0; }
 .main-footer { padding: 30px 10px; text-align: center; background: #eee; color: var(--main); margin-top: 20px; }
+
 .hidden { display: none !important; }
 .sticky-nav { background: white; padding: 15px; border-bottom: 3px solid var(--accent); position: sticky; top: 0; z-index: 1000; display: flex; align-items: center; gap: 10px; }
 .back-btn { background: var(--accent); border: none; padding: 8px 15px; border-radius: 8px; font-weight: bold; }
