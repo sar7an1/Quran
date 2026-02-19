@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة القرآن - Sar7an</title>
+    <title>القرآن الكريم - Sar7an</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -23,7 +23,7 @@
 
     <header class="main-header">
         <button class="menu-trigger" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
-        <h1>🕌 منصة القرآن الكريم</h1>
+        <h1>🕌 القرآن الكريم</h1>
         <p>صدقة جارية عني وعن جميع المسلمين</p>
     </header>
 
@@ -37,7 +37,7 @@
                 <div class="card" onclick="playAudio('https://n04.radiojar.com/8s9u67z8n0quv', 'إذاعة القاهرة')"><i class="fas fa-broadcast-tower" style="color:#3b82f6"></i><span>إذاعة القاهرة</span></div>
                 <div class="card" onclick="openReciters()"><i class="fas fa-microphone" style="color:#f59e0b"></i><span>أصوات مختلفة</span></div>
                 <div class="card" onclick="openAzkar()"><i class="fas fa-book-open" style="color:#10b981"></i><span>الأذكار</span></div>
-                <div class="card" onclick="playAudio('https://server10.mp3quran.net/roqia/001.mp3', 'الرقية الشرعية')"><i class="fas fa-hand-holding-heart" style="color:#ef4444"></i><span>الرقية الشرعية</span></div>
+                <div class="card" onclick="openRoqia()"><i class="fas fa-hand-holding-heart" style="color:#ef4444"></i><span>الرقية الشرعية</span></div>
             </div>
         </div>
 
@@ -63,7 +63,7 @@
         </div>
         <div class="volume-container">
             <i class="fas fa-volume-down"></i>
-            <input type="range" id="volControl" min="0" max="1" step="0.1">
+            <input type="range" id="volControl" min="0" max="1" step="0.1" value="1">
             <i class="fas fa-volume-up"></i>
         </div>
     </div>
