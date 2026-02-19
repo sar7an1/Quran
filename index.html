@@ -9,12 +9,8 @@
 </head>
 <body>
     <div id="sidebar" class="sidebar">
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-            <h3>القائمة</h3>
-            <span onclick="toggleSidebar()" style="cursor:pointer; font-size:24px;">&times;</span>
-        </div>
-        <button onclick="playAudio('https://backup.qurango.net/radio/abdulbasit_abdulsamad', 'إذاعة عبد الباسط')" style="width:100%; padding:12px; margin-top:20px; background:rgba(255,255,255,0.1); color:white; border:none; border-radius:8px; cursor:pointer; font-family:'Cairo';">إذاعة عبد الباسط</button>
-        <button onclick="playAudio('https://backup.qurango.net/radio/maher_al_muaiqly', 'إذاعة ماهر المعيقلي')" style="width:100%; padding:12px; margin-top:10px; background:rgba(255,255,255,0.1); color:white; border:none; border-radius:8px; cursor:pointer; font-family:'Cairo';">إذاعة ماهر المعيقلي</button>
+        <h3 onclick="toggleSidebar()" style="cursor:pointer">إغلاق ×</h3>
+        <button onclick="playAudio('https://backup.qurango.net/radio/abdulbasit_abdulsamad', 'إذاعة عبد الباسط')" style="width:100%; padding:10px; margin-top:20px; background:rgba(255,255,255,0.1); border:none; color:white; border-radius:5px;">إذاعة عبد الباسط</button>
     </div>
 
     <header class="main-header">
@@ -25,34 +21,32 @@
 
     <main>
         <div id="home-view">
-            <a href="https://t.me/Sar7an_1" class="telegram-btn"><i class="fab fa-telegram"></i> قناتنا على التليجرام</a>
-            
+            <a href="https://t.me/Sar7an_1" class="telegram-btn">📢 قناتنا على التليجرام</a>
             <div class="menu-grid">
                 <div class="card" onclick="playAudio('https://n04.radiojar.com/8s9u67z8n0quv', 'إذاعة القاهرة')"><i class="fas fa-broadcast-tower" style="color:#3b82f6"></i><span>إذاعة القاهرة</span></div>
-                <div class="card" onclick="openReciters()"><i class="fas fa-microphone" style="color:#f59e0b"></i><span>أصوات مختلفة</span></div>
                 <div class="card" onclick="openAzkar()"><i class="fas fa-book-open" style="color:#10b981"></i><span>الأذكار</span></div>
-                <div class="card" onclick="openRoqia()"><i class="fas fa-hand-holding-heart" style="color:#ef4444"></i><span>الرقية الشرعية</span></div>
+                <div class="card" onclick="openRoqia()"><i class="fas fa-shield-heart" style="color:#ef4444"></i><span>الرقية الشرعية</span></div>
+                <div class="card" onclick="location.reload()"><i class="fas fa-sync" style="color:#f59e0b"></i><span>تحديث</span></div>
             </div>
 
             <div class="prayer-section">
-                <div id="next-prayer-info">جاري حساب موعد الصلاة...</div>
                 <div id="prayer-times" class="prayer-box"></div>
             </div>
-            
-            <footer class="main-footer">
-                <div style="font-weight:bold; margin-bottom:10px;">Sar7an_1 © 2026</div>
-                <div style="font-style:italic;">رَبَّنَا تَقَبَّلْ مِنَّا إِنَّكَ أَنْتَ السَّمِيعُ الْعَلِيمُ</div>
+
+            <footer style="text-align:center; padding:20px; color:#888; font-size:12px;">
+                <p>Sar7an_1 © 2026</p>
+                <p><i>رَبَّنَا تَقَبَّلْ مِنَّا إِنَّكَ أَنْتَ السَّمِيعُ الْعَلِيمُ</i></p>
             </footer>
         </div>
         <div id="sub-view" class="hidden"><div id="content-area"></div></div>
     </main>
 
     <div class="player-bar">
-        <div id="track-title" style="text-align:center; font-size:12px; color:#fbbf24; margin-bottom:8px; padding:0 10px;">بانتظار اختيارك...</div>
+        <div id="track-title" style="text-align:center; font-size:11px; color:#fbbf24; margin-bottom:5px;">بانتظار اختيارك...</div>
         <div class="player-controls">
-            <i class="fas fa-backward" onclick="skip(-10)" style="cursor:pointer"></i>
+            <i class="fas fa-backward" onclick="skip(-10)"></i>
             <div class="play-main-btn" onclick="togglePlay()"><i id="play-icon" class="fas fa-play"></i></div>
-            <i class="fas fa-forward" onclick="skip(10)" style="cursor:pointer"></i>
+            <i class="fas fa-forward" onclick="skip(10)"></i>
         </div>
     </div>
 
