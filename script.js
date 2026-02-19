@@ -2,30 +2,31 @@ const audio = document.getElementById('main-audio');
 const playIcon = document.getElementById('play-icon');
 const trackTitle = document.getElementById('track-title');
 
+// قائمة أسماء السور الكاملة
 const surahs = ["الفاتحة","البقرة","آل عمران","النساء","المائدة","الأنعام","الأعراف","الأنفال","التوبة","يونس","هود","يوسف","الرعد","إبراهيم","الحجر","النحل","الإسراء","الكهف","مريم","طه","الأنبياء","الحج","المؤمنون","النور","الفرقان","الشعراء","النمل","القصص","العنكبوت","الروم","لقمان","السجدة","الأحزاب","سبأ","فاطر","يس","الصافات","ص","الزمر","غافر","فصلت","الشورى","الزخرف","الدخان","الجاثية","الأحقاف","محمد","الفتح","الحجرات","ق","الذاريات","الطور","النجم","القمر","الرحمن","الواقعة","الحديد","المجادلة","الحشر","الممتحنة","الصف","الجمعة","المنافقون","التغابن","الطلاق","التحريم","الملك","القلم","الحاقة","المعارج","نوح","الجن","المزمل","المدثر","القيامة","الإنسان","المرسلات","النبأ","النازعات","عبس","التكوير","الانفطار","المطففين","الانشقاق","البروج","الطارق","الأعلى","الغاشية","الفجر","البلد","الشمس","الليل","الضحى","الشرح","التين","العلق","القدر","البينة","الزلزلة","العاديات","القارعة","التكاثر","العصر","الهمزة","الفيل","قريش","الماعون","الكوثر","الكافرون","النصر","المسد","الإخلاص","الفلق","الناس"];
 
+// الأذكار
 const morningAzkar = [
-    {text:"آية الكرسي: ﴿اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ...﴾", count:1},
-    {text:"سورة الإخلاص (3 مرات)", count:3},
-    {text:"سورة الفلق (3 مرات)", count:3},
-    {text:"سورة الناس (3 مرات)", count:3},
-    {text:"بسم الله الذي لا يضر مع اسمه شيء", count:3}
+    {text:"آية الكرسي", count:1},
+    {text:"سورة الإخلاص والمعوذتين", count:3},
+    {text:"بسم الله الذي لا يضر مع اسمه شيء", count:3},
+    {text:"رضيت بالله رباً وبالإسلام ديناً", count:3}
 ];
-
 const eveningAzkar = [
-    {text:"آية الكرسي: ﴿اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ...﴾", count:1},
-    {text:"سورة الإخلاص (3 مرات)", count:3},
+    {text:"آية الكرسي", count:1},
+    {text:"سورة الإخلاص والمعوذتين", count:3},
     {text:"أعوذ بكلمات الله التامات من شر ما خلق", count:3}
 ];
 
+// نظام الوقت 12 ساعة لعدم تداخل الحروف
 function format12Hour(timeStr) {
     let [hours, minutes] = timeStr.split(':');
     let period = hours >= 12 ? 'م' : 'ص';
     hours = hours % 12 || 12;
-    // وضع ص/م في سطر منفصل لمنع التداخل العرضي
-    return `${hours}:${minutes}<br><span style="font-size:9px; opacity:0.7">${period}</span>`;
+    return `${hours}:${minutes}<br><span style="font-size:10px; opacity:0.7">${period}</span>`;
 }
 
+// جلب مواقيت الصلاة
 async function updatePrayers() {
     try {
         const res = await fetch('https://api.aladhan.com/v1/timingsByCity?city=Cairo&country=Egypt&method=5');
@@ -55,6 +56,7 @@ function calculateNextPrayer(prayers) {
 }
 updatePrayers();
 
+// التحكم في الواجهة
 function toggleTheme() {
     document.body.classList.toggle('dark-mode');
     const isDark = document.body.classList.contains('dark-mode');
@@ -76,6 +78,30 @@ function goHome() {
     document.getElementById('sub-view').classList.add('hidden'); 
 }
 
+// الرقية الشرعية بروابط Drive المباشرة [ماهر المعيقلي + مشاري العفاسي]
+function openRoqia() {
+    const roqiaList = [
+        { 
+            name: "الرقية الشرعية - ماهر المعيقلي", 
+            url: "https://docs.google.com/uc?export=download&id=1Gjg99YQEBb5EQvzMQd2OoaAs5JAKQuga" 
+        },
+        { 
+            name: "الرقية الشرعية - مشاري العفاسي", 
+            url: "https://docs.google.com/uc?export=download&id=1ra9OWtUyk7kf5jRu2zw1CvbCvzIS283_" 
+        }
+    ];
+
+    let html = `<div class="sticky-nav"><button onclick="goHome()" class="back-btn"><i class="fas fa-arrow-right"></i> رجوع</button></div><div class="menu-grid" style="padding:15px">`;
+    roqiaList.forEach(r => {
+        html += `<div class="card" style="padding:20px" onclick="playAudio('${r.url}', '${r.name}')">
+                    <i class="fas fa-heart-pulse" style="color:#ef4444; font-size:25px; margin-bottom:10px"></i>
+                    <span style="font-size:14px; display:block">${r.name}</span>
+                 </div>`;
+    });
+    showPage(html + "</div>");
+}
+
+// الأذكار والقراء
 function openAzkar() {
     showPage(`<div class="sticky-nav"><button onclick="goHome()" class="back-btn"><i class="fas fa-arrow-right"></i> رجوع</button></div>
     <div class="menu-grid" style="padding:15px"><div class="card" onclick="loadAzkar('morning')">☀️ أذكار الصباح</div><div class="card" onclick="loadAzkar('evening')">🌙 أذكار المساء</div></div>`);
@@ -117,6 +143,7 @@ function openSurahs(server, name, list) {
     document.getElementById('content-area').innerHTML = html + "</div>";
 }
 
+// مشغل الصوت
 function playAudio(url, title) { audio.src = url; audio.play(); trackTitle.innerText = title; playIcon.className = 'fas fa-pause'; }
 function togglePlay() { if(audio.paused) { audio.play(); playIcon.className = 'fas fa-pause'; } else { audio.pause(); playIcon.className = 'fas fa-play'; } }
 function skip(t) { audio.currentTime += t; }
