@@ -2,58 +2,55 @@
 
 :root {
     --bg-color: #f4f7f6;
-    --card-bg: #e9eeed;
+    --card-bg: #e2e8f0; /* أغمق بالكامل من الخلفية */
     --text-color: #1a2e2a;
     --header-bg: #064e3b;
 }
 
 .dark-mode {
     --bg-color: #0d1412;
-    --card-bg: #1a2623;
+    --card-bg: #1a2623; /* أغمق في الوضع الليلي */
     --text-color: #f0f4f3;
     --header-bg: #032018;
 }
 
-body { font-family: 'Cairo', sans-serif; background: var(--bg-color); color: var(--text-color); margin: 0; padding-bottom: 230px; transition: 0.3s; }
+body { font-family: 'Cairo', sans-serif; background: var(--bg-color); color: var(--text-color); margin: 0; padding-bottom: 220px; transition: 0.3s; }
 .hidden { display: none; }
 
-/* تنسيق الهيدر الموسط */
+/* الهيدر الموسط */
 .main-header { background: var(--header-bg); color: white; padding: 25px 0; border-bottom: 4px solid #fbbf24; position: relative; }
 .header-content { text-align: center; width: 80%; margin: 0 auto; }
-.header-content h1 { font-size: 1.3rem; font-weight: bold; }
-.header-content p { font-size: 10px; color: #fbbf24; margin-top: 5px; }
-
 .menu-trigger { position: absolute; right: 20px; top: 30px; font-size: 24px; color: white; cursor: pointer; border: none; background: none; }
 
-/* القائمة الجانبية */
+/* القائمة الجانبية المطورة */
 .sidebar { position: fixed; right: -280px; top: 0; width: 280px; height: 100%; background: var(--header-bg); z-index: 9999; transition: 0.4s; padding: 20px; box-shadow: -5px 0 15px rgba(0,0,0,0.5); }
 .sidebar.active { right: 0; }
-.sidebar-links { display: flex; flex-direction: column; gap: 20px; margin-top: 60px; }
-.sidebar-links button, .sidebar-links a { background: none; border: none; color: white; text-align: right; font-size: 16px; font-weight: bold; cursor: pointer; text-decoration: none; display: flex; align-items: center; gap: 12px; }
-.close-btn { position: absolute; left: 20px; top: 15px; font-size: 30px; color: white; border: none; background: none; cursor: pointer; }
+.sidebar-links-container { height: 100%; display: flex; flex-direction: column; justify-content: space-between; padding-top: 40px; }
+.sidebar-main-links { display: flex; flex-direction: column; gap: 15px; }
+.sidebar-main-links button { background: none; border: none; color: white; text-align: right; font-size: 15px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 12px; padding: 10px 0; }
+.sidebar-contact-btn { background: #0088cc; color: white; padding: 12px; border-radius: 10px; text-align: center; font-weight: bold; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 20px; }
+.close-btn { position: absolute; left: 15px; top: 15px; font-size: 30px; color: white; border: none; background: none; cursor: pointer; }
 
+/* الكروت (أغمق بالكامل) */
 .container { max-width: 500px; margin: 0 auto; padding: 15px; }
+.menu-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+.card { background: var(--card-bg); padding: 20px; border-radius: 15px; text-align: center; cursor: pointer; border-right: 6px solid #064e3b; box-shadow: 0 4px 10px rgba(0,0,0,0.08); color: var(--text-color); }
+.card i { font-size: 1.8rem; margin-bottom: 8px; display: block; }
+.blue { color: #3b82f6; } .amber { color: #f59e0b; } .emerald { color: #10b981; } .red { color: #ef4444; }
 .telegram-btn { display: flex; align-items: center; justify-content: center; gap: 10px; background: #0088cc; color: white; padding: 14px; border-radius: 12px; font-weight: bold; margin-bottom: 20px; text-decoration: none; }
 
-.menu-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
-.card { background: var(--card-bg); padding: 20px; border-radius: 15px; text-align: center; cursor: pointer; border-right: 5px solid #064e3b; box-shadow: 0 4px 10px rgba(0,0,0,0.05); color: var(--text-color); }
-.card i { font-size: 1.8rem; margin-bottom: 8px; display: block; }
-.card span { font-size: 12px; font-weight: bold; }
+/* زر الرجوع الثابت والكبير */
+.sticky-nav { position: sticky; top: 0; background: var(--bg-color); padding: 15px 5px; z-index: 1000; border-bottom: 3px solid #064e3b; display: flex; align-items: center; gap: 15px; margin-bottom: 15px; }
+.back-btn { background: #064e3b; color: white; padding: 10px 25px; border-radius: 10px; font-weight: bold; font-size: 14px; box-shadow: 0 3px 6px rgba(0,0,0,0.2); }
 
-.blue { color: #3b82f6; } .amber { color: #f59e0b; } .emerald { color: #10b981; } .red { color: #ef4444; }
+/* الفوتر */
+.main-footer { text-align: center; padding: 20px 10px; background: var(--header-bg); color: white; margin-top: 20px; border-radius: 15px 15px 0 0; }
 
-/* الفوتر الثابت فوق المشغل */
-.main-footer { background: var(--header-bg); color: white; text-align: center; padding: 15px; width: 100%; position: fixed; bottom: 110px; z-index: 900; }
-.copy { font-size: 13px; font-weight: bold; }
-.dua { font-size: 9px; opacity: 0.7; }
-
-/* المشغل الثابت تحت خالص */
-.player-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #022c22; color: white; padding: 15px; border-top: 3px solid #fbbf24; z-index: 1000; box-shadow: 0 -5px 15px rgba(0,0,0,0.3); }
-#track-title { font-size: 11px; color: #fbbf24; text-align: center; margin-bottom: 10px; font-weight: bold; }
-.player-main-layout { display: flex; align-items: center; justify-content: space-between; max-width: 500px; margin: 0 auto; }
-
-.volume-box { display: flex; flex-direction: column; align-items: center; background: rgba(255,255,255,0.05); padding: 5px; border-radius: 8px; width: 40px; }
-.volume-box input { -webkit-appearance: slider-vertical; width: 4px; height: 60px; outline: none; }
-
-.controls { display: flex; align-items: center; gap: 30px; }
-.play-btn { background: white; color: #022c22; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; cursor: pointer; }
+/* المشغل الصغير المطور */
+.player-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #022c22; color: white; padding: 10px 15px; height: 110px; border-top: 3px solid #fbbf24; z-index: 1000; display: flex; flex-direction: column; justify-content: center; }
+#track-title { font-size: 11px; color: #fbbf24; text-align: center; margin-bottom: 8px; font-weight: bold; white-space: nowrap; overflow: hidden; }
+.player-main-layout { display: flex; align-items: center; justify-content: space-between; max-width: 500px; margin: 0 auto; width: 100%; }
+.volume-box { display: flex; flex-direction: column; align-items: center; background: rgba(255,255,255,0.05); padding: 5px; border-radius: 8px; width: 35px; }
+.volume-box input { -webkit-appearance: slider-vertical; width: 3px; height: 50px; }
+.controls { display: flex; align-items: center; gap: 25px; }
+.play-btn { background: white; color: #022c22; width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; cursor: pointer; }
