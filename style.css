@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
 
 :root { 
-    --bg-color: #f0f2f1; --card-bg: #ffffff; --text-color: #064e3b; 
+    --bg-color: #f4f7f6; --card-bg: #ffffff; --text-color: #064e3b; 
     --header-bg: #064e3b; --accent: #fbbf24; --sidebar-bg: #064e3b;
 }
 
@@ -10,65 +10,53 @@
     --header-bg: #032018; --accent: #fbbf24; --sidebar-bg: #032018;
 }
 
-body { 
-    font-family: 'Cairo', sans-serif; background: var(--bg-color); 
-    color: var(--text-color); margin: 0; padding-bottom: 200px; transition: 0.3s; 
-}
+body { font-family: 'Cairo', sans-serif; background: var(--bg-color); color: var(--text-color); margin: 0; padding-bottom: 200px; transition: 0.3s; overflow-x: hidden; }
 
-/* القائمة الجانبية - أزرار مربعة */
-.sidebar { 
-    position: fixed; right: -300px; top: 0; width: 280px; height: 100%; 
-    background: var(--sidebar-bg); z-index: 10000; transition: 0.4s; 
-    padding: 20px; display: flex; flex-direction: column; 
-}
+/* الهيدر الأخضر */
+.main-header { background: var(--header-bg); color: white; padding: 40px 15px; text-align: center; border-bottom: 5px solid var(--accent); position: relative; }
+.main-header h1 { font-size: 24px; margin: 0; }
+.main-header p { font-size: 14px; opacity: 0.8; margin-top: 8px; }
+.menu-trigger { position: absolute; right: 20px; top: 35px; background: none; border: none; color: white; font-size: 24px; }
+
+/* زر التليجرام */
+.telegram-btn { display: flex; align-items: center; justify-content: center; gap: 10px; background: #0088cc; color: white !important; padding: 15px; border-radius: 15px; font-weight: bold; margin: -25px auto 20px; text-decoration: none; width: 85%; box-shadow: 0 4px 15px rgba(0,0,0,0.2); position: relative; z-index: 10; }
+
+/* القائمة الجانبية */
+.sidebar { position: fixed; right: -300px; top: 0; width: 280px; height: 100%; background: var(--sidebar-bg); z-index: 10000; transition: 0.4s; padding: 20px; display: flex; flex-direction: column; }
 .sidebar.active { right: 0; }
-.sidebar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; color: white; }
-.sidebar-main-links { flex-grow: 1; overflow-y: auto; }
-.sidebar-main-links button { 
-    width: 100%; text-align: right; background: rgba(255,255,255,0.1); color: white; 
-    border: 1px solid rgba(255,255,255,0.1); padding: 15px; border-radius: 12px; 
-    margin-bottom: 12px; display: flex; align-items: center; gap: 12px; font-weight: bold;
-}
-.sidebar-contact-btn { 
-    background: #0088cc; color: white; padding: 15px; border-radius: 12px; 
-    text-align: center; text-decoration: none; font-weight: bold; margin-top: auto;
-}
+.sidebar-header { display: flex; justify-content: space-between; align-items: center; color: white; margin-bottom: 30px; }
+.close-btn { background: none; border: none; color: white; font-size: 30px; }
+.sidebar-main-links { flex-grow: 1; }
+.sidebar-main-links button { width: 100%; text-align: right; background: rgba(255,255,255,0.1); color: white; border: none; padding: 15px; border-radius: 12px; margin-bottom: 12px; display: flex; align-items: center; gap: 12px; font-family: 'Cairo'; }
+.sidebar-contact-btn { background: #0088cc; color: white; padding: 15px; border-radius: 12px; text-align: center; text-decoration: none; font-weight: bold; margin-top: auto; }
 
-/* الهيدر وقناة التليجرام */
-.main-header { background: var(--header-bg); color: white; padding: 20px; text-align: center; border-bottom: 4px solid var(--accent); }
-.telegram-btn { 
-    display: flex; align-items: center; justify-content: center; gap: 10px; background: #0088cc; 
-    color: white !important; padding: 12px; border-radius: 12px; font-weight: bold; 
-    margin: 15px auto; text-decoration: none; width: 90%; 
-}
-
-/* حل مشكلة تداخل المواقيت والعداد */
-.prayer-section { width: 95%; max-width: 500px; margin: 20px auto; display: flex; flex-direction: column; gap: 10px; }
-.next-prayer-info, .prayer-box { 
-    background: var(--card-bg); border: 2px solid var(--accent); border-radius: 15px; 
-    padding: 15px; text-align: center; min-height: 90px; display: flex; 
-    flex-direction: column; justify-content: center; box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-}
-.prayer-box { display: grid; grid-template-columns: repeat(5, 1fr); padding: 10px 5px; flex-direction: row; }
+/* قسم الصلاة المطور */
+.prayer-section { width: 90%; margin: 20px auto; }
+.next-prayer-info { background: var(--card-bg); border: 2px solid var(--accent); border-radius: 15px; padding: 15px; text-align: center; font-weight: bold; margin-bottom: 10px; }
+.prayer-box { background: var(--card-bg); border: 2px solid var(--accent); border-radius: 15px; display: grid; grid-template-columns: repeat(5, 1fr); padding: 10px 5px; }
 .prayer-item { text-align: center; border-left: 1px solid rgba(0,0,0,0.05); }
 .prayer-item:last-child { border-left: none; }
-.prayer-name { font-size: 11px; color: var(--accent); font-weight: bold; }
+.prayer-name { font-size: 11px; color: var(--accent); font-weight: bold; display: block; }
 .prayer-time { font-size: 10px; font-weight: bold; margin-top: 5px; line-height: 1.2; }
 
-/* الكروت والشبكة */
-.menu-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 10px; }
-.card { 
-    background: var(--card-bg); padding: 25px 10px; border-radius: 20px; 
-    text-align: center; cursor: pointer; border-bottom: 5px solid var(--header-bg); 
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1); transition: 0.2s;
-}
+/* الكروت */
+.menu-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; padding: 15px; }
+.card { background: var(--card-bg); padding: 25px 10px; border-radius: 20px; text-align: center; cursor: pointer; border-bottom: 5px solid var(--header-bg); box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
 .card i { font-size: 30px; margin-bottom: 10px; display: block; }
-
-/* زر الرجوع */
-.sticky-nav { position: sticky; top: 0; background: var(--bg-color); padding: 15px; z-index: 100; border-bottom: 2px solid var(--accent); display: flex; align-items: center; }
-.back-btn { background: var(--accent); color: #000; padding: 8px 25px; border-radius: 10px; font-weight: bold; border: none; cursor: pointer; }
 
 /* المشغل */
 .player-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #011d17; color: white; padding: 15px 0; border-top: 4px solid var(--accent); z-index: 9999; }
-.main-footer { padding: 30px 10px; text-align: center; background: var(--header-bg); color: white; margin-top: 20px; border-radius: 30px 30px 0 0; }
+.player-title { text-align: center; margin-bottom: 10px; font-weight: bold; font-size: 14px; }
+.player-controls { display: flex; justify-content: center; align-items: center; gap: 30px; }
+.play-main-btn { background: white; color: #011d17; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+.volume-container { width: 80%; margin: 15px auto 0; display: flex; align-items: center; gap: 10px; }
+.volume-container input { flex-grow: 1; }
+
+/* الفوتر */
+.main-footer { padding: 40px 10px; text-align: center; background: var(--header-bg); color: white; margin-top: 30px; }
+.footer-dua { font-size: 12px; opacity: 0.8; margin-top: 10px; }
+
+/* زر الرجوع */
+.sticky-nav { position: sticky; top: 0; background: var(--bg-color); padding: 15px; z-index: 100; border-bottom: 2px solid var(--accent); }
+.back-btn { background: var(--accent); color: #000; padding: 8px 20px; border-radius: 10px; font-weight: bold; border: none; cursor: pointer; }
 .hidden { display: none !important; }
