@@ -34,4 +34,4 @@ body { font-family: 'Cairo', sans-serif; background: var(--bg-light); margin: 0;
 /* القائمة الجانبية */
 .sidebar { position: fixed; right: -280px; top: 0; width: 260px; height: 100%; background: var(--main-green); z-index: 10000; transition: 0.3s; padding: 20px; color: white; }
 .sidebar.active { right: 0; }
-.sidebar-links button { display: block; width: 100%; background: rgba(255,255,255,0.1); color: white; border: none; padding: 12px; margin-bottom: 10px; border-radius: 8px; text-align: right; font-family: 'Cairo'; }
+.sidebar-links button { display: block; width: 100%; background: rgba(255,255,255,0.1); color: white; border: none; padding: 12px; margin-bottom: 10px; border-radius: 8px; text-align: right; font-family: 'Cairo'; } 
