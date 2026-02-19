@@ -80,4 +80,4 @@ function updateCnt(btn) {
 }
 
 function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
-function skip(t) { audio.currentTime += t; }
+function skip(t) { audio.currentTime += t; } 
