@@ -3,40 +3,37 @@ const playIcon = document.getElementById('play-icon');
 const trackTitle = document.getElementById('track-title');
 
 // الأذكار كاملة
-const morningAzkar = [
-    {text:"آية الكرسي: اللَّهُ لَا إِلَهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ", count:1},
-    {text:"سورة الإخلاص (3 مرات)", count:3},
-    {text:"سورة الفلق (3 مرات)", count:3},
-    {text:"سورة الناس (3 مرات)", count:3},
-    {text:"أصبحنا وأصبح الملك لله والحمد لله", count:1},
-    {text:"بسم الله الذي لا يضر مع اسمه شيء (3 مرات)", count:3},
-    {text:"اللهم بك أصبحنا وبك أمسينا (1)", count:1},
-    {text:"رضيت بالله رباً وبالإسلام ديناً (3)", count:3}
-];
+const azkarData = {
+    morning: [
+        {text:"آية الكرسي", count:1},
+        {text:"سورة الإخلاص (3 مرات)", count:3},
+        {text:"سورة الفلق (3 مرات)", count:3},
+        {text:"سورة الناس (3 مرات)", count:3},
+        {text:"أصبحنا وأصبح الملك لله", count:1},
+        {text:"بسم الله الذي لا يضر مع اسمه شيء (3)", count:3},
+        {text:"رضيت بالله رباً وبالإسلام ديناً (3)", count:3}
+    ],
+    evening: [
+        {text:"آية الكرسي", count:1},
+        {text:"سورة الإخلاص والمعوذتين (3 مرات)", count:3},
+        {text:"أعوذ بكلمات الله التامات من شر ما خلق (3)", count:3},
+        {text:"أمسينا وأمسى الملك لله", count:1}
+    ]
+};
 
-const eveningAzkar = [
-    {text:"آية الكرسي", count:1},
-    {text:"سورة الإخلاص والمعوذتين (3 مرات)", count:3},
-    {text:"أعوذ بكلمات الله التامات من شر ما خلق (3)", count:3},
-    {text:"اللهم بك أمسينا وبك أصبحنا (1)", count:1}
-];
-
-// الرقية الشرعية بروابط مباشرة تعمل فوراً
+// فتح صفحة الرقية
 function openRoqia() {
-    const roqiaList = [
-        { name: "الرقية الشرعية - ماهر المعيقلي", url: "https://server12.mp3quran.net/maher/115.mp3" },
-        { name: "الرقية الشرعية - مشاري العفاسي", url: "https://server8.mp3quran.net/afs/115.mp3" }
-    ];
-    let html = `<div class="sticky-nav"><button onclick="goHome()" class="back-btn">رجوع</button><span>الرقية الشرعية</span></div><div class="menu-grid">`;
-    roqiaList.forEach(r => {
-        html += `<div class="card" onclick="playAudio('${r.url}', '${r.name}')"><i class="fas fa-heart"></i><span>${r.name}</span></div>`;
-    });
-    showPage(html + "</div>");
+    let html = `<div class="sticky-nav"><button onclick="goHome()" class="back-btn">رجوع</button><span>الرقية الشرعية</span></div>
+    <div class="menu-grid">
+        <div class="card" onclick="playAudio('https://server12.mp3quran.net/maher/115.mp3', 'رقية ماهر المعيقلي')"><i class="fas fa-heart-pulse" style="color:#ef4444"></i><span>ماهر المعيقلي</span></div>
+        <div class="card" onclick="playAudio('https://server8.mp3quran.net/afs/115.mp3', 'رقية مشاري العفاسي')"><i class="fas fa-heart-pulse" style="color:#ef4444"></i><span>مشاري العفاسي</span></div>
+    </div>`;
+    showPage(html);
 }
 
 function playAudio(url, title) {
     audio.src = url;
-    audio.play().catch(() => alert("يرجى الضغط على زر التشغيل"));
+    audio.play();
     trackTitle.innerText = title;
     playIcon.className = 'fas fa-pause';
 }
@@ -63,12 +60,12 @@ function openAzkar() {
 }
 
 function loadAzkar(type) {
-    const list = type === 'morning' ? morningAzkar : eveningAzkar;
-    let html = `<div class="sticky-nav"><button onclick="openAzkar()" class="back-btn">رجوع</button><span>أذكار ${type==='morning'?'الصباح':'المساء'}</span></div><div style="padding:10px">`;
+    const list = azkarData[type];
+    let html = `<div class="sticky-nav"><button onclick="openAzkar()" class="back-btn">رجوع</button><span>أذكار ${type==='morning'?'الصباح':'المساء'}</span></div><div style="padding:15px">`;
     list.forEach(z => {
-        html += `<div class="card" style="margin-bottom:10px; text-align:right; padding:15px; grid-column: span 2;">
-            <p style="font-size:14px; line-height:1.6;">${z.text}</p>
-            <button onclick="updateCnt(this)" style="background:var(--main-green); color:white; border:none; padding:5px 20px; border-radius:5px;">${z.count}</button>
+        html += `<div class="card" style="margin-bottom:15px; text-align:right; padding:20px; width:90%; margin-right:auto; margin-left:auto;">
+            <p style="font-size:16px; line-height:1.6; margin-bottom:15px">${z.text}</p>
+            <button onclick="updateCnt(this)" style="background:var(--main); color:white; border:none; padding:10px 30px; border-radius:10px; font-weight:bold">${z.count}</button>
         </div>`;
     });
     document.getElementById('content-area').innerHTML = html + "</div>";
@@ -79,5 +76,4 @@ function updateCnt(btn) {
     if (val > 0) { val--; btn.innerText = val === 0 ? '✓' : val; if(val===0) btn.style.background="#fbbf24"; }
 }
 
-function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
-function skip(t) { audio.currentTime += t; } 
+function skip(t) { audio.currentTime += t; }
