@@ -1,5 +1,5 @@
 body{
-    font-family:Tahoma,Arial;
+    font-family:Tahoma;
     background:#f4f7f6;
     margin:0;
     padding-bottom:160px;
@@ -8,10 +8,9 @@ body{
 
 .hidden{display:none}
 
-/* Header */
 .header{
     background:#064e3b;
-    color:#fff;
+    color:white;
     text-align:center;
     padding:20px;
     border-bottom:4px solid #fbbf24;
@@ -22,21 +21,19 @@ body{
     color:#fbbf24;
 }
 
-/* Layout */
 .container{
     max-width:900px;
     margin:auto;
     padding:20px;
 }
 
-/* Telegram */
 .telegram-btn{
     display:flex;
     justify-content:center;
     align-items:center;
     gap:10px;
     background:#0088cc;
-    color:#fff;
+    color:white;
     padding:15px;
     border-radius:12px;
     text-decoration:none;
@@ -44,7 +41,6 @@ body{
     margin-bottom:25px;
 }
 
-/* Grid */
 .menu-grid{
     display:grid;
     grid-template-columns:repeat(2,1fr);
@@ -57,9 +53,8 @@ body{
     }
 }
 
-/* Cards */
 .card{
-    background:#fff;
+    background:white;
     padding:20px;
     border-radius:16px;
     text-align:center;
@@ -79,31 +74,27 @@ body{
     font-size:14px;
 }
 
-/* Colors */
 .blue{color:#2563eb}
 .amber{color:#d97706}
 .emerald{color:#059669}
 .red{color:#dc2626}
 
-/* Back */
 .back-btn{
     background:#064e3b;
-    color:#fff;
+    color:white;
     padding:8px 20px;
     border:none;
     border-radius:8px;
     margin-bottom:15px;
-    cursor:pointer;
 }
 
-/* Player */
 .player-bar{
     position:fixed;
     bottom:0;
     left:0;
     right:0;
     background:#022c22;
-    color:#fff;
+    color:white;
     padding:15px;
     border-top:4px solid #fbbf24;
     display:flex;
@@ -129,7 +120,7 @@ body{
 }
 
 .play-btn{
-    background:#fff;
+    background:white;
     color:#064e3b;
     width:55px;
     height:55px;
