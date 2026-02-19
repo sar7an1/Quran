@@ -4,68 +4,139 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>منصة القرآن - Sar7an</title>
+
+    <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-    <header class="main-header">
-        <h1>منصة القرآن الكريم 🕌</h1>
-        <p>صدقة جارية عني وعن جميع المسلمين والمسلمات</p>
-    </header>
+<!-- ===== Header ===== -->
+<header class="bg-white shadow-md relative z-50">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
 
-    <main class="container">
-        <div id="home-view">
-            <a href="https://t.me/Sar7an_1" target="_blank" class="telegram-btn">
-                <i class="fab fa-telegram"></i> قناتنا على التليجرام
-            </a>
-            
-            <div class="menu-grid">
-                <div class="card" onclick="playAudio('https://n04.radiojar.com/8s9u67z8n0quv', 'إذاعة القاهرة')">
-                    <i class="fas fa-broadcast-tower blue"></i>
-                    <span>إذاعة القاهرة</span>
-                </div>
-                <div class="card" onclick="openReciters()">
-                    <i class="fas fa-microphone amber"></i>
-                    <span>أصوات مختلفة</span>
-                </div>
-                <div class="card" onclick="openAzkar()">
-                    <i class="fas fa-book-open emerald"></i>
-                    <span>الأذكار</span>
-                </div>
-                <div class="card" onclick="playAudio('https://server10.mp3quran.net/roqia/001.mp3', 'الرقية الشرعية')">
-                    <i class="fas fa-hand-holding-heart red"></i>
-                    <span>الرقية الشرعية</span>
-                </div>
+        <!-- Menu Button -->
+        <button id="menuBtn" class="text-2xl text-blue-600">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <!-- Title -->
+        <div class="text-center flex-1">
+            <h1 class="text-xl font-bold text-slate-800">القرآن الكريم</h1>
+            <p class="text-xs text-slate-500">صدقة جارية عني وعن جميع المسلمين</p>
+        </div>
+
+        <!-- Placeholder -->
+        <div class="w-8"></div>
+    </div>
+
+    <!-- Dropdown Menu -->
+    <div id="menuBox" class="hidden absolute right-4 top-16 bg-white shadow-lg rounded-xl w-56 p-3">
+        <a href="https://t.me/Sar7an_1" target="_blank"
+           class="flex items-center gap-3 bg-blue-500 text-white px-4 py-3 rounded-lg">
+            <i class="fab fa-telegram text-xl"></i>
+            <span>تواصل معنا</span>
+        </a>
+    </div>
+</header>
+
+<!-- ===== Telegram Channel Box ===== -->
+<div class="max-w-6xl mx-auto px-4 mt-6">
+    <a href="https://t.me/Sar7an_1" target="_blank"
+       class="telegram-btn">
+        <i class="fab fa-telegram"></i>
+        قناتنا على التليجرام
+    </a>
+</div>
+
+<!-- ===== Main Content ===== -->
+<main class="container">
+
+    <!-- Home View -->
+    <div id="home-view">
+
+        <div class="menu-grid">
+
+            <div class="card"
+                 onclick="playAudio('https://n04.radiojar.com/8s9u67z8n0quv','إذاعة القاهرة')">
+                <i class="fas fa-broadcast-tower blue"></i>
+                <span>إذاعة القاهرة</span>
             </div>
-        </div>
 
-        <div id="sub-view" class="hidden">
-            <button onclick="goHome()" class="back-btn"><i class="fas fa-arrow-right"></i> رجوع</button>
-            <div id="content-area"></div>
-        </div>
+            <div class="card" onclick="openReciters()">
+                <i class="fas fa-microphone amber"></i>
+                <span>أصوات مختلفة</span>
+            </div>
 
-        <footer class="main-footer">
-            <div class="copy">Sar7an_1©(2026)</div>
-            <div class="dua">رَبَّنَا تَقَبَّلْ مِنَّا إِنَّكَ أَنتَ السَّمِيعُ الْعَلِيمُ</div>
-        </footer>
-    </main>
+            <div class="card" onclick="openAzkar()">
+                <i class="fas fa-book-open emerald"></i>
+                <span>الأذكار</span>
+            </div>
 
-    <div class="player-bar">
-        <div id="track-title">بانتظار اختيارك...</div>
-        <div class="controls">
-            <i class="fas fa-backward" onclick="skip(-10)"></i>
-            <div class="play-btn" onclick="togglePlay()"><i id="play-icon" class="fas fa-play"></i></div>
-            <i class="fas fa-forward" onclick="skip(10)"></i>
-        </div>
-        <div class="volume-slider">
-            <i class="fas fa-volume-up"></i>
-            <input type="range" min="0" max="1" step="0.1" value="1" id="volControl">
+            <div class="card"
+                 onclick="playAudio('https://server10.mp3quran.net/roqia/001.mp3','الرقية الشرعية')">
+                <i class="fas fa-hand-holding-heart red"></i>
+                <span>الرقية الشرعية</span>
+            </div>
+
         </div>
     </div>
 
-    <audio id="main-audio"></audio>
-    <script src="script.js"></script>
+    <!-- Sub View -->
+    <div id="sub-view" class="hidden">
+        <button onclick="goHome()" class="back-btn">
+            <i class="fas fa-arrow-right"></i> رجوع
+        </button>
+        <div id="content-area"></div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="copy">Sar7an_1 © 2026</div>
+        <div class="dua">رَبَّنَا تَقَبَّلْ مِنَّا إِنَّكَ أَنتَ السَّمِيعُ الْعَلِيمُ</div>
+    </footer>
+
+</main>
+
+<!-- ===== Player Bar ===== -->
+<div class="player-bar">
+    <div id="track-title">بانتظار اختيارك...</div>
+
+    <div class="controls">
+        <i class="fas fa-backward" onclick="skip(-10)"></i>
+
+        <div class="play-btn" onclick="togglePlay()">
+            <i id="play-icon" class="fas fa-play"></i>
+        </div>
+
+        <i class="fas fa-forward" onclick="skip(10)"></i>
+    </div>
+
+    <div class="volume-slider">
+        <i class="fas fa-volume-up"></i>
+        <input type="range" min="0" max="1" step="0.1" value="1" id="volControl">
+    </div>
+</div>
+
+<audio id="main-audio"></audio>
+
+<!-- Scripts -->
+<script src="script.js"></script>
+
+<script>
+    const menuBtn = document.getElementById("menuBtn");
+    const menuBox = document.getElementById("menuBox");
+
+    menuBtn.onclick = () => {
+        menuBox.classList.toggle("hidden");
+    };
+</script>
+
 </body>
-</html> 
+</html>
