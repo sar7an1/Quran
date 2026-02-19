@@ -2,7 +2,7 @@ const audio = document.getElementById('main-audio');
 const playIcon = document.getElementById('play-icon');
 const trackTitle = document.getElementById('track-title');
 
-// 1. جلب أوقات الصلاة وتنسيقها في المربع العريض
+// 1. أوقات الصلاة
 async function getPrayerTimes() {
     try {
         const res = await fetch('https://api.aladhan.com/v1/timingsByCity?city=Cairo&country=Egypt&method=5');
@@ -18,7 +18,7 @@ async function getPrayerTimes() {
 }
 getPrayerTimes();
 
-// القائمة والوضع الليلي
+// 2. التحكم في القائمة والسمات
 function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
 function toggleTheme() {
     document.body.classList.toggle('dark-mode');
@@ -26,7 +26,7 @@ function toggleTheme() {
     document.getElementById('theme-btn').innerHTML = isDark ? '<i class="fas fa-sun"></i> الوضع النهاري' : '<i class="fas fa-moon"></i> الوضع الليلي';
 }
 
-// التحكم في الصوت
+// 3. التحكم في الصوت والمشغل
 function playAudio(url, title) {
     audio.src = url;
     audio.play().then(() => {
@@ -43,18 +43,18 @@ function togglePlay() {
 function skip(t) { audio.currentTime += t; }
 document.getElementById('volControl').oninput = function() { audio.volume = this.value; };
 
-// نظام الأذكار والعدادات (مع الحفظ التلقائي)
+// 4. الأذكار والعدادات
 const morningAzkar = [
     {id:"m1", text:"آية الكرسي: ﴿اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ...﴾", count:1},
-    {id:"m2", text:"بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ ﴿قُلْ هُوَ اللَّهُ أَحَدٌ...﴾", count:3},
-    {id:"m3", text:"بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ ﴿قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ...﴾", count:3},
-    {id:"m4", text:"بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ ﴿قُلْ أَعُوذُ بِرَبِّ النَّاسِ...﴾", count:3},
+    {id:"m2", text:"﴿قُلْ هُوَ اللَّهُ أَحَدٌ...﴾", count:3},
+    {id:"m3", text:"﴿قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ...﴾", count:3},
+    {id:"m4", text:"﴿قُلْ أَعُوذُ بِرَبِّ النَّاسِ...﴾", count:3},
     {id:"m5", text:"أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ...", count:1}
 ];
 
 const eveningAzkar = [
-    {id:"e1", text:"أَعُوذُ بِاللَّهِ مِنَ الشَّيْطَانِ الرَّجِيمِ ﴿اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ...﴾", count:1},
-    {id:"e2", text:"بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ ﴿قُلْ هُوَ اللَّهُ أَحَدٌ...﴾", count:3},
+    {id:"e1", text:"آية الكرسي: ﴿اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ...﴾", count:1},
+    {id:"e2", text:"﴿قُلْ هُوَ اللَّهُ أَحَدٌ...﴾", count:3},
     {id:"e3", text:"أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ...", count:1}
 ];
 
@@ -111,13 +111,13 @@ function goHome() {
     document.getElementById('sub-view').classList.add('hidden');
 }
 
-// دالة القراء المتبقية (API)
+// 5. أصوات القراء (API)
 async function openReciters() {
     showPage("<p class='text-center'>جاري التحميل...</p>");
     try {
         const res = await fetch('https://mp3quran.net/api/v3/reciters?language=ar');
         const data = await res.json();
-        let html = `<div class="sticky-nav"><button onclick="goHome()" class="back-btn">رجوع</button></div>`;
+        let html = `<div class="sticky-nav"><button onclick="goHome()" class="back-btn">رجوع للرئيسية</button></div>`;
         html += data.reciters.slice(0, 50).map(r => `
             <div class="card mb-3 flex justify-between items-center" style="padding:15px" onclick="openSurahs('${r.moshaf[0].server}', '${r.name}', '${r.moshaf[0].surah_list}')">
                 <span class="text-xs font-bold">${r.name}</span><i class="fas fa-chevron-left text-gray-400"></i>
@@ -129,7 +129,7 @@ async function openReciters() {
 
 function openSurahs(server, name, list) {
     const sArray = list.split(',');
-    let html = `<div class="sticky-nav"><button onclick="openReciters()" class="back-btn">رجوع</button><span class="text-[10px] font-bold">${name}</span></div><div class="menu-grid">`;
+    let html = `<div class="sticky-nav"><button onclick="openReciters()" class="back-btn">رجوع للقراء</button><span class="text-[10px] font-bold">${name}</span></div><div class="menu-grid">`;
     sArray.forEach(sNum => {
         html += `<div class="card" onclick="playAudio('${server}${sNum.padStart(3, '0')}.mp3', '${name} - سورة ${sNum}')"><span>سورة ${sNum}</span></div>`;
     });
