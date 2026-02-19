@@ -9,19 +9,12 @@ const morningAzkar = [
     {text:"سورة الإخلاص (3 مرات)", count:3},
     {text:"سورة الفلق (3 مرات)", count:3},
     {text:"سورة الناس (3 مرات)", count:3},
-    {text:"أصبحنا وأصبح الملك لله، والحمد لله", count:1},
-    {text:"اللهم بك أصبحنا، وبك أمسينا، وإليك النشور", count:1},
-    {text:"اللهم أنت ربي لا إله إلا أنت، خلقتني وأنا عبدك...", count:1},
-    {text:"بسم الله الذي لا يضر مع اسمه شيء في الأرض ولا في السماء", count:3}
+    {text:"بسم الله الذي لا يضر مع اسمه شيء", count:3}
 ];
 
 const eveningAzkar = [
     {text:"آية الكرسي: ﴿اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ...﴾", count:1},
     {text:"سورة الإخلاص (3 مرات)", count:3},
-    {text:"سورة الفلق (3 مرات)", count:3},
-    {text:"سورة الناس (3 مرات)", count:3},
-    {text:"أمسينا وأمسى الملك لله، والحمد لله", count:1},
-    {text:"اللهم بك أمسينا، وبك أصبحنا، وإليك المصير", count:1},
     {text:"أعوذ بكلمات الله التامات من شر ما خلق", count:3}
 ];
 
@@ -29,7 +22,8 @@ function format12Hour(timeStr) {
     let [hours, minutes] = timeStr.split(':');
     let period = hours >= 12 ? 'م' : 'ص';
     hours = hours % 12 || 12;
-    return `${hours}:${minutes}<br><span style="font-size:10px; opacity:0.7">${period}</span>`;
+    // وضع ص/م في سطر منفصل لمنع التداخل العرضي
+    return `${hours}:${minutes}<br><span style="font-size:9px; opacity:0.7">${period}</span>`;
 }
 
 async function updatePrayers() {
@@ -91,7 +85,7 @@ function loadAzkar(type) {
     const list = type === 'morning' ? morningAzkar : eveningAzkar;
     let html = `<div class="sticky-nav"><button onclick="openAzkar()" class="back-btn"><i class="fas fa-arrow-right"></i> رجوع</button></div><div style="padding:15px">`;
     list.forEach(z => {
-        html += `<div class="card mb-3 text-right" style="border-bottom:3px solid #064e3b">
+        html += `<div class="card mb-3 text-right" style="border-bottom:3px solid #064e3b; margin-bottom:10px;">
             <p class="text-sm mb-4 leading-relaxed">${z.text}</p>
             <button onclick="updateCnt(this, ${z.count})" style="background:#064e3b; color:white; padding:5px 15px; border-radius:10px">${z.count}</button>
         </div>`;
@@ -109,7 +103,7 @@ async function openReciters() {
     const res = await fetch('https://mp3quran.net/api/v3/reciters?language=ar');
     const data = await res.json();
     let html = `<div class="sticky-nav"><button onclick="goHome()" class="back-btn"><i class="fas fa-arrow-right"></i> رجوع</button></div>`;
-    html += data.reciters.slice(0, 60).map(r => `<div class="card mb-3 flex justify-between items-center" style="padding:15px; text-align:right;" onclick="openSurahs('${r.moshaf[0].server}', '${r.name}', '${r.moshaf[0].surah_list}')"><span>${r.name}</span><i class="fas fa-chevron-left"></i></div>`).join('');
+    html += data.reciters.slice(0, 50).map(r => `<div class="card mb-3 flex justify-between items-center" style="padding:15px; text-align:right" onclick="openSurahs('${r.moshaf[0].server}', '${r.name}', '${r.moshaf[0].surah_list}')"><span>${r.name}</span><i class="fas fa-chevron-left"></i></div>`).join('');
     document.getElementById('content-area').innerHTML = html;
 }
 
