@@ -13,7 +13,7 @@
     <div id="sidebar" class="sidebar">
         <button class="close-btn" onclick="toggleSidebar()">&times;</button>
         <div class="sidebar-links">
-            <button onclick="playAudio('https://stream.radiojar.com/8s9u67z8n0quv', 'إذاعة القرآن من السعودية')"><i class="fas fa-kaaba"></i> إذاعة السعودية</button>
+            <button onclick="playAudio('https://backup.qurango.net/radio/abdulbasit_abdulsamad', 'إذاعة عبد الباسط عبد الصمد')"><i class="fas fa-mosque"></i> إذاعة عبد الباسط</button>
             <button onclick="playAudio('https://backup.qurango.net/radio/maher_al_muaiqly', 'إذاعة ماهر المعيقلي')"><i class="fas fa-microphone-alt"></i> ماهر المعيقلي</button>
             <a href="https://t.me/Sar7an_1" target="_blank"><i class="fab fa-telegram-plane"></i> تواصل معنا</a>
             <hr class="opacity-20">
@@ -23,8 +23,10 @@
 
     <header class="main-header">
         <button class="menu-trigger" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
-        <h1>منصة القرآن الكريم 🕌</h1>
-        <p>صدقة جارية عني وعن جميع المسلمين والمسلمات</p>
+        <div class="header-content">
+            <h1>🕌 منصة القرآن الكريم</h1>
+            <p>صدقة جارية عني وعن جميع المسلمين والمسلمات</p>
+        </div>
     </header>
 
     <main class="container">
@@ -34,7 +36,7 @@
             </a>
             
             <div class="menu-grid">
-                <div class="card" onclick="playAudio('https://n04.radiojar.com/8s9u67z8n0quv', 'إذاعة القاهرة')">
+                <div class="card" onclick="playAudio('https://n04.radiojar.com/8s9u67z8n0quv', 'إذاعة القرآن من القاهرة')">
                     <i class="fas fa-broadcast-tower blue"></i>
                     <span>إذاعة القاهرة</span>
                 </div>
@@ -59,10 +61,8 @@
     </main>
 
     <footer class="main-footer">
-        <div class="footer-content">
-            <div class="copy">Sar7an_1©(2026)</div>
-            <div class="dua">رَبَّنَا تَقَبَّلْ مِنَّا إِنَّكَ أَنتَ السَّمِيعُ الْعَلِيمُ</div>
-        </div>
+        <div class="copy">Sar7an_1©(2026)</div>
+        <div class="dua">رَبَّنَا تَقَبَّلْ مِنَّا إِنَّكَ أَنتَ السَّمِيعُ الْعَلِيمُ</div>
     </footer>
 
     <div class="player-bar">
@@ -70,15 +70,14 @@
         
         <div class="player-main-layout">
             <div class="volume-box">
-                <i class="fas fa-volume-up text-[10px]"></i>
+                <i class="fas fa-volume-up"></i>
                 <input type="range" min="0" max="1" step="0.1" value="1" id="volControl">
-                <i class="fas fa-volume-mute text-[10px]"></i>
             </div>
 
             <div class="controls">
-                <i class="fas fa-backward" onclick="skip(-10)"></i>
+                <i class="fas fa-undo" onclick="skip(-10)"></i>
                 <div class="play-btn" onclick="togglePlay()"><i id="play-icon" class="fas fa-play"></i></div>
-                <i class="fas fa-forward" onclick="skip(10)"></i>
+                <i class="fas fa-redo" onclick="skip(10)"></i>
             </div>
         </div>
     </div>
