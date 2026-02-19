@@ -1,56 +1,49 @@
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
 
-:root { --bg-color: #f4f7f6; --card-bg: #e2e8f0; --text-color: #1a2e2a; --header-bg: #064e3b; }
+:root { --bg-color: #f4f7f6; --card-bg: #ffffff; --text-color: #1a2e2a; --header-bg: #064e3b; --accent: #fbbf24; }
 .dark-mode { --bg-color: #0d1412; --card-bg: #1a2623; --text-color: #f0f4f3; --header-bg: #032018; }
 
-body { 
-    font-family: 'Cairo', sans-serif; 
-    background: var(--bg-color); 
-    color: var(--text-color); 
-    margin: 0; 
-    padding-bottom: 250px; /* مساحة لعدم تداخل المشغل والفوتر */
-    transition: 0.3s; 
-}
+body { font-family: 'Cairo', sans-serif; background: var(--bg-color); color: var(--text-color); margin: 0; padding-bottom: 260px; transition: 0.3s; }
 
-/* الهيدر والقائمة */
-.main-header { background: var(--header-bg); color: white; padding: 25px 0; border-bottom: 4px solid #fbbf24; position: relative; text-align: center; }
-.menu-trigger { position: absolute; right: 20px; top: 30px; font-size: 24px; color: white; border: none; background: none; cursor: pointer; }
-.sidebar { position: fixed; right: -280px; top: 0; width: 280px; height: 100%; background: var(--header-bg); z-index: 10000; transition: 0.4s; padding: 20px; box-shadow: -5px 0 15px rgba(0,0,0,0.5); }
+/* القائمة الجانبية - إصلاح التصميم */
+.sidebar { position: fixed; right: -300px; top: 0; width: 280px; height: 100%; background: var(--header-bg); z-index: 10000; transition: 0.4s; padding: 20px; display: flex; flex-direction: column; }
 .sidebar.active { right: 0; }
-.close-btn { font-size: 30px; color: white; border: none; background: none; cursor: pointer; }
+.sidebar-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; margin-bottom: 20px; }
+.sidebar-title { color: white; font-weight: bold; }
+.close-btn { font-size: 30px; color: white; background: none; border: none; cursor: pointer; }
+.sidebar-main-links button { width: 100%; text-align: right; background: rgba(255,255,255,0.05); color: white; border: none; padding: 15px; border-radius: 10px; margin-bottom: 10px; display: flex; align-items: center; gap: 12px; }
 
-/* المحتوى والكروت */
-.container { max-width: 500px; margin: 0 auto; padding: 15px; }
-.menu-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-.card { background: var(--card-bg); padding: 20px; border-radius: 15px; text-align: center; cursor: pointer; border-right: 5px solid #064e3b; }
-.telegram-btn { display: flex; align-items: center; justify-content: center; gap: 10px; background: #0088cc; color: white; padding: 14px; border-radius: 12px; font-weight: bold; margin-bottom: 20px; text-decoration: none; }
+/* الهيدر وزر القائمة */
+.main-header { background: var(--header-bg); color: white; padding: 25px 0; border-bottom: 4px solid var(--accent); position: relative; text-align: center; }
+.menu-trigger { position: absolute; right: 20px; top: 50%; transform: translateY(-50%); font-size: 24px; color: white; background: none; border: none; cursor: pointer; }
 
-/* مربع أوقات الصلاة المطور */
-.prayer-section { width: 100%; display: flex; justify-content: center; margin-top: 30px; }
-.prayer-box { background: var(--card-bg); border-top: 4px solid #fbbf24; padding: 15px 5px; width: 95%; border-radius: 12px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 2px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+/* زر الرجوع المميز */
+.sticky-nav { position: sticky; top: 0; background: var(--bg-color); padding: 15px; z-index: 100; border-bottom: 2px solid var(--header-bg); display: flex; align-items: center; gap: 15px; }
+.back-btn { background: var(--accent); color: #000; padding: 10px 25px; border-radius: 50px; font-weight: bold; font-size: 14px; border: none; cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 0 #d97706; transition: 0.1s; }
+.back-btn:active { transform: translateY(3px); box-shadow: none; }
+
+/* مربع الصلاة والعداد */
+.prayer-section { width: 95%; max-width: 500px; margin: 30px auto; background: var(--card-bg); border-radius: 15px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+.next-prayer-info { background: var(--header-bg); color: white; padding: 12px; text-align: center; font-size: 13px; font-weight: bold; border-bottom: 3px solid var(--accent); }
+.prayer-box { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; padding: 15px 5px; }
 .prayer-item { text-align: center; }
-.prayer-name { font-size: 10px; color: #fbbf24; font-weight: bold; display: block; }
-.prayer-time { font-size: 12px; font-weight: bold; display: block; }
+.prayer-name { font-size: 11px; color: var(--accent); font-weight: bold; display: block; }
+.prayer-time { font-size: 11px; font-weight: bold; display: block; margin-top: 4px; direction: ltr; }
 
 /* الفوتر */
-.main-footer { text-align: center; padding: 20px 10px; background: var(--header-bg); color: white; margin-top: 40px; border-radius: 20px 20px 0 0; position: relative; }
+.main-footer { text-align: center; padding: 30px 10px; background: var(--header-bg); color: white; border-radius: 30px 30px 0 0; }
 
-/* المشغل الثابت المطور */
-.player-bar { 
-    position: fixed; bottom: 0; left: 0; right: 0; 
-    background: #011d17; color: white; height: 135px; 
-    border-top: 3px solid #fbbf24; z-index: 9999; padding: 10px 0;
-}
-.player-container { max-width: 500px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; justify-content: space-around; height: 100%; }
-#track-title { color: #fbbf24; font-size: 13px; font-weight: bold; text-align: center; width: 90%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+/* المشغل الثابت */
+.player-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #011d17; color: white; height: 145px; border-top: 4px solid var(--accent); z-index: 9999; padding: 15px 0; }
+.player-container { max-width: 500px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; height: 100%; justify-content: space-between; }
+#track-title { color: var(--accent); font-size: 12px; font-weight: bold; width: 90%; text-align: center; }
 .controls-row { display: flex; align-items: center; gap: 40px; }
-.play-btn-circle { width: 50px; height: 50px; background: white; color: #064e3b; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; cursor: pointer; }
-.skip-icon { font-size: 22px; color: #fff; cursor: pointer; opacity: 0.8; }
-.volume-row { width: 80%; display: flex; align-items: center; gap: 10px; opacity: 0.8; }
-.volume-row input { flex-grow: 1; accent-color: #fbbf24; height: 5px; }
+.play-btn-circle { width: 55px; height: 55px; background: white; color: #064e3b; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; cursor: pointer; }
+.volume-row { width: 85%; display: flex; align-items: center; gap: 12px; }
+.volume-row input { flex-grow: 1; accent-color: var(--accent); height: 5px; }
 
-/* العدادات والمشاركة */
-.zekr-counter { background: #064e3b; color: white; width: 42px; height: 42px; border-radius: 50%; border: none; font-weight: bold; cursor: pointer; }
-.zekr-counter.completed { background: #fbbf24 !important; color: #064e3b !important; }
-.share-icon { color: #25d366; font-size: 20px; cursor: pointer; }
+/* الكروت */
+.container { max-width: 500px; margin: 0 auto; padding: 15px; }
+.menu-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.card { background: var(--card-bg); padding: 25px 15px; border-radius: 20px; text-align: center; cursor: pointer; border-bottom: 5px solid var(--header-bg); box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
 .hidden { display: none; }
