@@ -9,26 +9,17 @@
 </head>
 <body>
     <header class="main-header">
-        <i class="fas fa-bars" onclick="toggleSidebar()" style="position:absolute; right:20px; top:25px; cursor:pointer;"></i>
         <h1>القرآن الكريم</h1>
         <p>صدقة جارية عني وعن جميع المسلمين</p>
     </header>
 
-    <div id="sidebar" class="sidebar">
-        <h3 onclick="toggleSidebar()" style="cursor:pointer">إغلاق ×</h3>
-        <div class="sidebar-links">
-            <button onclick="playAudio('https://backup.qurango.net/radio/abdulbasit_abdulsamad', 'إذاعة عبد الباسط')">إذاعة عبد الباسط</button>
-            <button onclick="playAudio('https://backup.qurango.net/radio/maher_al_muaiqly', 'إذاعة ماهر المعيقلي')">إذاعة ماهر المعيقلي</button>
-        </div>
-    </div>
-
-    <main>
+    <main class="container">
         <div id="home-view">
             <a href="https://t.me/Sar7an_1" class="telegram-btn"><i class="fab fa-telegram"></i> قناتنا على التليجرام</a>
             <div class="menu-grid">
-                <div class="card" onclick="playAudio('https://n04.radiojar.com/8s9u67z8n0quv', 'إذاعة القاهرة')"><i class="fas fa-broadcast-tower"></i><span>إذاعة القاهرة</span></div>
-                <div class="card" onclick="openAzkar()"><i class="fas fa-book-open"></i><span>الأذكار</span></div>
-                <div class="card" onclick="openRoqia()"><i class="fas fa-hand-holding-heart"></i><span>الرقية الشرعية</span></div>
+                <div class="card" onclick="playAudio('https://n04.radiojar.com/8s9u67z8n0quv', 'إذاعة القاهرة')"><i class="fas fa-broadcast-tower" style="color:#3b82f6"></i><span>إذاعة القاهرة</span></div>
+                <div class="card" onclick="openAzkar()"><i class="fas fa-book-open" style="color:#10b981"></i><span>الأذكار</span></div>
+                <div class="card" onclick="openRoqia()"><i class="fas fa-hand-holding-heart" style="color:#ef4444"></i><span>الرقية الشرعية</span></div>
             </div>
         </div>
         <div id="sub-view" class="hidden"><div id="content-area"></div></div>
