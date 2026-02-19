@@ -97,6 +97,54 @@ body{
     cursor:pointer;
 }
 
+/* =================================================
+   صفحات السور / المصحف
+================================================= */
+
+/* تثبيت شريط الصفحة الداخلية */
+.sticky-nav{
+    position:sticky;
+    top:0;
+    background:#f4f7f6;
+    padding:10px 0;
+    z-index:100;
+    border-bottom:1px solid #ddd;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+/* شبكة السور */
+.surah-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+    margin-top:15px;
+}
+
+@media(min-width:768px){
+    .surah-grid{
+        grid-template-columns:repeat(4,1fr);
+    }
+}
+
+.surah-card{
+    background:white;
+    padding:12px;
+    border-radius:10px;
+    text-align:center;
+    font-size:13px;
+    font-weight:bold;
+    border:1px solid #e2e8f0;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.surah-card:hover{
+    background:#ecfdf5;
+    border-color:#059669;
+}
+
 /* ===== Player Bar ===== */
 .player-bar{
     position:fixed;
@@ -190,12 +238,8 @@ body{
 
 /* ===== Mobile Tweaks ===== */
 @media(max-width:480px){
-    .card span{
-        font-size:13px;
-    }
-    .controls{
-        gap:22px;
-    }
+    .card span{font-size:13px}
+    .controls{gap:22px}
     .play-btn{
         width:54px;
         height:54px;
