@@ -1,26 +1,83 @@
-@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
-:root { --bg: #f4f7f6; --main: #064e3b; --accent: #fbbf24; }
-body { font-family: 'Cairo', sans-serif; background: var(--bg); margin: 0; padding-bottom: 160px; direction: rtl; }
+const audio = document.getElementById('main-audio');
+const playIcon = document.getElementById('play-icon');
+const trackTitle = document.getElementById('track-title');
 
-/* هيدر منضبط */
-.main-header { background: var(--main); color: white; padding: 25px 10px; text-align: center; border-bottom: 4px solid var(--accent); }
-.main-header h1 { font-size: 20px; margin: 0; }
+// الأذكار كاملة
+const morningAzkar = [
+    {text:"آية الكرسي: اللَّهُ لَا إِلَهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ", count:1},
+    {text:"سورة الإخلاص (3 مرات)", count:3},
+    {text:"سورة الفلق (3 مرات)", count:3},
+    {text:"سورة الناس (3 مرات)", count:3},
+    {text:"أصبحنا وأصبح الملك لله والحمد لله", count:1},
+    {text:"بسم الله الذي لا يضر مع اسمه شيء (3 مرات)", count:3},
+    {text:"اللهم بك أصبحنا وبك أمسينا (1)", count:1},
+    {text:"رضيت بالله رباً وبالإسلام ديناً (3)", count:3}
+];
 
-/* زر التليجرام */
-.telegram-btn { display: block; background: #0088cc; color: white !important; text-align: center; padding: 12px; margin: 15px auto; width: 85%; border-radius: 10px; text-decoration: none; font-weight: bold; font-size: 14px; }
+const eveningAzkar = [
+    {text:"آية الكرسي", count:1},
+    {text:"سورة الإخلاص والمعوذتين (3 مرات)", count:3},
+    {text:"أعوذ بكلمات الله التامات من شر ما خلق (3)", count:3},
+    {text:"اللهم بك أمسينا وبك أصبحنا (1)", count:1}
+];
 
-/* شبكة الكروت منضبطة */
-.menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 10px; }
-.card { background: white; padding: 15px 5px; border-radius: 12px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1); cursor: pointer; border-bottom: 3px solid var(--main); }
-.card i { font-size: 24px; color: var(--main); margin-bottom: 8px; display: block; }
-.card span { font-size: 13px; font-weight: bold; }
+// الرقية الشرعية بروابط مباشرة تعمل فوراً
+function openRoqia() {
+    const roqiaList = [
+        { name: "الرقية الشرعية - ماهر المعيقلي", url: "https://server12.mp3quran.net/maher/115.mp3" },
+        { name: "الرقية الشرعية - مشاري العفاسي", url: "https://server8.mp3quran.net/afs/115.mp3" }
+    ];
+    let html = `<div class="sticky-nav"><button onclick="goHome()" class="back-btn">رجوع</button><span>الرقية الشرعية</span></div><div class="menu-grid">`;
+    roqiaList.forEach(r => {
+        html += `<div class="card" onclick="playAudio('${r.url}', '${r.name}')"><i class="fas fa-heart"></i><span>${r.name}</span></div>`;
+    });
+    showPage(html + "</div>");
+}
 
-/* مشغل صوتي نحيف لا يغطي الشاشة */
-.player-bar { position: fixed; bottom: 0; width: 100%; background: #011d17; color: white; padding: 10px 0; z-index: 999; border-top: 3px solid var(--accent); }
-.player-title { text-align: center; font-size: 12px; margin-bottom: 8px; color: var(--accent); }
-.player-controls { display: flex; justify-content: center; align-items: center; gap: 20px; }
-.play-main-btn { background: white; color: #011d17; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+function playAudio(url, title) {
+    audio.src = url;
+    audio.play().catch(() => alert("يرجى الضغط على زر التشغيل"));
+    trackTitle.innerText = title;
+    playIcon.className = 'fas fa-pause';
+}
 
-.hidden { display: none; }
-.prayer-section { padding: 10px; }
-.prayer-box { display: grid; grid-template-columns: repeat(5, 1fr); background: white; border-radius: 10px; padding: 8px; border: 1px solid var(--accent); }
+function togglePlay() {
+    if(audio.paused) { audio.play(); playIcon.className = 'fas fa-pause'; }
+    else { audio.pause(); playIcon.className = 'fas fa-play'; }
+}
+
+function showPage(html) {
+    document.getElementById('home-view').classList.add('hidden');
+    document.getElementById('sub-view').classList.remove('hidden');
+    document.getElementById('content-area').innerHTML = html;
+}
+
+function goHome() {
+    document.getElementById('home-view').classList.remove('hidden');
+    document.getElementById('sub-view').classList.add('hidden');
+}
+
+function openAzkar() {
+    showPage(`<div class="sticky-nav"><button onclick="goHome()" class="back-btn">رجوع</button></div>
+    <div class="menu-grid"><div class="card" onclick="loadAzkar('morning')">☀️ أذكار الصباح</div><div class="card" onclick="loadAzkar('evening')">🌙 أذكار المساء</div></div>`);
+}
+
+function loadAzkar(type) {
+    const list = type === 'morning' ? morningAzkar : eveningAzkar;
+    let html = `<div class="sticky-nav"><button onclick="openAzkar()" class="back-btn">رجوع</button><span>أذكار ${type==='morning'?'الصباح':'المساء'}</span></div><div style="padding:10px">`;
+    list.forEach(z => {
+        html += `<div class="card" style="margin-bottom:10px; text-align:right; padding:15px; grid-column: span 2;">
+            <p style="font-size:14px; line-height:1.6;">${z.text}</p>
+            <button onclick="updateCnt(this)" style="background:var(--main-green); color:white; border:none; padding:5px 20px; border-radius:5px;">${z.count}</button>
+        </div>`;
+    });
+    document.getElementById('content-area').innerHTML = html + "</div>";
+}
+
+function updateCnt(btn) {
+    let val = parseInt(btn.innerText);
+    if (val > 0) { val--; btn.innerText = val === 0 ? '✓' : val; if(val===0) btn.style.background="#fbbf24"; }
+}
+
+function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
+function skip(t) { audio.currentTime += t; }
