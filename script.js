@@ -2,125 +2,100 @@ const audio = document.getElementById('main-audio');
 const playIcon = document.getElementById('play-icon');
 const trackTitle = document.getElementById('track-title');
 
-// 1. أوقات الصلاة
-async function getPrayerTimes() {
+// تحويل الوقت لنظام 12 ساعة
+function format12Hour(timeStr) {
+    let [hours, minutes] = timeStr.split(':');
+    let period = hours >= 12 ? 'م' : 'ص';
+    hours = hours % 12 || 12;
+    return `${hours}:${minutes} ${period}`;
+}
+
+// تحديث أوقات الصلاة والعداد
+async function updatePrayers() {
     try {
         const res = await fetch('https://api.aladhan.com/v1/timingsByCity?city=Cairo&country=Egypt&method=5');
         const data = await res.json();
         const t = data.data.timings;
-        const prayers = [
-            {n:"الفجر", t:t.Fajr}, {n:"الظهر", t:t.Dhuhr}, {n:"العصر", t:t.Asr}, {n:"المغرب", t:t.Maghrib}, {n:"العشاء", t:t.Isha}
+        const prayerList = [
+            { n: "الفجر", time: t.Fajr }, { n: "الظهر", time: t.Dhuhr },
+            { n: "العصر", time: t.Asr }, { n: "المغرب", time: t.Maghrib }, { n: "العشاء", time: t.Isha }
         ];
-        document.getElementById('prayer-times').innerHTML = prayers.map(p => `
-            <div class="prayer-item"><span class="prayer-name">${p.n}</span><span class="prayer-time">${p.t}</span></div>
+
+        document.getElementById('prayer-times').innerHTML = prayerList.map(p => `
+            <div class="prayer-item">
+                <span class="prayer-name">${p.n}</span>
+                <span class="prayer-time">${format12Hour(p.time)}</span>
+            </div>
         `).join('');
-    } catch (e) { document.getElementById('prayer-times').innerText = "تعذر تحميل المواقيت"; }
-}
-getPrayerTimes();
 
-// 2. التحكم في القائمة والسمات
+        calculateNextPrayer(prayerList);
+    } catch (e) { console.error("Prayer Error"); }
+}
+
+function calculateNextPrayer(prayers) {
+    const now = new Date();
+    let next = null;
+    for (let p of prayers) {
+        const [h, m] = p.time.split(':');
+        const pDate = new Date(); pDate.setHours(h, m, 0);
+        if (pDate > now) { next = { n: p.n, t: pDate }; break; }
+    }
+    if (!next) {
+        const [h, m] = prayers[0].time.split(':');
+        const pDate = new Date(); pDate.setDate(pDate.getDate() + 1); pDate.setHours(h, m, 0);
+        next = { n: "الفجر", t: pDate };
+    }
+    
+    // عداد الوقت المتبقي
+    setInterval(() => {
+        const diff = next.t.getTime() - new Date().getTime();
+        const h = Math.floor(diff / 3600000);
+        const m = Math.floor((diff % 3600000) / 60000);
+        const s = Math.floor((diff % 60000) / 1000);
+        document.getElementById('next-prayer-banner').innerHTML = 
+            `الصلاة القادمة: <span style="color:#fbbf24">${next.n}</span><br>المتبقي ${h}:${m}:${s}`;
+    }, 1000);
+}
+
+updatePrayers();
+
+// تحكم الظهور والإخفاء (إظهار الصلاة في الرئيسية فقط)
+function showPage(html) {
+    document.getElementById('home-view').classList.add('hidden');
+    document.querySelector('.prayer-section').classList.add('hidden'); 
+    document.getElementById('sub-view').classList.remove('hidden');
+    document.getElementById('content-area').innerHTML = html;
+    window.scrollTo(0,0);
+}
+
+function goHome() { 
+    document.getElementById('home-view').classList.remove('hidden'); 
+    document.querySelector('.prayer-section').classList.remove('hidden'); 
+    document.getElementById('sub-view').classList.add('hidden'); 
+}
+
+// القائمة والوظائف
 function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
-function toggleTheme() {
-    document.body.classList.toggle('dark-mode');
-    const isDark = document.body.classList.contains('dark-mode');
-    document.getElementById('theme-btn').innerHTML = isDark ? '<i class="fas fa-sun"></i> الوضع النهاري' : '<i class="fas fa-moon"></i> الوضع الليلي';
-}
-
-// 3. التحكم في الصوت والمشغل
-function playAudio(url, title) {
-    audio.src = url;
-    audio.play().then(() => {
-        trackTitle.innerText = title;
-        playIcon.className = 'fas fa-pause';
-        if (document.getElementById('sidebar').classList.contains('active')) toggleSidebar();
-    });
-}
-function togglePlay() {
-    if (!audio.src) return;
-    if (audio.paused) { audio.play(); playIcon.className = 'fas fa-pause'; }
-    else { audio.pause(); playIcon.className = 'fas fa-play'; }
-}
-function skip(t) { audio.currentTime += t; }
-document.getElementById('volControl').oninput = function() { audio.volume = this.value; };
-
-// 4. الأذكار والعدادات
-const morningAzkar = [
-    {id:"m1", text:"آية الكرسي: ﴿اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ...﴾", count:1},
-    {id:"m2", text:"﴿قُلْ هُوَ اللَّهُ أَحَدٌ...﴾", count:3},
-    {id:"m3", text:"﴿قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ...﴾", count:3},
-    {id:"m4", text:"﴿قُلْ أَعُوذُ بِرَبِّ النَّاسِ...﴾", count:3},
-    {id:"m5", text:"أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ...", count:1}
-];
-
-const eveningAzkar = [
-    {id:"e1", text:"آية الكرسي: ﴿اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ...﴾", count:1},
-    {id:"e2", text:"﴿قُلْ هُوَ اللَّهُ أَحَدٌ...﴾", count:3},
-    {id:"e3", text:"أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ...", count:1}
-];
 
 function openAzkar() {
-    showPage(`<div class="sticky-nav"><button onclick="goHome()" class="back-btn">رجوع</button></div>
-    <div class="menu-grid">
+    showPage(`<div class="sticky-nav">
+        <button onclick="goHome()" class="back-btn"><i class="fas fa-arrow-right"></i> رجوع</button>
+    </div>
+    <div class="menu-grid" style="padding:15px">
         <div class="card" onclick="loadAzkar('morning')">☀️ أذكار الصباح</div>
         <div class="card" onclick="loadAzkar('evening')">🌙 أذكار المساء</div>
     </div>`);
 }
 
-function loadAzkar(type) {
-    const list = type === 'morning' ? morningAzkar : eveningAzkar;
-    let html = `<div class="sticky-nav"><button onclick="openAzkar()" class="back-btn">رجوع</button><span class="text-xs font-bold">${type==='morning'?'الصباح':'المساء'}</span></div>`;
-    list.forEach(z => {
-        let saved = localStorage.getItem(z.id);
-        let current = saved !== null ? parseInt(saved) : z.count;
-        let done = current === 0;
-        html += `<div class="card mb-3 text-right">
-            <p class="text-xs mb-4 leading-relaxed">${z.text}</p>
-            <div class="flex justify-between items-center">
-                <i class="fab fa-whatsapp share-icon" onclick="shareZekr('${z.text}')"></i>
-                <button id="${z.id}" onclick="updateCnt('${z.id}')" class="zekr-counter ${done?'completed':''}">
-                    ${done ? '✓' : current}
-                </button>
-            </div>
-        </div>`;
-    });
-    document.getElementById('content-area').innerHTML = html;
-}
-
-function updateCnt(id) {
-    const btn = document.getElementById(id);
-    let val = btn.innerText === '✓' ? 0 : parseInt(btn.innerText);
-    if (val > 0) {
-        val--;
-        btn.innerText = val === 0 ? '✓' : val;
-        localStorage.setItem(id, val);
-        if (val === 0) btn.classList.add('completed');
-    }
-}
-
-function shareZekr(t) { window.open(`https://wa.me/?text=${encodeURIComponent(t + " - عبر تطبيق منصة القرآن")}`); }
-
-function showPage(h) {
-    document.getElementById('home-view').classList.add('hidden');
-    document.getElementById('sub-view').classList.remove('hidden');
-    document.getElementById('content-area').innerHTML = h;
-    window.scrollTo(0,0);
-}
-
-function goHome() {
-    document.getElementById('home-view').classList.remove('hidden');
-    document.getElementById('sub-view').classList.add('hidden');
-}
-
-// 5. أصوات القراء (API)
 async function openReciters() {
-    showPage("<p class='text-center'>جاري التحميل...</p>");
+    showPage("<p class='text-center'>جاري تحميل القراء...</p>");
     try {
         const res = await fetch('https://mp3quran.net/api/v3/reciters?language=ar');
         const data = await res.json();
-        let html = `<div class="sticky-nav"><button onclick="goHome()" class="back-btn">رجوع للرئيسية</button></div>`;
+        let html = `<div class="sticky-nav"><button onclick="goHome()" class="back-btn"><i class="fas fa-arrow-right"></i> رجوع</button></div>`;
         html += data.reciters.slice(0, 50).map(r => `
-            <div class="card mb-3 flex justify-between items-center" style="padding:15px" onclick="openSurahs('${r.moshaf[0].server}', '${r.name}', '${r.moshaf[0].surah_list}')">
-                <span class="text-xs font-bold">${r.name}</span><i class="fas fa-chevron-left text-gray-400"></i>
+            <div class="card mb-3 flex justify-between items-center" style="padding:15px; text-align:right;" onclick="openSurahs('${r.moshaf[0].server}', '${r.name}', '${r.moshaf[0].surah_list}')">
+                <span class="font-bold">${r.name}</span><i class="fas fa-chevron-left"></i>
             </div>
         `).join('');
         document.getElementById('content-area').innerHTML = html;
@@ -129,10 +104,34 @@ async function openReciters() {
 
 function openSurahs(server, name, list) {
     const sArray = list.split(',');
-    let html = `<div class="sticky-nav"><button onclick="openReciters()" class="back-btn">رجوع للقراء</button><span class="text-[10px] font-bold">${name}</span></div><div class="menu-grid">`;
+    let html = `<div class="sticky-nav"><button onclick="openReciters()" class="back-btn"><i class="fas fa-arrow-right"></i> القراء</button></div><div class="menu-grid" style="padding:10px">`;
     sArray.forEach(sNum => {
-        html += `<div class="card" onclick="playAudio('${server}${sNum.padStart(3, '0')}.mp3', '${name} - سورة ${sNum}')"><span>سورة ${sNum}</span></div>`;
+        html += `<div class="card" style="padding:15px;" onclick="playAudio('${server}${sNum.padStart(3, '0')}.mp3', '${name} - سورة ${sNum}')"><span>سورة ${sNum}</span></div>`;
     });
     document.getElementById('content-area').innerHTML = html + "</div>";
     window.scrollTo(0,0);
+}
+
+function playAudio(url, title) {
+    audio.src = url;
+    audio.play().then(() => {
+        trackTitle.innerText = title;
+        playIcon.className = 'fas fa-pause';
+        if(document.getElementById('sidebar').classList.contains('active')) toggleSidebar();
+    });
+}
+
+function togglePlay() {
+    if(!audio.src) return;
+    if(audio.paused) { audio.play(); playIcon.className = 'fas fa-pause'; }
+    else { audio.pause(); playIcon.className = 'fas fa-play'; }
+}
+
+function skip(t) { audio.currentTime += t; }
+document.getElementById('volControl').oninput = function() { audio.volume = this.value; };
+
+// الوضع الليلي
+function toggleTheme() {
+    // الوضع حاليا مظلم افتراضي، هذه الدالة للتبديل إذا رغبت مستقبلاً
+    alert("أنت حالياً في الوضع المفضل للمنصة");
 }
