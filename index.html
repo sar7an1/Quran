@@ -3,68 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>القرآن الكريم - Sar7an</title>
+    <title>القرآن الكريم</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="light-mode">
-    <div id="sidebar" class="sidebar">
-        <div class="sidebar-header">
-            <button onclick="toggleSidebar()" class="close-btn">&times;</button>
-            <span class="sidebar-title">القائمة</span>
-        </div>
-        <div class="sidebar-main-links">
-            <button onclick="playAudio('https://backup.qurango.net/radio/abdulbasit_abdulsamad', 'إذاعة عبد الباسط')"><i class="fas fa-mosque"></i> إذاعة عبد الباسط</button>
-            <button onclick="playAudio('https://backup.qurango.net/radio/maher_al_muaiqly', 'إذاعة ماهر المعيقلي')"><i class="fas fa-microphone-alt"></i> إذاعة ماهر المعيقلي</button>
-            <button onclick="toggleTheme()" id="theme-toggle-btn"><i class="fas fa-moon"></i> الوضع الليلي</button>
-        </div>
-        <a href="https://t.me/Sar7an_1" target="_blank" class="sidebar-contact-btn">تواصل معنا</a>
-    </div>
-
+<body>
     <header class="main-header">
-        <button class="menu-trigger" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
-        <h1>🕌 القرآن الكريم</h1>
+        <i class="fas fa-bars" onclick="toggleSidebar()" style="position:absolute; right:20px; top:25px; cursor:pointer;"></i>
+        <h1>القرآن الكريم</h1>
         <p>صدقة جارية عني وعن جميع المسلمين</p>
     </header>
 
-    <main class="container">
+    <div id="sidebar" class="sidebar">
+        <h3 onclick="toggleSidebar()" style="cursor:pointer">إغلاق ×</h3>
+        <div class="sidebar-links">
+            <button onclick="playAudio('https://backup.qurango.net/radio/abdulbasit_abdulsamad', 'إذاعة عبد الباسط')">إذاعة عبد الباسط</button>
+            <button onclick="playAudio('https://backup.qurango.net/radio/maher_al_muaiqly', 'إذاعة ماهر المعيقلي')">إذاعة ماهر المعيقلي</button>
+        </div>
+    </div>
+
+    <main>
         <div id="home-view">
-            <a href="https://t.me/Sar7an_1" target="_blank" class="telegram-btn">
-                <i class="fab fa-telegram"></i> قناتنا على التليجرام
-            </a>
-            
+            <a href="https://t.me/Sar7an_1" class="telegram-btn"><i class="fab fa-telegram"></i> قناتنا على التليجرام</a>
             <div class="menu-grid">
-                <div class="card" onclick="playAudio('https://n04.radiojar.com/8s9u67z8n0quv', 'إذاعة القاهرة')"><i class="fas fa-broadcast-tower" style="color:#3b82f6"></i><span>إذاعة القاهرة</span></div>
-                <div class="card" onclick="openReciters()"><i class="fas fa-microphone" style="color:#f59e0b"></i><span>أصوات مختلفة</span></div>
-                <div class="card" onclick="openAzkar()"><i class="fas fa-book-open" style="color:#10b981"></i><span>الأذكار</span></div>
-                <div class="card" onclick="openRoqia()"><i class="fas fa-hand-holding-heart" style="color:#ef4444"></i><span>الرقية الشرعية</span></div>
+                <div class="card" onclick="playAudio('https://n04.radiojar.com/8s9u67z8n0quv', 'إذاعة القاهرة')"><i class="fas fa-broadcast-tower"></i><span>إذاعة القاهرة</span></div>
+                <div class="card" onclick="openAzkar()"><i class="fas fa-book-open"></i><span>الأذكار</span></div>
+                <div class="card" onclick="openRoqia()"><i class="fas fa-hand-holding-heart"></i><span>الرقية الشرعية</span></div>
             </div>
         </div>
-
         <div id="sub-view" class="hidden"><div id="content-area"></div></div>
-
-        <div class="prayer-section">
-            <div id="next-prayer-banner" class="next-prayer-info">جاري حساب موعد الصلاة...</div>
-            <div id="prayer-times" class="prayer-box"></div>
-        </div>
     </main>
-
-    <footer class="main-footer">
-        <div class="footer-copy">Sar7an_1 © 2026</div>
-        <div class="footer-dua">رَبَّنَا تَقَبَّلْ مِنَّا إِنَّكَ أَنْتَ السَّمِيعُ الْعَلِيمُ</div>
-    </footer>
 
     <div class="player-bar">
         <div id="track-title" class="player-title">بانتظار اختيارك...</div>
         <div class="player-controls">
-            <i class="fas fa-step-backward" onclick="skip(-10)"></i>
-            <div onclick="togglePlay()" class="play-main-btn"><i id="play-icon" class="fas fa-play"></i></div>
-            <i class="fas fa-step-forward" onclick="skip(10)"></i>
-        </div>
-        <div class="volume-container">
-            <i class="fas fa-volume-down"></i>
-            <input type="range" id="volControl" min="0" max="1" step="0.1" value="1">
-            <i class="fas fa-volume-up"></i>
+            <i class="fas fa-backward" onclick="skip(-10)"></i>
+            <div class="play-main-btn" onclick="togglePlay()"><i id="play-icon" class="fas fa-play"></i></div>
+            <i class="fas fa-forward" onclick="skip(10)"></i>
         </div>
     </div>
 
