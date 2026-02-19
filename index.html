@@ -9,9 +9,12 @@
 </head>
 <body>
     <div id="sidebar" class="sidebar">
-        <h3 onclick="toggleSidebar()" style="cursor:pointer">إغلاق ×</h3>
-        <button onclick="playAudio('https://backup.qurango.net/radio/abdulbasit_abdulsamad', 'إذاعة عبد الباسط')" style="width:100%; padding:12px; margin-top:20px; background:rgba(255,255,255,0.1); color:white; border:none; border-radius:8px;">إذاعة عبد الباسط</button>
-        <button onclick="playAudio('https://backup.qurango.net/radio/maher_al_muaiqly', 'إذاعة ماهر المعيقلي')" style="width:100%; padding:12px; margin-top:10px; background:rgba(255,255,255,0.1); color:white; border:none; border-radius:8px;">إذاعة ماهر المعيقلي</button>
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <h3>القائمة</h3>
+            <span onclick="toggleSidebar()" style="cursor:pointer; font-size:24px;">&times;</span>
+        </div>
+        <button onclick="playAudio('https://backup.qurango.net/radio/abdulbasit_abdulsamad', 'إذاعة عبد الباسط')" style="width:100%; padding:12px; margin-top:20px; background:rgba(255,255,255,0.1); color:white; border:none; border-radius:8px; cursor:pointer; font-family:'Cairo';">إذاعة عبد الباسط</button>
+        <button onclick="playAudio('https://backup.qurango.net/radio/maher_al_muaiqly', 'إذاعة ماهر المعيقلي')" style="width:100%; padding:12px; margin-top:10px; background:rgba(255,255,255,0.1); color:white; border:none; border-radius:8px; cursor:pointer; font-family:'Cairo';">إذاعة ماهر المعيقلي</button>
     </div>
 
     <header class="main-header">
@@ -32,7 +35,7 @@
             </div>
 
             <div class="prayer-section">
-                <div id="next-prayer-info">جاري التحميل...</div>
+                <div id="next-prayer-info">جاري حساب موعد الصلاة...</div>
                 <div id="prayer-times" class="prayer-box"></div>
             </div>
             
@@ -45,11 +48,11 @@
     </main>
 
     <div class="player-bar">
-        <div id="track-title" style="text-align:center; font-size:12px; color:#fbbf24; margin-bottom:8px;">بانتظار اختيارك...</div>
+        <div id="track-title" style="text-align:center; font-size:12px; color:#fbbf24; margin-bottom:8px; padding:0 10px;">بانتظار اختيارك...</div>
         <div class="player-controls">
-            <i class="fas fa-backward" onclick="skip(-10)"></i>
+            <i class="fas fa-backward" onclick="skip(-10)" style="cursor:pointer"></i>
             <div class="play-main-btn" onclick="togglePlay()"><i id="play-icon" class="fas fa-play"></i></div>
-            <i class="fas fa-forward" onclick="skip(10)"></i>
+            <i class="fas fa-forward" onclick="skip(10)" style="cursor:pointer"></i>
         </div>
     </div>
 
