@@ -8,9 +8,21 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="light-mode">
+
+    <div id="sidebar" class="sidebar">
+        <button class="close-btn" onclick="toggleSidebar()">&times;</button>
+        <div class="sidebar-links">
+            <button onclick="playAudio('https://stream.radiojar.com/8s9u67z8n0quv', 'إذاعة القرآن من السعودية')"><i class="fas fa-kaaba"></i> إذاعة السعودية</button>
+            <button onclick="playAudio('https://backup.qurango.net/radio/maher_al_muaiqly', 'إذاعة ماهر المعيقلي')"><i class="fas fa-microphone-alt"></i> ماهر المعيقلي</button>
+            <a href="https://t.me/Sar7an_1" target="_blank"><i class="fab fa-telegram-plane"></i> تواصل معنا</a>
+            <hr class="opacity-20">
+            <button onclick="toggleTheme()" id="theme-btn"><i class="fas fa-moon"></i> الوضع الليلي</button>
+        </div>
+    </div>
 
     <header class="main-header">
+        <button class="menu-trigger" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
         <h1>منصة القرآن الكريم 🕌</h1>
         <p>صدقة جارية عني وعن جميع المسلمين والمسلمات</p>
     </header>
@@ -22,7 +34,7 @@
             </a>
             
             <div class="menu-grid">
-                <div class="card" onclick="playAudio('https://n04.radiojar.com/8s9u67z8n0quv', 'إذاعة القرآن من القاهرة')">
+                <div class="card" onclick="playAudio('https://n04.radiojar.com/8s9u67z8n0quv', 'إذاعة القاهرة')">
                     <i class="fas fa-broadcast-tower blue"></i>
                     <span>إذاعة القاهرة</span>
                 </div>
@@ -44,24 +56,30 @@
         <div id="sub-view" class="hidden">
             <div id="content-area"></div>
         </div>
+    </main>
 
-        <footer class="main-footer">
+    <footer class="main-footer">
+        <div class="footer-content">
             <div class="copy">Sar7an_1©(2026)</div>
             <div class="dua">رَبَّنَا تَقَبَّلْ مِنَّا إِنَّكَ أَنتَ السَّمِيعُ الْعَلِيمُ</div>
-        </footer>
-    </main>
+        </div>
+    </footer>
 
     <div class="player-bar">
         <div id="track-title">بانتظار اختيارك...</div>
-        <div class="controls">
-            <i class="fas fa-backward" onclick="skip(-10)"></i>
-            <div class="play-btn" onclick="togglePlay()"><i id="play-icon" class="fas fa-play"></i></div>
-            <i class="fas fa-forward" onclick="skip(10)"></i>
-        </div>
-        <div class="volume-slider">
-            <i class="fas fa-volume-up"></i>
-            <input type="range" min="0" max="1" step="0.1" value="1" id="volControl">
-            <i class="fas fa-volume-mute"></i>
+        
+        <div class="player-main-layout">
+            <div class="volume-box">
+                <i class="fas fa-volume-up text-[10px]"></i>
+                <input type="range" min="0" max="1" step="0.1" value="1" id="volControl">
+                <i class="fas fa-volume-mute text-[10px]"></i>
+            </div>
+
+            <div class="controls">
+                <i class="fas fa-backward" onclick="skip(-10)"></i>
+                <div class="play-btn" onclick="togglePlay()"><i id="play-icon" class="fas fa-play"></i></div>
+                <i class="fas fa-forward" onclick="skip(10)"></i>
+            </div>
         </div>
     </div>
 
