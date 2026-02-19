@@ -11,7 +11,10 @@
 <body class="light-mode">
 
     <div id="sidebar" class="sidebar">
-        <button class="close-btn" onclick="toggleSidebar()">&times;</button>
+        <div class="sidebar-header">
+            <button class="close-btn" onclick="toggleSidebar()">&times;</button>
+            <span class="sidebar-title">القائمة</span>
+        </div>
         <div class="sidebar-links-container">
             <div class="sidebar-main-links">
                 <button onclick="playAudio('https://backup.qurango.net/radio/abdulbasit_abdulsamad', 'إذاعة عبد الباسط')"><i class="fas fa-mosque"></i> إذاعة عبد الباسط</button>
@@ -52,10 +55,14 @@
                 </div>
             </div>
         </div>
-        <div id="sub-view" class="hidden"><div id="content-area"></div></div>
+        
+        <div id="sub-view" class="hidden">
+            <div id="content-area"></div>
+        </div>
 
         <div class="prayer-section">
-            <div id="prayer-times" class="prayer-box">جاري التحميل...</div>
+            <div class="next-prayer-info" id="next-prayer-banner">جاري حساب موعد الصلاة القادمة...</div>
+            <div id="prayer-times" class="prayer-box"></div>
         </div>
     </main>
 
@@ -68,13 +75,13 @@
         <div class="player-container">
             <div id="track-title">بانتظار اختيارك...</div>
             <div class="controls-row">
-                <i class="fas fa-backward skip-icon" onclick="skip(-10)"></i>
+                <i class="fas fa-step-backward skip-icon" onclick="skip(-10)"></i>
                 <div class="play-btn-circle" onclick="togglePlay()"><i id="play-icon" class="fas fa-play"></i></div>
-                <i class="fas fa-forward skip-icon" onclick="skip(10)"></i>
+                <i class="fas fa-step-forward skip-icon" onclick="skip(10)"></i>
             </div>
             <div class="volume-row">
                 <i class="fas fa-volume-down"></i>
-                <input type="range" min="0" max="1" step="0.1" value="1" id="volControl">
+                <input type="range" min="0" max="1" step="0.05" value="1" id="volControl">
                 <i class="fas fa-volume-up"></i>
             </div>
         </div>
