@@ -15,16 +15,22 @@
             <button class="close-btn" onclick="toggleSidebar()">&times;</button>
             <span class="sidebar-title">القائمة</span>
         </div>
-        <div class="sidebar-links-container">
-            <div class="sidebar-main-links">
-                <button onclick="playAudio('https://backup.qurango.net/radio/abdulbasit_abdulsamad', 'إذاعة عبد الباسط')"><i class="fas fa-mosque"></i> إذاعة عبد الباسط</button>
-                <button onclick="playAudio('https://backup.qurango.net/radio/maher_al_muaiqly', 'إذاعة ماهر المعيقلي')"><i class="fas fa-microphone-alt"></i> إذاعة ماهر المعيقلي</button>
-                <button onclick="toggleTheme()" id="theme-btn"><i class="fas fa-moon"></i> الوضع الليلي</button>
-            </div>
-            <a href="https://t.me/Sar7an_1" target="_blank" class="sidebar-contact-btn">
-                <i class="fab fa-telegram-plane"></i> تواصل معنا
-            </a>
+        
+        <div class="sidebar-main-links">
+            <button onclick="playAudio('https://backup.qurango.net/radio/abdulbasit_abdulsamad', 'إذاعة عبد الباسط')">
+                <i class="fas fa-mosque"></i> إذاعة عبد الباسط
+            </button>
+            <button onclick="playAudio('https://backup.qurango.net/radio/maher_al_muaiqly', 'إذاعة ماهر المعيقلي')">
+                <i class="fas fa-microphone-alt"></i> إذاعة ماهر المعيقلي
+            </button>
+            <button onclick="toggleTheme()" id="theme-toggle-btn">
+                <i class="fas fa-moon"></i> الوضع الليلي
+            </button>
         </div>
+
+        <a href="https://t.me/Sar7an_1" target="_blank" class="sidebar-contact-btn">
+            <i class="fab fa-telegram-plane"></i> تواصل معنا
+        </a>
     </div>
 
     <header class="main-header">
@@ -42,16 +48,16 @@
             </a>
             <div class="menu-grid">
                 <div class="card" onclick="playAudio('https://n04.radiojar.com/8s9u67z8n0quv', 'إذاعة القاهرة')">
-                    <i class="fas fa-broadcast-tower blue"></i><span>إذاعة القاهرة</span>
+                    <i class="fas fa-broadcast-tower" style="color:#3b82f6"></i><span>إذاعة القاهرة</span>
                 </div>
                 <div class="card" onclick="openReciters()">
-                    <i class="fas fa-microphone amber"></i><span>أصوات مختلفة</span>
+                    <i class="fas fa-microphone" style="color:#f59e0b"></i><span>أصوات مختلفة</span>
                 </div>
                 <div class="card" onclick="openAzkar()">
-                    <i class="fas fa-book-open emerald"></i><span>الأذكار</span>
+                    <i class="fas fa-book-open" style="color:#10b981"></i><span>الأذكار</span>
                 </div>
                 <div class="card" onclick="playAudio('https://server10.mp3quran.net/roqia/001.mp3', 'الرقية الشرعية')">
-                    <i class="fas fa-hand-holding-heart red"></i><span>الرقية الشرعية</span>
+                    <i class="fas fa-hand-holding-heart" style="color:#ef4444"></i><span>الرقية الشرعية</span>
                 </div>
             </div>
         </div>
@@ -68,7 +74,7 @@
 
     <footer class="main-footer">
         <div class="copy">Sar7an_1 © 2026</div>
-        <div class="dua">رَبَّنَا تَقَبَّلْ مِنَّا إِنَّكَ أَنْتَ السَّمِيعُ الْعَلِيمُ</div>
+        <div class="dua">رَبَّنَا تَقَبَّلْ مِنَّا إِنَّكَ أَنْتَ السَّمِيعُ الْعَلِيمُ</div>
     </footer>
 
     <div class="player-bar">
