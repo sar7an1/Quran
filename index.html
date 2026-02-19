@@ -12,12 +12,15 @@
 
     <div id="sidebar" class="sidebar">
         <button class="close-btn" onclick="toggleSidebar()">&times;</button>
-        <div class="sidebar-links">
-            <button onclick="playAudio('https://backup.qurango.net/radio/abdulbasit_abdulsamad', 'إذاعة عبد الباسط عبد الصمد')"><i class="fas fa-mosque"></i> إذاعة عبد الباسط</button>
-            <button onclick="playAudio('https://backup.qurango.net/radio/maher_al_muaiqly', 'إذاعة ماهر المعيقلي')"><i class="fas fa-microphone-alt"></i> ماهر المعيقلي</button>
-            <a href="https://t.me/Sar7an_1" target="_blank"><i class="fab fa-telegram-plane"></i> تواصل معنا</a>
-            <hr class="opacity-20">
-            <button onclick="toggleTheme()" id="theme-btn"><i class="fas fa-moon"></i> الوضع الليلي</button>
+        <div class="sidebar-links-container">
+            <div class="sidebar-main-links">
+                <button onclick="playAudio('https://backup.qurango.net/radio/abdulbasit_abdulsamad', 'إذاعة عبد الباسط عبد الصمد')"><i class="fas fa-mosque"></i> إذاعة عبد الباسط</button>
+                <button onclick="playAudio('https://backup.qurango.net/radio/maher_al_muaiqly', 'إذاعة ماهر المعيقلي')"><i class="fas fa-microphone-alt"></i> إذاعة ماهر المعيقلي</button>
+                <button onclick="toggleTheme()" id="theme-btn"><i class="fas fa-moon"></i> الوضع الليلي</button>
+            </div>
+            <a href="https://t.me/Sar7an_1" target="_blank" class="sidebar-contact-btn">
+                <i class="fab fa-telegram-plane"></i> تواصل معنا
+            </a>
         </div>
     </div>
 
@@ -36,7 +39,7 @@
             </a>
             
             <div class="menu-grid">
-                <div class="card" onclick="playAudio('https://n04.radiojar.com/8s9u67z8n0quv', 'إذاعة القرآن من القاهرة')">
+                <div class="card" onclick="playAudio('https://n04.radiojar.com/8s9u67z8n0quv', 'إذاعة القاهرة')">
                     <i class="fas fa-broadcast-tower blue"></i>
                     <span>إذاعة القاهرة</span>
                 </div>
@@ -67,13 +70,11 @@
 
     <div class="player-bar">
         <div id="track-title">بانتظار اختيارك...</div>
-        
         <div class="player-main-layout">
             <div class="volume-box">
                 <i class="fas fa-volume-up"></i>
                 <input type="range" min="0" max="1" step="0.1" value="1" id="volControl">
             </div>
-
             <div class="controls">
                 <i class="fas fa-undo" onclick="skip(-10)"></i>
                 <div class="play-btn" onclick="togglePlay()"><i id="play-icon" class="fas fa-play"></i></div>
