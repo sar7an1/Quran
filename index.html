@@ -14,7 +14,7 @@
         <button class="close-btn" onclick="toggleSidebar()">&times;</button>
         <div class="sidebar-links-container">
             <div class="sidebar-main-links">
-                <button onclick="playAudio('https://backup.qurango.net/radio/abdulbasit_abdulsamad', 'إذاعة عبد الباسط عبد الصمد')"><i class="fas fa-mosque"></i> إذاعة عبد الباسط</button>
+                <button onclick="playAudio('https://backup.qurango.net/radio/abdulbasit_abdulsamad', 'إذاعة عبد الباسط')"><i class="fas fa-mosque"></i> إذاعة عبد الباسط</button>
                 <button onclick="playAudio('https://backup.qurango.net/radio/maher_al_muaiqly', 'إذاعة ماهر المعيقلي')"><i class="fas fa-microphone-alt"></i> إذاعة ماهر المعيقلي</button>
                 <button onclick="toggleTheme()" id="theme-btn"><i class="fas fa-moon"></i> الوضع الليلي</button>
             </div>
@@ -28,7 +28,7 @@
         <button class="menu-trigger" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
         <div class="header-content">
             <h1>🕌 منصة القرآن الكريم</h1>
-            <p>صدقة جارية عني وعن جميع المسلمين والمسلمات</p>
+            <p>صدقة جارية عني وعن جميع المسلمين</p>
         </div>
     </header>
 
@@ -37,48 +37,42 @@
             <a href="https://t.me/Sar7an_1" target="_blank" class="telegram-btn">
                 <i class="fab fa-telegram"></i> قناتنا على التليجرام
             </a>
-            
             <div class="menu-grid">
                 <div class="card" onclick="playAudio('https://n04.radiojar.com/8s9u67z8n0quv', 'إذاعة القاهرة')">
-                    <i class="fas fa-broadcast-tower blue"></i>
-                    <span>إذاعة القاهرة</span>
+                    <i class="fas fa-broadcast-tower blue"></i><span>إذاعة القاهرة</span>
                 </div>
                 <div class="card" onclick="openReciters()">
-                    <i class="fas fa-microphone amber"></i>
-                    <span>أصوات مختلفة</span>
+                    <i class="fas fa-microphone amber"></i><span>أصوات مختلفة</span>
                 </div>
                 <div class="card" onclick="openAzkar()">
-                    <i class="fas fa-book-open emerald"></i>
-                    <span>الأذكار</span>
+                    <i class="fas fa-book-open emerald"></i><span>الأذكار</span>
                 </div>
                 <div class="card" onclick="playAudio('https://server10.mp3quran.net/roqia/001.mp3', 'الرقية الشرعية')">
-                    <i class="fas fa-hand-holding-heart red"></i>
-                    <span>الرقية الشرعية</span>
+                    <i class="fas fa-hand-holding-heart red"></i><span>الرقية الشرعية</span>
                 </div>
             </div>
         </div>
-
-        <div id="sub-view" class="hidden">
-            <div id="content-area"></div>
-        </div>
+        <div id="sub-view" class="hidden"><div id="content-area"></div></div>
     </main>
 
     <footer class="main-footer">
+        <div id="prayer-times" class="prayer-box">جاري التحميل...</div>
         <div class="copy">Sar7an_1©(2026)</div>
-        <div class="dua">رَبَّنَا تَقَبَّلْ مِنَّا إِنَّكَ أَنتَ السَّمِيعُ الْعَلِيمُ</div>
+        <div class="dua">رَبَّنَا تَقَبَّلْ مِنَّا إِنَّكَ أَنتَ السَّمِيعُ الْعَلِيمُ</div>
     </footer>
 
     <div class="player-bar">
-        <div id="track-title">بانتظار اختيارك...</div>
-        <div class="player-main-layout">
-            <div class="volume-box">
-                <i class="fas fa-volume-up"></i>
-                <input type="range" min="0" max="1" step="0.1" value="1" id="volControl">
+        <div class="player-container">
+            <div id="track-title">بانتظار اختيارك...</div>
+            <div class="main-controls">
+                <i class="fas fa-backward skip-icon" onclick="skip(-10)"></i>
+                <div class="play-btn-circle" onclick="togglePlay()"><i id="play-icon" class="fas fa-play"></i></div>
+                <i class="fas fa-forward skip-icon" onclick="skip(10)"></i>
             </div>
-            <div class="controls">
-                <i class="fas fa-undo" onclick="skip(-10)"></i>
-                <div class="play-btn" onclick="togglePlay()"><i id="play-icon" class="fas fa-play"></i></div>
-                <i class="fas fa-redo" onclick="skip(10)"></i>
+            <div class="volume-row">
+                <i class="fas fa-volume-down"></i>
+                <input type="range" min="0" max="1" step="0.1" value="1" id="volControl">
+                <i class="fas fa-volume-up"></i>
             </div>
         </div>
     </div>
@@ -86,4 +80,4 @@
     <audio id="main-audio"></audio>
     <script src="script.js"></script>
 </body>
-</html> 
+</html>
